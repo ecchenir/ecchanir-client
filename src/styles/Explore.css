@@ -1,0 +1,83 @@
+/* .banner-img {
+    margin-top: 60px;
+  } */
+  
+  /* .explore h1 {
+    color: #1F5F5B;
+    font-family: 'Playfair Display', serif;
+    
+  } */
+  
+  
+  /* .explore {
+    display: flex;
+    flex-wrap: wrap;
+  } */
+  /* .explore .card {
+    background-color: white;
+    width: 18rem;
+  }
+  .explore .card-name-price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .explore .card-price {
+    color: #1F5F5B;
+    font-weight: bold;
+  } */
+  /* .explore button {
+    border-radius: 0;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+  } */
+  
+  /* .explore .card-text {
+    color: rgb(90, 89, 89);
+  } */
+  
+  .explore .card img:hover {
+    transform: scale(0.10);
+  }
+  
+  .explore .card-img-top {
+    height: 300px !important;
+  }
+  /* ==================
+  filters
+  ============== */
+  /* .filters h4 {
+    margin-top: 100px;
+    color: gray !important;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.337);
+  }
+  
+  .ant-checkbox-wrapper:first-of-type {
+    margin-left: 8px;
+  }
+  
+  .ant-checkbox-wrapper {
+    margin: 2px;
+  }
+  .ant-radio-wrapper {
+    margin-bottom: 5px !important;
+    margin-left: 10px;
+  }
+  
+  .filters button {
+    background-color: black;
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    margin-top: 20px;
+  }
+  
+  .loadmore {
+    color: #1F5F5B;
+    font-weight: bold;
+    font-size: 20px !important;
+  } */

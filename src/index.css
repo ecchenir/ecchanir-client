@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@300;400&display=swap');
+
+/* Add a fallback font */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* font-family: 'Poppins', sans-serif; */
+/* font-family: 'Playfair Display', serif; */
+/* font-family: 'Great Vibes', cursive; */
+
+/* Navbar css */
+.navbar {
+  font-family: "Inter";
+  font-size: 20px;
+  line-height: 26px;
+  box-shadow: 0 6px 6px -6px #F7F7F7;
+  background-color: white;
+  --webkit-box-shadow: 0 8px 6px -6px #F7F7F7;
+  border-bottom: solid #F7F7F7 !important;
+
+}
+
+ 
+
+.banner-image {
+  height: 150px; /* Set your desired height for mobile */
+}
+
+@media (min-width: 992px) {
+  /* Large screens (lg) */
+  .banner-image {
+    height: 450px; /* Set your desired height for large screens */
+  }
+}
+@media (min-width: 650px) {
+  /* Large screens (lg) */
+  .banner-image {
+    height: 350px; /* Set your desired height for large screens */
+  }
+}
+
+
+.bang-Image {
+
+  border-radius: 5px;
+}
+
+
+
+
+.brandeName {
+  letter-spacing: -1px;
+}
+
+
+
+.subHeader {
+  background: #F7F7F7;
+  align-items: center;
+  padding-top: 15px;
+  padding-right: 30px;
+  padding-left: 30px;
+  font-family: "Inter";
+
+
+}
+
+.iconSize {
+  height: 25px;
+}
+
+.nav-link {
+  font-weight: 300 !important;
+}
+
+.active {
+  color: blue;
+  font-weight: 400;
+  /* border-bottom: 1px solid black; */
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-family: "Inter";
+  letter-spacing: 3px;
+}
+
+.dropdown-menu {
+  background-color: #F7F7F7;
+  font-family: "Inter";
+}
+
+.dropdown-menu :hover {
+  background-color: #F7F7F7;
+}
+
+.dropdown-menu :active {
+  background-color: #F7F7F7;
+}
+
+.aboutImage{
+  height: 550px;
+  
+}
+
+
+.searchInput{
+  height: 35px;
+border-radius: 5px;
+
+}
+
+/* =================================
+======== page not found css ======= */
+.pnf {
+  display: flex;
+  min-height: 80vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #F7F7F7;
+  font-family: 'Great Vibes', cursive;
+}
+
+.pnf-title {
+  font-size: 100px;
+  font-weight: 700;
+}
+
+.pnf-heading {
+  font-weight: normal;
+}
+
+.pnf-btn {
+  color: black;
+  border: 1px solid black;
+  text-decoration: none;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.pnf-btn:hover {
+  background-color: black;
+  color: white;
+}
+
+/* register page */
+.register {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  flex-direction: column;
+}
+
+
+/* ==================== */
+.product-link {
+  text-decoration: none !important;
+  color: black !important;
+}
+
+.cat-btn {
+  padding: 40px 0px;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.cat-btn:hover {
+  background-color: #434343;
+  color: #1F5F5B;
+}
+
+.catt-btn {
+  padding: 38px 0px;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.catt-btn:hover {
+  background-color: #1F5F5B;
+  color: #434343;
+}
+
+.show {
+  color: black;
+  font-family: 'Inter';
+  font-weight: 'bold';
+  /* font-size: 16px; */
+
+}
+
+.price {
+  color: #f85606;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+
+.discountPrice{
+  color: #676262;
+  margin-bottom: 0;
+  font-size: 14px;
+  text-decoration: line-through;
+}
+.cardTitle {
+  /* white-space: nowrap; */
+  letter-spacing: -1px;
+  font-size: 14px;
+  
+
+}
+.productCard{
+  /* height: 262px; */
+  padding-bottom: 5px;
+}
+
+.cart-image{
+  border-radius: 100%;
+}
+
+/* ================
+====dashboard
+=================== */
+
+.dashboard {
+  margin-top: 100px !important;
+}
+
+.dashboard-menu h4 {
+  background-color: #434343 !important;
+  color: white;
+  padding: 20px 0px;
+}
