@@ -14,7 +14,12 @@ export default function BuyNow() {
   const [orderData, setOrderData] = useState([]);
   const [quantities, setQuantities] = useState(1);
   const [size, setSizes] = useState();
+  
+  const [selectedDivision, setSelectedDivision] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedUpazila, setSelectedUpazila] = useState('');
+
+
 
   useEffect(() => {
     // Fetch order data from local storage
@@ -169,7 +174,14 @@ export default function BuyNow() {
                                     />
                                 </div>
                                 <div>
-                                    <DistrictSelector/>
+                                    <DistrictSelector
+                                     selectedDistrict={selectedDistrict}
+                                      setSelectedDistrict={setSelectedDistrict}
+                                       selectedDivision={selectedDivision}
+                                        setSelectedDivision={setSelectedDistrict}
+                                         selectedUpazila={selectedUpazila} 
+                                         setSelectedUpazila={setSelectedUpazila}/>
+                                         
                                     {/* <DistrictSelector setSelectedDistrict={setSelectedDistrict} selectedDistrict={selectedDistrict} /> */}
                                 </div>
 

@@ -70,6 +70,11 @@ const Footer = () => {
               <h5 className="text-uppercase mb-4 pb-1">Subscribe Now</h5>
               <SearchInput />
 
+              <div>
+               
+                <a target='_blank' href="https://www.facebook.com/groups/ecchenir">  Join Our FaceBook Group </a>
+              </div>
+
             </div>
 
             {/*Grid column*/}
@@ -81,7 +86,7 @@ const Footer = () => {
         <div className="text-center p-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
 
 
-          <p>© 2024 EcchaNir. All rights reserved.</p>
+          <p>© 2024 EccheNir. All rights reserved.</p>
         </div>
         {/* Copyright */}
       </div>

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
 const { Option } = Select;
@@ -35,7 +35,7 @@ const CreateProduct = () => {
   const [rating, setRating] = useState("");
   const [productNumber, setProductNumber] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const options = ['M', 'L', 'XL', 'XXL'];
+  const options = ["M", "L", "XL", "XXL"];
 
   //get all category
   const getAllCategory = async () => {
@@ -76,7 +76,10 @@ const CreateProduct = () => {
       productData.append("rating", rating);
       productData.append("productNumber", productNumber);
 
-      const { data } = await axios.post("/api/v1/product/create-product", productData);
+      const { data } = await axios.post(
+        "/api/v1/product/create-product",
+        productData
+      );
 
       if (data?.success) {
         toast.success("Product Created Successfully");
@@ -104,18 +107,22 @@ const CreateProduct = () => {
     const option = e.target.value;
     if (e.target.checked) {
       // If checkbox is checked, add the option to the selectedOptions array
-      setSelectedOptions((prevSelectedOptions) => [...prevSelectedOptions, option]);
+      setSelectedOptions((prevSelectedOptions) => [
+        ...prevSelectedOptions,
+        option,
+      ]);
     } else {
       // If checkbox is unchecked, remove the option from the selectedOptions array
       setSelectedOptions((prevSelectedOptions) =>
-        prevSelectedOptions.filter((selectedOption) => selectedOption !== option)
+        prevSelectedOptions.filter(
+          (selectedOption) => selectedOption !== option
+        )
       );
     }
   };
 
-
   return (
-    <Layout title={'Dashboard-Create Product'}>
+    <Layout title={"Dashboard-Create Product"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
@@ -153,7 +160,6 @@ const CreateProduct = () => {
                 </label>
               </div>
 
-
               <div className="mb-3">
                 {photo && (
                   <div className="text-center">
@@ -176,19 +182,22 @@ const CreateProduct = () => {
                 />
               </div>
 
-              <div className='mb-3 mt-3'>
+              <div className="mb-3 mt-3">
                 <div>
                   <h4>Select Size Options:</h4>
                   {options.map((option) => (
-                    <Checkbox key={option} option={option} onChange={handleOptionChange} />
+                    <Checkbox
+                      key={option}
+                      option={option}
+                      onChange={handleOptionChange}
+                    />
                   ))}
                   <div>
                     <h4>Selected Size:</h4>
-                    <p>{selectedOptions.join(', ')}</p>
+                    <p>{selectedOptions.join(", ")}</p>
                   </div>
                 </div>
               </div>
-
 
               <div className="mb-3">
                 <textarea
@@ -235,7 +244,7 @@ const CreateProduct = () => {
                 <input
                   type="text"
                   value={productNumber}
-                  placeholder="Write a Product Number"
+                  placeholder="Product code"
                   className="form-control"
                   onChange={(e) => setProductNumber(e.target.value)}
                   required
@@ -261,7 +270,7 @@ const CreateProduct = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default CreateProduct
+export default CreateProduct;

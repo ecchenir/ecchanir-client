@@ -108,20 +108,11 @@ console.log(updatedOrderData);
           <h6 style={{ fontSize: "20px", fontWeight: 'bolder' }}>{product.name}</h6>
           <h6>{product.description}</h6>
           {/* <h6>{product?.category?.name}</h6> */}
-          <p className="price">{product.discount}Taka</p>
           <p className="discountPrice">{product.price}Taka</p>
-          <p>
+          <p className="price">{product.discount}Taka</p>
+          
 
-            <Rating
-              className="ml-3"
-              placeholderRating={product.rating}
-              readonly
-              emptySymbol={<FaRegStar></FaRegStar>}
-              placeholderSymbol={<FaStar className='text-warning'></FaStar>}
-              fullSymbol={<FaStar></FaStar>}
-            />
-
-          </p>
+          
           {/* <h6>Category : {product?.category?.name}</h6> */}
           <div className=" ">
             <p className="mb-0">Size :</p>
@@ -141,7 +132,7 @@ console.log(updatedOrderData);
 
           <div className="d-flex mt-3">
             <button
-              className="btn btn-success ms-1"
+              className="btn btn-dark ms-1"
               onClick={handleBuyNowClick}
             >
               Buy Now

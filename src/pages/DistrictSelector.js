@@ -1,65 +1,104 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import {
+  allDivision,
+  districtsOf,
+  upazilasOf,
+} from "@bangladeshi/bangladesh-address";
 
 export default function DistrictSelector() {
-    const [divisions, setDivisions] = useState([]);
-    const [districts, setDistricts] = useState([]);
-    const [selectedDivision, setSelectedDivision] = useState('');
+  const [divisions, setDivisions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [upazilas, setUpazilas] = useState([]);
 
-    useEffect(() => {
-        const address = require('@bangladeshi/bangladesh-address');
-        console.log(address);
-        const divisionsData = address.DivisonName || [];
-        console.log(divisionsData);  // Log the data to check its structure
+  const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedUpazila, setSelectedUpazila] = useState("");
 
-        // Check if divisionsData is an object and convert it to an array
-        if (typeof divisionsData === 'object' && divisionsData !== null) {
-            const divisionsArray = Object.values(divisionsData);
-            setDivisions(divisionsArray);
-        } else {
-            setDivisions(divisionsData);
-        }
-    }, []);
+  console.log(selectedDivision);
+  console.log(selectedDistrict);
+  console.log(selectedUpazila);
 
-    useEffect(() => {
-        if (selectedDivision) {
-            const address = require('@bangladeshi/bangladesh-address');
-            const districtsData = address.getDistricts();
-            console.log(districtsData);  // Log the data to check its structure
-            setDistricts(districtsData);
-        } else {
-            setDistricts([]);
-        }
-    }, [selectedDivision]);
+  useEffect(() => {
+    const allDivisionsList = allDivision();
+    setDivisions(allDivisionsList);
+  }, []);
 
-    return (
-        <div>
-            <select
-                name="division"
-                id="division"
-                value={selectedDivision}
-                onChange={(e) => setSelectedDivision(e.target.value)}
+  useEffect(() => {
+    if (selectedDivision) {
+      const districtList = districtsOf(selectedDivision);
+      setDistricts(districtList);
+    }
+  }, [selectedDivision]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      const upazilaList = upazilasOf(selectedDistrict);
+      setUpazilas(upazilaList);
+    }
+  }, [selectedDistrict]);
+
+  const handleDivisionChange = (event) => {
+    setSelectedDivision(event.target.value);
+    setSelectedDistrict("");
+    setSelectedUpazila("");
+  };
+
+  const handleDistrictChange = (event) => {
+    setSelectedDistrict(event.target.value);
+    setSelectedUpazila("");
+  };
+
+  const handleUpazilaChange = (event) => {
+    setSelectedUpazila(event.target.value);
+  };
+
+  return (
+    <div>
+      <label htmlFor=""> Select Division</label>
+      <select
+        name="division"
+        id="division"
+        value={selectedDivision}
+        onChange={handleDivisionChange}
+      >
+        <option value="">Select Division Name</option>
+        {divisions.map((division, index) => (
+          <option key={index} value={division}>
+            {division}
+          </option>
+        ))}
+      </select>
+      <br />
+
+      <select
+        className="mt-2"
+        name="districts"
+        id="districts"
+        value={selectedDistrict}
+        onChange={handleDistrictChange}
+      >
+        <option value="">Select District Name</option>
+        {districts.map((d, index) => (
+          <option key={index} value={d}>
+            {d}
+          </option>
+        ))}
+      </select>
+      <br />
+      <select
+            className='mt-2'
+            name="upazila"
+            id="upazila"
+            value={selectedUpazila}
+            onChange={handleUpazilaChange}
             >
-                <option value="">Select Division Name</option>
-                {divisions.map((division, index) => (
-                    <option key={index} value={division}>
-                        {division}
-                    </option>
-                ))}
+            <option value="">Select Upazila Name</option>
+            {upazilas.map((upazila, index) => (
+                <option key={index} value={upazila.upazila}>
+                {upazila.upazila}
+                </option>
+            ))}
             </select>
-
-            <select
-                name="district"
-                id="district"
-                value={districts}
-                onChange={(e) => setDistricts(e.target.value)}
-            >
-                <option value="">Select District</option>
-                {districts.map((district, index) => (
-                    <option key={index} value={district}>
-                        {district}
-                    </option>
-                ))}
-            </select>
-        </div>
-    );
+    </div>
+  );
 }

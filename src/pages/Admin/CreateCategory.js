@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import Layout from "../../components/Layout/Layout"
+import React, { useEffect, useState } from "react";
+import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/Layout/AdminMenu";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import axios from "axios";
 import CategoryForm from "../../components/Form/CategoryForm";
-
 
 import { Modal } from "antd";
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
-  const [subcategory,  setSubcategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
   // const [value, setValue] = useState('');
   const [photo, setPhoto] = useState("");
-  const [parentCategoryId, setParentCategoryId] = useState('');
-
+  const [parentCategoryId, setParentCategoryId] = useState("");
 
   //handle Form
   const handleCreate = async (e) => {
@@ -43,18 +41,17 @@ const CreateCategory = () => {
       toast.error("something went wrong");
     }
   };
- 
 
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get('/api/v1/category/get-category');
+      const { data } = await axios.get("/api/v1/category/get-category");
       if (data?.success) {
-        setCategories(data?.category)
+        setCategories(data?.category);
       }
     } catch (error) {
-      console.log(error)
-      toast.error('Something went wrong in getting category')
+      console.log(error);
+      toast.error("Something went wrong in getting category");
     }
   };
 
@@ -66,7 +63,10 @@ const CreateCategory = () => {
 
   const handleUpdate = async (e) => {
     try {
-      const { data } = await axios.put(`/api/v1/category/update-category/${selected._id}`, { name: updatedName })
+      const { data } = await axios.put(
+        `/api/v1/category/update-category/${selected._id}`,
+        { name: updatedName }
+      );
       if (data?.success) {
         toast.success(`${updatedName} is updated`);
         setSelected(null);
@@ -77,7 +77,7 @@ const CreateCategory = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error("Somtihing went wrong");
     }
   };
@@ -100,37 +100,35 @@ const CreateCategory = () => {
     }
   };
 
+  // Handle Create subCategory
+  const handleCreateSubcategory = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `/api/v1/category/${parentCategoryId}/create-subcategory`,
+        { name: subcategory }
+      );
 
-// Handle Create subCategory 
-const handleCreateSubcategory = async (e) => {
-  e.preventDefault();
-  try {
-    const { data } = await axios.post(
-      `/api/v1/category/${parentCategoryId}/create-subcategory`,
-      { name: subcategory }
-    );
-
-    if (data?.success) {
-      toast.success("Subcategory Created Successfully");
-      getAllCategory();
-    } else {
-      toast.error(data?.message);
+      if (data?.success) {
+        toast.success("Subcategory Created Successfully");
+        getAllCategory();
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
     }
-  } catch (error) {
-    console.log(error);
-    toast.error("Something went wrong");
-  }
-};
-
+  };
 
   return (
-    <Layout title={'Dashboard-Create Category'}>
+    <Layout title={"Dashboard-Create Category"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
             <AdminMenu />
           </div>
-          <div className='col-md-9'>
+          <div className="col-md-9">
             <div className="mb-3">
               <input
                 type="text"
@@ -166,86 +164,91 @@ const handleCreateSubcategory = async (e) => {
                 </div>
               )}
             </div>
-            <button type="submit" onClick={handleCreate} className="btn btn-success">
+            <button
+              type="submit"
+              onClick={handleCreate}
+              className="btn btn-success"
+            >
               Submit
             </button>
 
-              {/* Handle create Sub Category  */}
+            {/* Handle create Sub Category  */}
 
-                <p className='mt-5 text-center'> Create Sub Category</p>
-                <div className="mb-3">
-                        <select
-                          value={parentCategoryId}
-                          onChange={(e) => setParentCategoryId(e.target.value)}
-                          className="form-select"
-                        >
-                          <option value="">Select Parent Category</option>
-                          {categories.map((category) => (
-                            <option key={category._id} value={category._id}>
-                              {category.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+            <p className="mt-5 text-center"> Create Sub Category</p>
+            <div className="mb-3">
+              <select
+                value={parentCategoryId}
+                onChange={(e) => setParentCategoryId(e.target.value)}
+                className="form-select"
+              >
+                <option value="">Select Parent Category</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                      <div className="mb-3">
-                <div>
+            <div className="mb-3">
+              <div>
                 <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Create Subcategory"
-                        value={subcategory}
-                        onChange={(e) => setSubcategory(e.target.value)}
-                      />
-                    </div>
+                  type="text"
+                  className="form-control"
+                  placeholder="Create Subcategory"
+                  value={subcategory}
+                  onChange={(e) => setSubcategory(e.target.value)}
+                />
+              </div>
 
-                    <button type="submit" onClick={handleCreateSubcategory} className="btn btn-success mt-2">
-                      Submit Subcategory
-                    </button>
-                </div>
-
+              <button
+                type="submit"
+                onClick={handleCreateSubcategory}
+                className="btn btn-success mt-2"
+              >
+                Submit Subcategory
+              </button>
+            </div>
 
             <div className="w-75">
               <table className="table">
                 <thead>
                   <tr>
-
                     <th scope="col">Name</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-
-                  {
-                    categories?.map(c => (
-                      <>
-                        <tr>
-                          <td key={c._id}>{c.name}</td>
-                          <td>
-                            {/* <button className="btn btn-success ms-2" onClick={() => {
+                  {categories?.map((c) => (
+                    <>
+                      <tr>
+                        <td key={c._id}>{c.name}</td>
+                        <td>
+                          {/* <button className="btn btn-success ms-2" onClick={() => {
                             setVisible(true);
                             setUpdatedName(c.name);
                             setSelected(c);
                           }}>Edit</button> */}
-                            <button className="btn btn-danger ms-2"
-                              onClick={() => {
-                                handleDelete(c._id);
-                              }}
-                            >Delete</button>
-                          </td>
-
-                        </tr>
-                      </>
-                    ))
-                  }
-
+                          <button
+                            className="btn btn-danger ms-2"
+                            onClick={() => {
+                              handleDelete(c._id);
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </>
+                  ))}
                 </tbody>
               </table>
-
             </div>
-            <Modal onCancel={() => setVisible(false)}
+            <Modal
+              onCancel={() => setVisible(false)}
               footer={null}
-              visible={visible}>
+              visible={visible}
+            >
               <CategoryForm
                 value={updatedName}
                 setValue={setUpdatedName}
@@ -254,11 +257,9 @@ const handleCreateSubcategory = async (e) => {
             </Modal>
           </div>
         </div>
-
       </div>
+    </Layout>
+  );
+};
 
-    </Layout >
-  )
-}
-
-export default CreateCategory
+export default CreateCategory;

@@ -172,31 +172,25 @@ const HomePage = () => {
       <ShowCategories />
 
 
-      <h2 className="p-2 text-center show">Ecche Nir Products</h2>
+      <h2 className="p-2 text-center lg:mt-5 md:mt-3 show">EccheNir Products</h2>
       {/* .........❤️❤️❤️❤️❤️❤️....... */}
       {/* show product */}
       <div className="container">
-        <Row xs={2} sm={3} md={4} lg={5} className="xs:g-2 g-3">
+        <Row xs={2} sm={3} md={4} lg={4} className="xs:g-2 g-3">
           {products.map((p) => (
             <Col key={p._id}>
               <Card onClick={() => navigate(`/product/${p.slug}`)} className="productCard">
+                
                 <img
-                // style={{ objectFit: 'cove', width: '100%' ,minHeight:'200px' }}
-                  src={`/api/v1/product/product-photo/${p._id}`}
-                  className="card-img-top"
-                  height={"150px"}
-                  alt={p.name}
-                />
-                {/* <img
                 style={{ objectFit: 'cove', width: '100%' ,minHeight:'200px' }}
                   src={`/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top"
-                  height={"150px"}
+                  // height={"150px"}
                   alt={p.name}
-                /> */}
+                />
                 <div className="card-body">
                   <h5 className="cardTitle"> {p.name.length <= 20 ? p.name : `${p.name.substring(0, 20)}...`}</h5>
-                 
+                
                   <p className="discountPrice">{p.price}Taka</p>
                   <p className="price">{p.discount}Taka</p>
                   {/* <Rating

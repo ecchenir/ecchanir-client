@@ -89,7 +89,7 @@ const reversedProduct = [...products].reverse();
        
       <tbody>
         {reversedProduct?.map((product, index) => (
-          <tr key={index}>
+          <tr key={index} onClick={() => navigate(`/dashboard/admin/compleatOrder/${product._id}`)}>
             <td>{index + 1}</td>
             <td>{product.names}</td>
             <td>{product.phone}</td>
