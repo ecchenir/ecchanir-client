@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import AdminMenu from "../../components/Layout/AdminMenu"
+import React, { useState, useEffect } from "react";
+import AdminMenu from "../../components/Layout/AdminMenu";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
 const { Option } = Select;
@@ -17,7 +17,9 @@ const CreateBanner = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -41,7 +43,7 @@ const CreateBanner = () => {
       productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.post(
-        "/api/v1/banner/create-banner",
+        "https://new-ecchanir-server.vercel.app/api/v1/banner/create-banner",
         productData
       );
       if (data?.success) {
@@ -57,7 +59,7 @@ const CreateBanner = () => {
   };
 
   return (
-    <Layout title={'Dashboard-Create Product'}>
+    <Layout title={"Dashboard-Create Product"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
@@ -126,7 +128,7 @@ const CreateBanner = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default CreateBanner
+export default CreateBanner;

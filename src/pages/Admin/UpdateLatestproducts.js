@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
 const UpdateLatestproducts = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const params = useParams();
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
@@ -24,7 +24,7 @@ const UpdateLatestproducts = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/latestproduct/get-latestproduct/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${params.slug}`
       );
       setName(data.product.name);
       setId(data.product._id);
@@ -45,7 +45,9 @@ const UpdateLatestproducts = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -71,7 +73,7 @@ const UpdateLatestproducts = () => {
       photo && productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.put(
-        `/api/v1/latestproduct/update-latestproduct/${id}`,
+        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/update-latestproduct/${id}`,
         productData
       );
       if (data?.success) {
@@ -92,7 +94,7 @@ const UpdateLatestproducts = () => {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
       const { data } = await axios.delete(
-        `/api/v1/latestproduct/delete-latestproduct/${id}`
+        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/delete-latestproduct/${id}`
       );
       toast.success("Product Deleted Successfully");
       navigate("/dashboard/admin/latestproducts");
@@ -153,7 +155,7 @@ const UpdateLatestproducts = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/latestproduct/latestproduct-photo/${id}`}
+                      src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${id}`}
                       alt="product_photo"
                       height={"200px"}
                       className="img img-responsive"
@@ -229,7 +231,7 @@ const UpdateLatestproducts = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default UpdateLatestproducts
+export default UpdateLatestproducts;

@@ -1,13 +1,12 @@
-
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from "react-router-dom";
 import About from "./pages/About";
 import Register from "./pages/Auth/Register";
 import Contact from "./pages/Contact";
 import HomePage from "./pages/HomePage";
 import Pagenotfound from "./pages/Pagenotfound";
 import Policy from "./pages/Policy";
-import Login from './pages/Auth/Login';
-import Dashboard from './pages/user/Dashboard';
+import Login from "./pages/Auth/Login";
+import Dashboard from "./pages/user/Dashboard";
 import PrivateRoute from "./components/Routes/Private";
 import AdminRoute from "./components/Routes/AdminRoute";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
@@ -35,19 +34,17 @@ import CreateLatestproduct from "./pages/Admin/CreateLatestproduct";
 import Latestproducts from "./pages/Admin/Latestproducts";
 import UpdateLatestproducts from "./pages/Admin/UpdateLatestproducts";
 import LatestProductDetails from "./pages/LatestProductDetails";
-import Blogs from './pages/Blogs';
-import BuyNow from './pages/Admin/BuyNow/BuyNow';
-import CompleatOrder from './pages/Admin/BuyNow/CompleatOrder';
-import { useEffect } from 'react';
-import  axios  from 'axios';
-
+import Blogs from "./pages/Blogs";
+import BuyNow from "./pages/Admin/BuyNow/BuyNow";
+import CompleatOrder from "./pages/Admin/BuyNow/CompleatOrder";
+import { useEffect } from "react";
+import axios from "axios";
 
 function App() {
-
-  useEffect(()=>{
-    axios.defaults.baseURL = 'http://localhost:2000';
-  },[])
-
+  useEffect(() => {
+    axios.defaults.baseURL = "https://new-ecchanir-server.vercel.app";
+  }, []);
+  // "proxy": "http://localhost:2000"
   return (
     <>
       <Routes>
@@ -70,11 +67,17 @@ function App() {
           <Route path="admin" element={<AdminDashboard />} />
           <Route path="admin/create-category" element={<CreateCategory />} />
           <Route path="admin/create-product" element={<CreateProduct />} />
-          <Route path="admin/create-latestproduct" element={<CreateLatestproduct />} />
+          <Route
+            path="admin/create-latestproduct"
+            element={<CreateLatestproduct />}
+          />
           <Route path="admin/create-banner" element={<CreateBanner />} />
           <Route path="admin/product/:slug" element={<UpdateProducts />} />
-          <Route path="admin/latestproduct/:slug" element={<UpdateLatestproducts />} />
-          <Route path="admin/compleatOrder/:id" element={< CompleatOrder />} />
+          <Route
+            path="admin/latestproduct/:slug"
+            element={<UpdateLatestproducts />}
+          />
+          <Route path="admin/compleatOrder/:id" element={<CompleatOrder />} />
           <Route path="admin/banner/:slug" element={<UpdateBanners />} />
           <Route path="admin/order/:slug" element={<UpdateOrders />} />
 
@@ -85,17 +88,16 @@ function App() {
           <Route path="admin/users" element={<Users />} />
         </Route>
         <Route path="/register" element={<Register />} />
-       
+
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
-        <Route path="/blog" element={< Blogs />} />
+        <Route path="/blog" element={<Blogs />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
         <Route path="*" element={<Pagenotfound />} />
       </Routes>
     </>
-
   );
 }
 

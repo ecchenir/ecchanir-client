@@ -8,33 +8,33 @@ import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
 const UpdateOrders = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const params = useParams();
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  
+
   const [address, setAddress] = useState("");
   const [currieraddress, setCurrieraddress] = useState("");
   const [size, setSize] = useState("");
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState("");
-//   const [photo, setPhoto] = useState("");
+  //   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
 
   //get single product
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/order/get-order/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/order/get-order/${params.slug}`
       );
       setName(data.product.name);
       setId(data.product._id);
       setEmail(data.product.email);
       setPhone(data.product.phone);
-      
+
       setAddress(data.product.address);
       setCurrieraddress(data.product.currieraddress);
       setSize(data.product.size);
@@ -52,7 +52,9 @@ const UpdateOrders = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -74,15 +76,15 @@ const UpdateOrders = () => {
       productData.append("name", name);
       productData.append("email", email);
       productData.append("phone", phone);
-     
+
       productData.append("address", address);
       productData.append("currieraddress", currieraddress);
       productData.append("size", size);
       productData.append("quantity", quantity);
-    //   photo && productData.append("photo", photo);
+      //   photo && productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.put(
-        `/api/v1/order/update-order/${id}`,
+        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
         productData
       );
       if (data?.success) {
@@ -103,7 +105,7 @@ const UpdateOrders = () => {
       let answer = window.prompt("Are You Sure want to delete this order ? ");
       if (!answer) return;
       const { data } = await axios.delete(
-        `/api/v1/order/delete-order/${id}`
+        `https://new-ecchanir-server.vercel.app/api/v1/order/delete-order/${id}`
       );
       toast.success("Order Deleted Successfully");
       navigate("/dashboard/admin/orders");
@@ -139,8 +141,7 @@ const UpdateOrders = () => {
                   </Option>
                 ))}
               </Select>
-              
-             
+
               <div className="mb-3">
                 <input
                   type="text"
@@ -172,7 +173,7 @@ const UpdateOrders = () => {
                   disabled
                 />
               </div>
-             
+
               <div className="mb-3">
                 <textarea
                   type="text"
@@ -231,7 +232,7 @@ const UpdateOrders = () => {
               </div>
               <div className="mb-3">
                 <button className="btn btn-success" onClick={handleUpdate}>
-                 Order
+                  Order
                 </button>
               </div>
               <div className="mb-3">
@@ -244,7 +245,7 @@ const UpdateOrders = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default UpdateOrders
+export default UpdateOrders;

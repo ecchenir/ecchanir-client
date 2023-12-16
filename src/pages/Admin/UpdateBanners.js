@@ -8,11 +8,11 @@ import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
 const UpdateBanners = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const params = useParams();
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
-  
+
   const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
@@ -21,11 +21,11 @@ const UpdateBanners = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/banner/get-banner/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner/${params.slug}`
       );
       setName(data.product.name);
       setId(data.product._id);
-      
+
       setCategory(data.product.category._id);
     } catch (error) {
       console.log(error);
@@ -38,7 +38,9 @@ const UpdateBanners = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -58,12 +60,11 @@ const UpdateBanners = () => {
     try {
       const productData = new FormData();
       productData.append("name", name);
-      
-    
+
       photo && productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.put(
-        `/api/v1/banner/update-banner/${id}`,
+        `https://new-ecchanir-server.vercel.app/api/v1/banner/update-banner/${id}`,
         productData
       );
       if (data?.success) {
@@ -84,7 +85,7 @@ const UpdateBanners = () => {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
       const { data } = await axios.delete(
-        `/api/v1/banner/delete-banner/${id}`
+        `https://new-ecchanir-server.vercel.app/api/v1/banner/delete-banner/${id}`
       );
       toast.success("Product Deleted Successfully");
       navigate("/dashboard/admin/banners");
@@ -145,7 +146,7 @@ const UpdateBanners = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/banner/banner-photo/${id}`}
+                      src={`https://new-ecchanir-server.vercel.app/api/v1/banner/banner-photo/${id}`}
                       alt="product_photo"
                       height={"200px"}
                       className="img img-responsive"
@@ -177,7 +178,7 @@ const UpdateBanners = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default UpdateBanners 
+export default UpdateBanners;

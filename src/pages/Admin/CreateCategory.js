@@ -27,7 +27,7 @@ const CreateCategory = () => {
       productData.append("name", name);
       productData.append("photo", photo);
       const { data } = axios.post(
-        "/api/v1/category/create-category",
+        "https://new-ecchanir-server.vercel.app/api/v1/category/create-category",
         productData
       );
       if (data?.success) {
@@ -45,7 +45,9 @@ const CreateCategory = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -64,7 +66,7 @@ const CreateCategory = () => {
   const handleUpdate = async (e) => {
     try {
       const { data } = await axios.put(
-        `/api/v1/category/update-category/${selected._id}`,
+        `https://new-ecchanir-server.vercel.app/api/v1/category/update-category/${selected._id}`,
         { name: updatedName }
       );
       if (data?.success) {
@@ -86,7 +88,7 @@ const CreateCategory = () => {
   const handleDelete = async (pId) => {
     try {
       const { data } = await axios.delete(
-        `/api/v1/category/delete-category/${pId}`
+        `https://new-ecchanir-server.vercel.app/api/v1/category/delete-category/${pId}`
       );
       if (data?.success) {
         toast.success(`category is deleted`);
@@ -105,7 +107,7 @@ const CreateCategory = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `/api/v1/category/${parentCategoryId}/create-subcategory`,
+        `https://new-ecchanir-server.vercel.app/api/v1/category/${parentCategoryId}/create-subcategory`,
         { name: subcategory }
       );
 

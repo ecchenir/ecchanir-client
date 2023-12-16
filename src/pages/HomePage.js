@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Banner from "../components/Layout/Banner";
-import Layout from "../components/Layout/Layout"
+import Layout from "../components/Layout/Layout";
 import axios from "axios";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import "../styles/Homepage.css";
-import { AiOutlineReload } from "react-icons/ai"
+import { AiOutlineReload } from "react-icons/ai";
 import LatestProduct from "./LatestProduct";
 import ShowCategories from "./ShowCategories";
 import { useCart } from "../context/cart";
-import { FaRegStar, FaStar } from 'react-icons/fa';
-import Rating from 'react-rating';
+import { FaRegStar, FaStar } from "react-icons/fa";
+import Rating from "react-rating";
 
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-
-
-
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -34,13 +31,12 @@ const HomePage = () => {
   // Buy Now
   const [visible, setVisible] = useState(false);
 
-
-
-
   //get all cat
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -57,7 +53,7 @@ const HomePage = () => {
   // //get products
   // const getAllProducts = async () =>{
   //   try {
-  //     const {data} = await axios.get("/api/v1/product/get-product");
+  //     const {data} = await axios.get("https://new-ecchanir-server.vercel.app/api/v1/product/get-product");
   //     setProducts(data.products);
   //   } catch (error) {
   //     console.log(error)
@@ -67,8 +63,6 @@ const HomePage = () => {
   // useEffect(()=>{
   //   getAllProducts();
   // });
-
-
 
   // filter by cat
   // const handleFilter = (value, id) => {
@@ -92,7 +86,9 @@ const HomePage = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
+      );
       setLoading(false);
       setProducts(data.products);
     } catch (error) {
@@ -104,7 +100,9 @@ const HomePage = () => {
   //getTOtal COunt
   const getTotal = async () => {
     try {
-      const { data } = await axios.get("/api/v1/product/product-count");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/product/product-count"
+      );
       setTotal(data?.total);
     } catch (error) {
       console.log(error);
@@ -119,7 +117,9 @@ const HomePage = () => {
   const loadMore = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
+      const { data } = await axios.get(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
+      );
       setLoading(false);
       setProducts([...products, ...data?.products]);
     } catch (error) {
@@ -129,8 +129,6 @@ const HomePage = () => {
   };
 
   //order
-
-
 
   // filter by cat
   const handleFilter = (value, id) => {
@@ -153,13 +151,15 @@ const HomePage = () => {
   //get filterd product
   const filterProduct = async () => {
     try {
-      const { data } = await axios.post("/api/v1/product/product-filters", {
-        checked,
-        radio,
-      });
+      const { data } = await axios.post(
+        "https://new-ecchanir-server.vercel.app/api/v1/product/product-filters",
+        {
+          checked,
+          radio,
+        }
+      );
       setProducts(data?.products);
       // console.log(data?.products);
-
     } catch (error) {
       console.log(error);
     }
@@ -171,26 +171,38 @@ const HomePage = () => {
       {/* show category product */}
       <ShowCategories />
 
-
-      <h2 className="p-2 text-center lg:mt-5 md:mt-3 show">EccheNir Products</h2>
+      <h2 className="p-2 text-center lg:mt-5 md:mt-3 show">
+        EccheNir Products
+      </h2>
       {/* .........❤️❤️❤️❤️❤️❤️....... */}
       {/* show product */}
       <div className="container">
         <Row xs={2} sm={3} md={4} lg={4} className="xs:g-2 g-3">
           {products.map((p) => (
             <Col key={p._id}>
-              <Card onClick={() => navigate(`/product/${p.slug}`)} className="productCard">
-                
+              <Card
+                onClick={() => navigate(`/product/${p.slug}`)}
+                className="productCard"
+              >
                 <img
-                style={{ objectFit: 'cove', width: '100%' ,minHeight:'200px' }}
-                  src={`/api/v1/product/product-photo/${p._id}`}
+                  style={{
+                    objectFit: "cove",
+                    width: "100%",
+                    minHeight: "200px",
+                  }}
+                  src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top"
                   // height={"150px"}
                   alt={p.name}
                 />
                 <div className="card-body">
-                  <h5 className="cardTitle"> {p.name.length <= 20 ? p.name : `${p.name.substring(0, 20)}...`}</h5>
-                
+                  <h5 className="cardTitle">
+                    {" "}
+                    {p.name.length <= 20
+                      ? p.name
+                      : `${p.name.substring(0, 20)}...`}
+                  </h5>
+
                   <p className="discountPrice">{p.price}Taka</p>
                   <p className="price">{p.discount}Taka</p>
                   {/* <Rating
@@ -208,11 +220,10 @@ const HomePage = () => {
         </Row>
       </div>
 
-
       {/* latestProduct */}
       <LatestProduct />
     </Layout>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

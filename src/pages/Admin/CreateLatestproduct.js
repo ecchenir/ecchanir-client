@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import AdminMenu from "../../components/Layout/AdminMenu"
+import React, { useState, useEffect } from "react";
+import AdminMenu from "../../components/Layout/AdminMenu";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
 const { Option } = Select;
@@ -34,12 +34,14 @@ const CreateLatestproduct = () => {
   const [rating, setRating] = useState("");
   const [productNumber, setProductNumber] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const options = ['M', 'L', 'XL', 'XXL'];
+  const options = ["M", "L", "XL", "XXL"];
 
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -69,7 +71,7 @@ const CreateLatestproduct = () => {
       productData.append("productNumber", productNumber);
 
       const { data } = axios.post(
-        "/api/v1/latestproduct/create-latestproduct",
+        "https://new-ecchanir-server.vercel.app/api/v1/latestproduct/create-latestproduct",
         productData
       );
       if (data?.success) {
@@ -88,18 +90,22 @@ const CreateLatestproduct = () => {
     const option = e.target.value;
     if (e.target.checked) {
       // If checkbox is checked, add the option to the selectedOptions array
-      setSelectedOptions((prevSelectedOptions) => [...prevSelectedOptions, option]);
+      setSelectedOptions((prevSelectedOptions) => [
+        ...prevSelectedOptions,
+        option,
+      ]);
     } else {
       // If checkbox is unchecked, remove the option from the selectedOptions array
       setSelectedOptions((prevSelectedOptions) =>
-        prevSelectedOptions.filter((selectedOption) => selectedOption !== option)
+        prevSelectedOptions.filter(
+          (selectedOption) => selectedOption !== option
+        )
       );
     }
   };
 
-
   return (
-    <Layout title={'Dashboard-Create Product'}>
+    <Layout title={"Dashboard-Create Product"}>
       <div className="container-fluid m-3 p-3">
         <div className="row">
           <div className="col-md-3">
@@ -148,18 +154,21 @@ const CreateLatestproduct = () => {
                   </div>
                 )}
               </div>
-              <div className='mb-3 mt-3'>
+              <div className="mb-3 mt-3">
                 <div>
                   <h4>Select Size Options:</h4>
                   {options.map((option) => (
-                    <Checkbox key={option} option={option} onChange={handleOptionChange} />
+                    <Checkbox
+                      key={option}
+                      option={option}
+                      onChange={handleOptionChange}
+                    />
                   ))}
                   <div>
-                    <h4>Selected  Size:</h4>
-                    <p>{selectedOptions.join(', ')}</p>
+                    <h4>Selected Size:</h4>
+                    <p>{selectedOptions.join(", ")}</p>
                   </div>
                 </div>
-
               </div>
 
               <div className="mb-3">
@@ -220,11 +229,9 @@ const CreateLatestproduct = () => {
                 />
               </div>
 
-
-
               <div className="mb-3">
                 <button className="btn btn-success" onClick={handleCreate}>
-                  CREATE Latest  PRODUCT
+                  CREATE Latest PRODUCT
                 </button>
               </div>
             </div>
@@ -232,7 +239,7 @@ const CreateLatestproduct = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default CreateLatestproduct
+export default CreateLatestproduct;

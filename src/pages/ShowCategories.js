@@ -1,16 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import useCategory from "../hooks/useCategory";
 
 const CategoryCard = React.memo(({ category, navigate }) => (
   <Col key={category._id}>
     <Card onClick={() => navigate(`/category/${category.slug}`)}>
       <div>
-        <Card.Img variant="top" height={50} src={`/api/v1/category/category-photo/${category._id}`} />
-        <p style={{ textAlign: 'center', marginBottom:'0'}}>{category.name}</p>
+        <Card.Img
+          variant="top"
+          height={50}
+          src={`https://new-ecchanir-server.vercel.app/api/v1/category/category-photo/${category._id}`}
+        />
+        <p style={{ textAlign: "center", marginBottom: "0" }}>
+          {category.name}
+        </p>
       </div>
     </Card>
   </Col>

@@ -26,7 +26,7 @@ const UpdateProducts = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${params.slug}`
       );
       setName(data.product.name);
       setId(data.product._id);
@@ -49,7 +49,9 @@ const UpdateProducts = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -78,7 +80,7 @@ const UpdateProducts = () => {
       photo && productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.put(
-        `/api/v1/product/update-product/${id}`,
+        `https://new-ecchanir-server.vercel.app/api/v1/product/update-product/${id}`,
         productData
       );
       if (data?.success) {
@@ -99,7 +101,7 @@ const UpdateProducts = () => {
       let answer = window.prompt("Are You Sure want to delete this product ? ");
       if (!answer) return;
       const { data } = await axios.delete(
-        `/api/v1/product/delete-product/${id}`
+        `https://new-ecchanir-server.vercel.app/api/v1/product/delete-product/${id}`
       );
       toast.success("Product Deleted Successfully");
       navigate("/dashboard/admin/products");
@@ -160,7 +162,7 @@ const UpdateProducts = () => {
                 ) : (
                   <div className="text-center">
                     <img
-                      src={`/api/v1/product/product-photo/${id}`}
+                      src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${id}`}
                       alt="product_photo"
                       height={"200px"}
                       className="img img-responsive"
@@ -186,7 +188,7 @@ const UpdateProducts = () => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
-            
+
               <div className="mb-3">
                 <input
                   type="number"
@@ -250,7 +252,7 @@ const UpdateProducts = () => {
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default UpdateProducts
+export default UpdateProducts;

@@ -17,7 +17,7 @@ const LatestProduct = () => {
   const getAllProducts = async () => {
     try {
       const { data } = await axios.get(
-        "/api/v1/latestproduct/get-latestproduct"
+        "https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct"
       );
       setProducts(data.products);
     } catch (error) {
@@ -50,7 +50,7 @@ const LatestProduct = () => {
                     width: "100%",
                     minHeight: "200px",
                   }}
-                  src={`/api/v1/latestproduct/latestproduct-photo/${p._id}`}
+                  src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${p._id}`}
                   className="card-img-top"
                   alt={p.name}
                 />

@@ -22,7 +22,7 @@ const LatestProductDetails = () => {
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/latestproduct/get-latestproduct/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${params.slug}`
       );
       setProduct(data?.product);
       //   getSimilarProduct(data?.product._id, data?.product.category._id);
@@ -34,7 +34,7 @@ const LatestProductDetails = () => {
   //   const getSimilarProduct = async (pid, cid) => {
   //     try {
   //       const { data } = await axios.get(
-  //         `/api/v1/product/related-product/${pid}/${cid}`
+  //         `https://new-ecchanir-server.vercel.app/api/v1/product/related-product/${pid}/${cid}`
   //       );
   //       setRelatedProducts(data?.products);
   //     } catch (error) {
@@ -44,12 +44,12 @@ const LatestProductDetails = () => {
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
-
   };
 
   const handleBuyNowClick = () => {
     // Get existing order data from local storage
-    const existingOrderData = JSON.parse(localStorage.getItem("orderData")) || [];
+    const existingOrderData =
+      JSON.parse(localStorage.getItem("orderData")) || [];
 
     // Create a new order object
     const newOrder = {
@@ -68,16 +68,12 @@ const LatestProductDetails = () => {
     navigate("/buyNow");
   };
 
-
-
-
-
   return (
     <Layout>
       <div className="row container  product-details">
         <div className="col-md-6">
           <img
-            src={`/api/v1/latestproduct/latestproduct-photo/${product._id}`}
+            src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${product._id}`}
             className="card-img-top"
             alt={product.name}
             height="300"
@@ -136,7 +132,6 @@ const LatestProductDetails = () => {
                 XXL
               </label>
             </div>
-
           </div>
 
           <div className="d-flex">
@@ -147,7 +142,8 @@ const LatestProductDetails = () => {
               Buy Now
             </button>
 
-            <button className="btn btn-secondary ms-1"
+            <button
+              className="btn btn-secondary ms-1"
               onClick={() => {
                 setCart([...cart, product]);
                 localStorage.setItem(
@@ -155,10 +151,12 @@ const LatestProductDetails = () => {
                   JSON.stringify([...cart, product])
                 );
                 toast.success("Item Added to cart");
-              }} >Add to cart</button>
+              }}
+            >
+              Add to cart
+            </button>
           </div>
         </div>
-
       </div>
       <hr />
       {/* <div className="row container similar-products">
@@ -170,7 +168,7 @@ const LatestProductDetails = () => {
           {relatedProducts?.map((p) => (
             <div className="card m-2" key={p._id}>
               <img
-                src={`/api/v1/product/product-photo/${p._id}`}
+                src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
                 className="card-img-top"
                 alt={p.name}
               />

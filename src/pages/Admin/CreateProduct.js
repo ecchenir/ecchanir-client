@@ -40,7 +40,9 @@ const CreateProduct = () => {
   //get all category
   const getAllCategory = async () => {
     try {
-      const { data } = await axios.get("/api/v1/category/get-category");
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+      );
       if (data?.success) {
         setCategories(data?.category);
       }
@@ -77,7 +79,7 @@ const CreateProduct = () => {
       productData.append("productNumber", productNumber);
 
       const { data } = await axios.post(
-        "/api/v1/product/create-product",
+        "https://new-ecchanir-server.vercel.app/api/v1/product/create-product",
         productData
       );
 
