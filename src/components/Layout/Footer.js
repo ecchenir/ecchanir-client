@@ -85,6 +85,10 @@ const Footer = () => {
                 <a href="/"> Office</a>{" "}
               </p>
               <p>
+                {" "}
+                <a href="/policy"> Policy</a>{" "}
+              </p>
+              <p>
                 <div className="d-flex   gap-2 ">
                   Flows Us
                   <p>
