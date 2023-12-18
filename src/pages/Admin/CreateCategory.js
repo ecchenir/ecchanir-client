@@ -102,26 +102,48 @@ const CreateCategory = () => {
     }
   };
 
+  console.log(parentCategoryId);
+
   // Handle Create subCategory
+  // const handleCreateSubcategory = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { data } = await axios.post(
+  //       `https://new-ecchanir-server.vercel.app/api/v1/category/create-subcategory/${parentCategoryId}`,
+  //       { name: subcategory }
+  //     );
+
+  //     if (data?.success) {
+  //       toast.success("Subcategory Created Successfully");
+  //     } else {
+  //       toast.error(data?.message || "Error creating subcategory");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     toast.error("Something went wrong");
+  //   }
+  // };
+
   const handleCreateSubcategory = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://new-ecchanir-server.vercel.app/api/v1/category/${parentCategoryId}/create-subcategory`,
+        `/api/v1/category/create-subcategory/${parentCategoryId}`,
         { name: subcategory }
       );
 
       if (data?.success) {
         toast.success("Subcategory Created Successfully");
-        getAllCategory();
       } else {
-        toast.error(data?.message);
+        toast.error(data?.message || "Error creating subcategory");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error:", error);
       toast.error("Something went wrong");
     }
   };
+
+  
 
   return (
     <Layout title={"Dashboard-Create Category"}>
@@ -197,7 +219,7 @@ const CreateCategory = () => {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Create Subcategory"
+                  placeholder="Write Sub Category Name"
                   value={subcategory}
                   onChange={(e) => setSubcategory(e.target.value)}
                 />
@@ -208,7 +230,7 @@ const CreateCategory = () => {
                 onClick={handleCreateSubcategory}
                 className="btn btn-success mt-2"
               >
-                Submit Subcategory
+                Sub Category
               </button>
             </div>
 

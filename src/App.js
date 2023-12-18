@@ -41,8 +41,11 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function App() {
+  // useEffect(() => {
+  //   axios.defaults.baseURL = "https://new-ecchanir-server.vercel.app";
+  // }, []);
   useEffect(() => {
-    axios.defaults.baseURL = "https://new-ecchanir-server.vercel.app";
+    axios.defaults.baseURL = "http://localhost:5000";
   }, []);
   // "proxy": "http://localhost:2000"
   return (

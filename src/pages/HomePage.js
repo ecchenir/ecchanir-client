@@ -171,13 +171,13 @@ const HomePage = () => {
       {/* show category product */}
       <ShowCategories />
 
-      <h2 className="p-2 text-center lg:mt-5 md:mt-3 show">
+      <h2 className="p-2 text-center lg:mt-5 w-100%  md:mt-3 show">
         EccheNir Products
       </h2>
       {/* .........❤️❤️❤️❤️❤️❤️....... */}
       {/* show product */}
       <div className="container">
-        <Row xs={2} sm={3} md={4} lg={4} className="xs:g-2 g-3">
+        <Row xs={2} sm={3} md={4} lg={4} className="xs:g-2 g-3 g">
           {products.map((p) => (
             <Col key={p._id}>
               <Card
@@ -188,7 +188,7 @@ const HomePage = () => {
                   style={{
                     objectFit: "cove",
                     width: "100%",
-                    minHeight: "200px",
+                    minHeight: "168px",
                   }}
                   src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top"
@@ -221,7 +221,7 @@ const HomePage = () => {
       </div>
 
       {/* latestProduct */}
-      <LatestProduct />
+      <LatestProduct className="pt-5" />
     </Layout>
   );
 };

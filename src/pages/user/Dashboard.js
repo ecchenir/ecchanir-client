@@ -12,10 +12,12 @@ const Dashboard = () => {
             <UserMenu/>
         </div>
         <div className="col-md-9">
+          <p className='display-5 text-center'>User Information</p>
             <div className="card w-75 p-3">
               <h3> Name: {auth?.user?.name}</h3>
               <h3> Email: {auth?.user?.email}</h3>
               <h3> Address: {auth?.user?.address}</h3>
+              <h3> Address: {auth?.user?.phone}</h3>
             </div>
         </div>
     </div>

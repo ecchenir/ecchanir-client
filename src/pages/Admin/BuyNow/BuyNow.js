@@ -3,7 +3,7 @@ import Layout from "../../../components/Layout/Layout";
 import Axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Card, Button } from "react-bootstrap";
+import Table from "react-bootstrap/Table";
 import DistrictSelector from "../../DistrictSelector";
 
 export default function BuyNow() {
@@ -89,7 +89,7 @@ export default function BuyNow() {
     <Layout>
       <div>
         <div className="border container">
-          <p className="text-center  fw-bold">Order Summary</p>
+          <p className="text-center display-5 pt-3  fw-bold">Order Summary</p>
           <table class="table">
             <thead>
               <tr>
@@ -102,13 +102,18 @@ export default function BuyNow() {
               </tr>
               <tr>
                 <th scope="col">Product Name</th>
-                <th scope="col"> : {orderData.slug} </th>
+                <th scope="col" style={{ whiteSpace: "nowrap" }}>
+                  {" "}
+                  : {orderData.slug}{" "}
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="fw-medium">Size</td>
-                <td>: {size}</td>
+                <td className="fw-medium bg-primary p-5 w-100">Size</td>
+                <td style={{ width: "50%" }} className="bg-dark w-100">
+                  : {size}
+                </td>
               </tr>
               {/* <tr>
                                 <td><p>Product Number</p></td>
@@ -117,12 +122,16 @@ export default function BuyNow() {
                             </tr> */}
 
               <tr>
-                <td className="fw-medium">Quantity</td>
+                <td className="fw-medium ">Quantity</td>
                 <p className="border d-flex justify-content-between pt-2 pb-0 ">
                   {" "}
-                  <p onClick={handleDecrease}>-</p>
+                  <p className="btn" onClick={handleDecrease}>
+                    -
+                  </p>
                   {quantities}
-                  <p onClick={handleIncrease}>+</p>
+                  <p className="btn" onClick={handleIncrease}>
+                    +
+                  </p>
                 </p>
               </tr>
 
@@ -210,6 +219,27 @@ export default function BuyNow() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div>
+              <Table striped="columns">
+                <thead>
+                  <tr>
+                    <th width={75}> {orderData.price}</th>
+                    <th> {orderData.price}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td> ggggggggggggggggg</td>
+                    <td>Otto</td>
+                  </tr>
+                  <tr>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                  </tr>
+                </tbody>
+              </Table>
             </div>
 
             <div className="d-flex mt-2 justify-content-end">
