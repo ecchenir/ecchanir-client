@@ -15,6 +15,7 @@ import Rating from "react-rating";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import SubcategoryHeader from "./SubcategoryHeader";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -167,6 +168,7 @@ const HomePage = () => {
   // console.log(products);
   return (
     <Layout>
+      <SubcategoryHeader />
       <Banner />
       {/* show category product */}
       <ShowCategories />
@@ -177,7 +179,7 @@ const HomePage = () => {
       {/* .........❤️❤️❤️❤️❤️❤️....... */}
       {/* show product */}
       <div className="container">
-        <Row xs={2} sm={3} md={4} lg={4} className="xs:g-2 g-3 g">
+        <Row xs={2} sm={3} md={4} lg={4} className="xs:g-2 g-2">
           {products.map((p) => (
             <Col key={p._id}>
               <Card
@@ -186,7 +188,7 @@ const HomePage = () => {
               >
                 <img
                   style={{
-                    objectFit: "cove",
+                    objectFit: "cover",
                     width: "100%",
                     minHeight: "168px",
                   }}
@@ -203,8 +205,8 @@ const HomePage = () => {
                       : `${p.name.substring(0, 20)}...`}
                   </h5>
 
-                  <p className="discountPrice">{p.price}Taka</p>
-                  <p className="price">{p.discount}Taka</p>
+                  <p className="discountPrice">৳ {p.price}</p>
+                  <p className="price">৳ {p.discount}</p>
                   {/* <Rating
                     className="ml-3"
                     placeholderRating={p.rating}

@@ -104,31 +104,13 @@ const CreateCategory = () => {
 
   console.log(parentCategoryId);
 
-  // Handle Create subCategory
-  // const handleCreateSubcategory = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const { data } = await axios.post(
-  //       `https://new-ecchanir-server.vercel.app/api/v1/category/create-subcategory/${parentCategoryId}`,
-  //       { name: subcategory }
-  //     );
-
-  //     if (data?.success) {
-  //       toast.success("Subcategory Created Successfully");
-  //     } else {
-  //       toast.error(data?.message || "Error creating subcategory");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     toast.error("Something went wrong");
-  //   }
-  // };
+  
 
   const handleCreateSubcategory = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `/api/v1/category/create-subcategory/${parentCategoryId}`,
+        `https://new-ecchanir-server.vercel.app/api/v1/category/create-subcategory/${parentCategoryId}`,
         { name: subcategory }
       );
 
@@ -142,8 +124,6 @@ const CreateCategory = () => {
       toast.error("Something went wrong");
     }
   };
-
-  
 
   return (
     <Layout title={"Dashboard-Create Category"}>

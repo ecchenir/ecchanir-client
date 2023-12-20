@@ -102,10 +102,7 @@ export default function BuyNow() {
               </tr>
               <tr>
                 <th scope="col">Product Name</th>
-                <th scope="col" style={{ whiteSpace: "nowrap" }}>
-                  {" "}
-                  : {orderData.slug}{" "}
-                </th>
+                <th scope="col"> : {orderData.slug} </th>
               </tr>
             </thead>
             <tbody>
@@ -207,12 +204,14 @@ export default function BuyNow() {
                       {/* <DistrictSelector setSelectedDistrict={setSelectedDistrict} selectedDistrict={selectedDistrict} /> */}
                     </div>
 
-                    <div className="mb-3">
+                    <div className="mb-3 mt-lg-3">
+                      <label htmlFor=""> Write a address</label>
                       <textarea
                         type="text"
                         value={address}
-                        placeholder="write a address"
+                        placeholder="example :  post / upozala "
                         className="form-control"
+                        required
                         onChange={(e) => setAddress(e.target.value)}
                       />
                     </div>
@@ -226,13 +225,13 @@ export default function BuyNow() {
                 <thead>
                   <tr>
                     <th width={75}> {orderData.price}</th>
-                    <th> {orderData.price}</th>
+                    <th> {orderData.price} ut af adf askdf awfaer p</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td> ggggggggggggggggg</td>
-                    <td>Otto</td>
+                    <td>Otto ffffffffffffffff</td>
                   </tr>
                   <tr>
                     <td>Jacob</td>

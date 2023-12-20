@@ -29,13 +29,14 @@ const CreateProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [photo, setPhoto] = useState("");
   const [discount, setDiscount] = useState("");
-  const [rating, setRating] = useState("");
   const [productNumber, setProductNumber] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const options = ["M", "L", "XL", "XXL"];
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [subcategories, setSubcategories] = useState([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
   //get all category
   const getAllCategory = async () => {
@@ -60,7 +61,16 @@ const CreateProduct = () => {
   const handleCreate = async (e) => {
     e.preventDefault();
     // Validate required fields
-    if (!name || !description || !price || !category) {
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !selectedSubcategory ||
+      !discount ||
+      !selectedOptions ||
+      !productNumber
+    ) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -70,12 +80,11 @@ const CreateProduct = () => {
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
-      productData.append("quantity", quantity);
       productData.append("photo", photo);
       productData.append("category", category);
+      productData.append("selectedSubcategory", selectedSubcategory);
       productData.append("discount", discount);
       productData.append("selectedOptions", JSON.stringify(selectedOptions));
-      productData.append("rating", rating);
       productData.append("productNumber", productNumber);
 
       const { data } = await axios.post(
@@ -86,16 +95,16 @@ const CreateProduct = () => {
       if (data?.success) {
         toast.success("Product Created Successfully");
         // Clear form fields
-        setName("");
-        setDescription("");
-        setPrice("");
-        setCategory("");
-        setQuantity("");
-        setPhoto("");
-        setDiscount("");
-        setRating("");
-        setProductNumber("");
-        setSelectedOptions([]);
+        // setName("");
+        // setDescription("");
+        // setPrice("");
+        // setCategory("");
+        // setQuantity("");
+        // setPhoto("");
+        // setDiscount("");
+        // setRating("");
+        // setProductNumber("");
+        // setSelectedOptions([]);
         // navigate("/dashboard/admin/products");
       }
     } catch (error) {
@@ -123,6 +132,9 @@ const CreateProduct = () => {
     }
   };
 
+  // console.log(selectedCategory);
+  // console.log(subcategories);
+  // console.log(selectedSubcategory);
   return (
     <Layout title={"Dashboard-Create Product"}>
       <div className="container-fluid m-3 p-3">
@@ -132,48 +144,10 @@ const CreateProduct = () => {
           </div>
           <div className="col-md-9">
             <h1>Create Product</h1>
-            <div className="m-1 w-75">
-              <Select
-                bordered={false}
-                placeholder="Select a category"
-                size="large"
-                showSearch
-                className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
-              >
-                {categories?.map((c) => (
-                  <Option key={c._id} value={c._id}>
-                    {c.name}
-                  </Option>
-                ))}
-              </Select>
-              <div className="mb-3">
-                <label className="btn btn-outline-success  col-md-12">
-                  {photo ? photo.name : "Upload Photo"}
-                  <input
-                    type="file"
-                    name="photo"
-                    accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                    hidden
-                  />
-                </label>
-              </div>
 
-              <div className="mb-3">
-                {photo && (
-                  <div className="text-center">
-                    <img
-                      src={URL.createObjectURL(photo)}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                )}
-              </div>
+            <div className="m-1 w-75">
+              {/* image */}
+
               <div className="mb-3">
                 <input
                   type="text"
@@ -182,23 +156,6 @@ const CreateProduct = () => {
                   className="form-control"
                   onChange={(e) => setName(e.target.value)}
                 />
-              </div>
-
-              <div className="mb-3 mt-3">
-                <div>
-                  <h4>Select Size Options:</h4>
-                  {options.map((option) => (
-                    <Checkbox
-                      key={option}
-                      option={option}
-                      onChange={handleOptionChange}
-                    />
-                  ))}
-                  <div>
-                    <h4>Selected Size:</h4>
-                    <p>{selectedOptions.join(", ")}</p>
-                  </div>
-                </div>
               </div>
 
               <div className="mb-3">
@@ -212,16 +169,34 @@ const CreateProduct = () => {
                 />
               </div>
 
+              <div className="mb-3 mt-3">
+                <div>
+                  <h4>Select Size Options:</h4>
+                  {options.map((option) => (
+                    <Checkbox
+                      key={option}
+                      option={option}
+                      onChange={handleOptionChange}
+                    />
+                  ))}
+                  {/* <div>
+                    <h4>Selected Size:</h4>
+                    <p>{selectedOptions.join(", ")}</p>
+                  </div> */}
+                </div>
+              </div>
+
               <div className="mb-3">
                 <input
                   type="number"
                   value={price}
-                  placeholder="write a Price"
+                  placeholder="Write a Price"
                   className="form-control"
                   onChange={(e) => setPrice(e.target.value)}
                   required
                 />
               </div>
+
               <div className="mb-3">
                 <input
                   type="number"
@@ -234,16 +209,6 @@ const CreateProduct = () => {
 
               <div className="mb-3">
                 <input
-                  type="number"
-                  value={rating}
-                  placeholder="write a Rating"
-                  className="form-control"
-                  onChange={(e) => setRating(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
                   type="text"
                   value={productNumber}
                   placeholder="Product code"
@@ -252,14 +217,73 @@ const CreateProduct = () => {
                   required
                 />
               </div>
+
+              <label htmlFor=""> Select Category</label>
+              <Select
+                bordered={false}
+                placeholder="Select a category"
+                size="large"
+                showSearch
+                className="form-select mb-3"
+                onChange={(value) => {
+                  setSelectedCategory(value);
+                  setCategory(value);
+                  // Fetch and set subcategories based on the selected category
+                  const selectedCategoryData = categories.find(
+                    (cat) => cat._id === value
+                  );
+                  setSubcategories(selectedCategoryData?.subCategory || []);
+                  setSelectedSubcategory(""); // Reset selected subcategory when category changes
+                }}
+              >
+                {categories?.map((c) => (
+                  <Option key={c._id} value={c._id}>
+                    {c.name}
+                  </Option>
+                ))}
+              </Select>
+              <label htmlFor=""> Select Sub Category</label>
+              <Select
+                bordered={false}
+                placeholder="Select Subcategory"
+                size="large"
+                showSearch
+                className="form-select mb-3"
+                value={selectedSubcategory}
+                onChange={(value) => setSelectedSubcategory(value)}
+              >
+                {subcategories.map((subcat) => (
+                  <Option key={subcat} value={subcat}>
+                    {subcat}
+                  </Option>
+                ))}
+              </Select>
+
+              {/* image section */}
               <div className="mb-3">
-                <input
-                  type="number"
-                  value={quantity}
-                  placeholder="write a quantity"
-                  className="form-control"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
+                <label className="btn btn-outline-success  col-md-12">
+                  {photo ? photo.name : "Upload Photo"}
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                    hidden
+                  />
+                </label>
+              </div>
+              {/* show image */}
+              <div className="mb-3">
+                {photo && (
+                  <div className="text-center">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="product_photo"
+                      height={"200px"}
+                      className="img img-responsive"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="mb-3">

@@ -1,0 +1,29 @@
+/* SubcategoryHeader.css */
+.hidden {
+  display: none;
+}
+
+.mobile-toggle {
+  display: none; /* Initially hide the mobile toggle button */
+}
+
+@media (max-width: 768px) {
+  .hidden {
+    display: none !important; /* Override any conflicting styles */
+  }
+
+  .nav-tabs.mobile-hidden {
+    display: none; /* Hide the navigation tabs on smaller screens */
+  }
+
+  .mobile-toggle {
+    display: block; /* Show the mobile toggle button on smaller screens */
+    background: none; /* Remove the background color */
+    color: #000; /* Set the color for the icon */
+    font-size: 24px;
+    color: aliceblue;
+     /* Adjust the font size as needed */
+  }
+}
+
+

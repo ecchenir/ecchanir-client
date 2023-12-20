@@ -54,14 +54,13 @@ export default function DistrictSelector() {
 
   return (
     <div>
-      <label htmlFor=""> Select Division</label>
       <select
         name="division"
         id="division"
         value={selectedDivision}
         onChange={handleDivisionChange}
       >
-        <option value="">Select Division Name</option>
+        <option value="">Select Division</option>
         {divisions.map((division, index) => (
           <option key={index} value={division}>
             {division}
@@ -77,7 +76,7 @@ export default function DistrictSelector() {
         value={selectedDistrict}
         onChange={handleDistrictChange}
       >
-        <option value="">Select District Name</option>
+        <option value="">Select District</option>
         {districts.map((d, index) => (
           <option key={index} value={d}>
             {d}
@@ -85,20 +84,20 @@ export default function DistrictSelector() {
         ))}
       </select>
       <br />
-      <select
-            className='mt-2'
-            name="upazila"
-            id="upazila"
-            value={selectedUpazila}
-            onChange={handleUpazilaChange}
-            >
-            <option value="">Select Upazila Name</option>
-            {upazilas.map((upazila, index) => (
-                <option key={index} value={upazila.upazila}>
-                {upazila.upazila}
-                </option>
-            ))}
-            </select>
+      {/* <select
+        className="mt-2"
+        name="upazila"
+        id="upazila"
+        value={selectedUpazila}
+        onChange={handleUpazilaChange}
+      >
+        <option value="">Select Upazila Name</option>
+        {upazilas.map((upazila, index) => (
+          <option key={index} value={upazila.upazila}>
+            {upazila.upazila}
+          </option>
+        ))}
+      </select> */}
     </div>
   );
 }

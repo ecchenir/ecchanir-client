@@ -3,6 +3,8 @@
 /* Add a fallback font */
 body {
   font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  width: 100vh;
 }
 
 

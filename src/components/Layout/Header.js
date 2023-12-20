@@ -8,6 +8,7 @@ import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import { Badge } from "antd";
 import SubHeader from "./SubHeader";
+import SubcategoryHeader from "../../pages/SubcategoryHeader";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
@@ -22,6 +23,8 @@ const Header = () => {
     localStorage.removeItem("auth");
     toast.success("Logout Successfully");
   };
+
+  console.log(categories.subCategory);
   return (
     <>
       <SubHeader />
@@ -149,6 +152,8 @@ const Header = () => {
           </div>
         </div>
       </nav>
+
+      <div></div>
     </>
   );
 };

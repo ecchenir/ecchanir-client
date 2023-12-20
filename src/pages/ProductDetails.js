@@ -28,6 +28,16 @@ const ProductDetails = () => {
     if (params?.slug) getProduct();
   }, [params?.slug]);
 
+  // ...
+
+  useEffect(() => {
+    if (params?.slug) getProduct();
+  }, [params?.slug]);
+
+  // ...
+
+  // in getProduct function
+
   //getProduct
   const getProduct = async () => {
     try {
@@ -64,6 +74,10 @@ const ProductDetails = () => {
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
+  };
+
+  const handleSimilarProductClick = (slug) => {
+    navigate(`/product/${slug}`);
   };
 
   const handleBuyNowClick = () => {
@@ -112,8 +126,8 @@ const ProductDetails = () => {
           </h6>
           <h6>{product.description}</h6>
           {/* <h6>{product?.category?.name}</h6> */}
-          <p className="discountPrice">{product.price}Taka</p>
-          <p className="price">{product.discount}Taka</p>
+          <p className="discountPrice">৳ {product.price} </p>
+          <p className="price">৳ {product.discount} </p>
 
           {/* <h6>Category : {product?.category?.name}</h6> */}
           <div className=" ">
@@ -165,7 +179,7 @@ const ProductDetails = () => {
             {relatedProducts.map((p) => (
               <Col key={p._id}>
                 <Card
-                  onClick={() => navigate(`/product/${p.slug}`)}
+                  onClick={() => handleSimilarProductClick(p.slug)}
                   className="productCard"
                 >
                   <img
@@ -176,16 +190,8 @@ const ProductDetails = () => {
                   />
                   <div className="card-body">
                     <h5 className="cardTitle">{p.name}</h5>
-                    <p className="discountPrice">{p.price}Taka</p>
-                    <p className="price">{p.discount}Taka</p>
-                    {/* <Rating
-                      className="ml-3"
-                      placeholderRating={p.rating}
-                      readonly
-                      emptySymbol={<FaRegStar></FaRegStar>}
-                      placeholderSymbol={<FaStar className='text-warning'></FaStar>}
-                      fullSymbol={<FaStar></FaStar>}
-                    /> */}
+                    <p className="discountPrice">৳ {p.price}</p>
+                    <p className="price">৳ {p.discount}</p>
                   </div>
                 </Card>
               </Col>
@@ -193,58 +199,6 @@ const ProductDetails = () => {
           </Row>
         </div>
       </div>
-
-      {/* <div className="row container similar-products">
-        <h6>Similar Products ➡️</h6>
-
-        {relatedProducts.length < 1 && (
-          <p className="text-center">No Similar Products found</p>
-        )}
-
-
-
-
-        <div className="d-flex flex-wrap">
-          {relatedProducts?.map((p) => (
-            <div className="card m-2" key={p._id}>
-              <img
-                src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
-                className="card-img-top"
-                alt={p.name}
-              />
-              <div className="card-body">
-                <div className="card-name-price">
-                  <h5 className="card-title">{p.name}</h5>
-                  <h5 className="card-title card-price">
-                    {p.price}
-                  </h5>
-                </div>
-                <p className="card-text ">
-                  {p.description.substring(0, 60)}...
-                </p>
-                <div className="d-flex">
-                  <button
-                    className="btn btn-success ms-1"
-                    onClick={handleBuyNowClick}
-                  >
-                    Buy Now
-                  </button>
-
-                  <button className="btn btn-secondary ms-1"
-                    onClick={() => {
-                      setCart([...cart, p]);
-                      localStorage.setItem(
-                        "cart",
-                        JSON.stringify([...cart, p])
-                      );
-                      toast.success("Item Added to cart");
-                    }} >Add to cart</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </Layout>
   );
 };

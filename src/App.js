@@ -53,6 +53,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:slug" element={<ProductDetails />} />
+        <Route path="/product/:slug" element={<ProductDetails />} />
+        
         <Route path="/latestproduct/:slug" element={<LatestProductDetails />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/CreateOrder" element={<CreateOrder />} />

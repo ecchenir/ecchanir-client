@@ -26,7 +26,9 @@ export default function SubHeader() {
         <p><a target='_blank' href="https://www.instagram.com/ecchenir/?fbclid=IwAR0dOUlGP_uyf4SBGlCML9Y4BYMyNcxL8F_qI6njM5uJ8fpFF2E-7GCGiBs"> < FaInstagram /></a></p>
         <p><a target='_blank' href="https://www.tiktok.com/@ecchenir?is_from_webapp=1&sender_device=pc"> < FaTiktok /></a></p>
         <p><a target='_blank' href="https://www.linkedin.com/in/ecchenir?fbclid=IwAR01YaE-EsF-xuBvh-v2WUX8pawf4tlQk5B3Qy_TXp6FVv9KAmeSCEPfgh8"> < FaLinkedin /></a></p>
-        <p><a target='_blank' href=""> < FaWhatsapp /></a></p>
+       
+
+        <p><a target='_blank'  href="https://api.whatsapp.com/send?phone=01603257876"> < FaWhatsapp /></a></p>
 
       </div>
     </div>
