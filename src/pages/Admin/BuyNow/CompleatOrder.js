@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ReactToPrint from "react-to-print";
 import Card from "react-bootstrap/Card";
+import { Button, Badge } from "react-bootstrap";
 
 export default function CompleatOrder() {
   const { id } = useParams(); // Correctly extract 'id' from the URL parameters
@@ -18,6 +19,43 @@ export default function CompleatOrder() {
       setOrder(data.product);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  // oder  confirm functionality
+
+  const handleConfirm = async (_id) => {
+    console.log(_id);
+
+    try {
+      const data = { status: "complete" };
+      console.log("Button clicked");
+      const updateOrder = await axios.put(
+        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${_id}`,
+        data
+      );
+      // navigate(`/dashboard/admin/compleatOrder/${_id}`);
+      console.log("Axios Response", updateOrder);
+    } catch (error) {
+      console.error("Error updating data", error);
+    }
+  };
+
+  // oder delete functionality
+  const handleCancel = async (_id) => {
+    console.log(_id);
+
+    try {
+      const data = { status: "cancel" };
+      // console.log("Button clicked");
+      const updateOrder = await axios.put(
+        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${_id}`,
+        data
+      );
+      // navigate(`/dashboard/admin/compleatOrder/${_id}`);
+      console.log("Axios Response", updateOrder);
+    } catch (error) {
+      console.error("Error updating data", error);
     }
   };
 
@@ -46,7 +84,7 @@ export default function CompleatOrder() {
             </tr>
             <tr>
               <td>Division </td>
-              <td>: {order?.selectedDivision}</td>
+              <td>: {order.selectedDistrict}</td>
             </tr>
             <tr>
               <td>District </td>
@@ -84,11 +122,21 @@ export default function CompleatOrder() {
             </tr>
           </tbody>
         </table>
-        <div className="d-flex justify-content-end mb-3">
+        <div className="d-flex justify-content-between">
+          <Button variant="danger" onClick={() => handleConfirm(order._id)}>
+            Cancel
+          </Button>
+
+          <Button variant="success" onClick={() => handleCancel(order._id)}>
+            Confirm
+          </Button>
+        </div>
+
+        {/* <div className="d-flex justify-content-end mb-3">
           <Link to="/dashboard/admin/orders" className="btn btn-dark">
             Check Other Orders
           </Link>
-        </div>
+        </div> */}
       </Card>
     </Layout>
   );

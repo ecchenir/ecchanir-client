@@ -82,7 +82,6 @@ const Orders = () => {
                   <th>Product Number</th>
                   <th>Qty</th>
                   <th>Status</th>
-                  <th>Action</th>
                 </tr>
               </thead>
 
@@ -103,14 +102,18 @@ const Orders = () => {
                     <td align="center">
                       <Badge
                         bg={
-                          product.status === "pending" ? "secondary" : "success"
+                          product.status === "pending"
+                            ? "secondary"
+                            : product.status === "cancel"
+                            ? "danger"
+                            : "success"
                         }
                       >
                         {" "}
                         {product.status}
                       </Badge>
                     </td>
-                    <td align="center">
+                    {/* <td align="center">
                       <Button
                         variant="success"
                         onClick={() => handleConfirm(product._id)}
@@ -118,71 +121,11 @@ const Orders = () => {
                       >
                         Confirm
                       </Button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
             </Table>
-          </div>
-
-          <div className="col-md-9">
-            <h1 className="text-center">All Order List</h1>
-            <div className="d-flex flex-wrap">
-              {products?.map((p) => (
-                <Link
-                  key={p._id}
-                  to={`/dashboard/admin/order/${p.slug}`}
-                  className="product-link"
-                >
-                  <div className="card m-2" style={{ width: "18rem" }}>
-                    {/* <img
-                    src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
-                    className="card-img-top"
-                    height={"150px"}
-                    alt={p.name}
-                  /> */}
-                    <div className="card-body">
-                      <h5 className="card-title">Name: {p.names}</h5>
-
-                      <p className="card-text">phone: {p.phone}</p>
-                      <p className="card-text">Contact Number: {p.phone}</p>
-                      <p className="card-text">
-                        Product Number: {p.productNumber}
-                      </p>
-                      <p className="card-text">
-                        {" "}
-                        District: {p.selectedDistrict}
-                      </p>
-                      <p className="card-text">address: {p.address}</p>
-
-                      <p className="card-text">size: {p.size}</p>
-                      <p className="card-text">Quantity: {p.quantities}</p>
-                      <p className="card-text">Price: {p.amount}Taka</p>
-                      <p className="card-text">Price: {p.delivery}Taka</p>
-                      <p className="card-text">Price: {p.total}Taka</p>
-                    </div>
-                    <div>
-                      <button
-                        className="btn btn-secondary ms-1"
-                        onClick={() => {
-                          setOrder([...order, p]);
-                          localStorage.setItem(
-                            "order",
-                            JSON.stringify([...order, p])
-                          );
-                          toast.success("Item Added to order");
-                        }}
-                      >
-                        Confirm
-                      </button>
-                      <button className="btn btn-danger" onClick={handleDelete}>
-                        DELETE
-                      </button>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
       </div>
