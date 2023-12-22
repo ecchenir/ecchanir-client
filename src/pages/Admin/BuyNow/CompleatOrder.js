@@ -21,7 +21,7 @@ export default function CompleatOrder() {
     }
   };
 
-  // console.log(order);
+  console.log(order);
 
   useEffect(() => {
     getAllProducts();
@@ -44,7 +44,10 @@ export default function CompleatOrder() {
               <td className="fw-medium">Phone</td>
               <td>: {order.phone}</td>
             </tr>
-            <tr></tr>
+            <tr>
+              <td>Division </td>
+              <td>: {order?.selectedDivision}</td>
+            </tr>
             <tr>
               <td>District </td>
               <td>: {order.selectedDistrict}</td>

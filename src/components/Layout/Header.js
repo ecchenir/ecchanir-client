@@ -23,8 +23,6 @@ const Header = () => {
     localStorage.removeItem("auth");
     toast.success("Logout Successfully");
   };
-
-  console.log(categories.subCategory);
   return (
     <>
       <SubHeader />
@@ -153,7 +151,9 @@ const Header = () => {
         </div>
       </nav>
 
-      <div></div>
+      <div>
+      
+      </div>
     </>
   );
 };

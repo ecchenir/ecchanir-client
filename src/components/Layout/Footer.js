@@ -12,7 +12,7 @@ import Ecche from "../../assists/Image/ecchenir.jpg";
 
 const Footer = () => {
   return (
-    <div className="bg-light text-center text-dark ">
+    <div className="bg-light text-center text-dark pt-2 ">
       <div className=" text-center text-lg-start">
         {/* Grid container */}
         <div className="container">
@@ -107,18 +107,17 @@ const Footer = () => {
               </p>
             </div>
 
-            
             <div className="col-lg-3 col-md-6 mb-4 mb-md-0">
               <h5 className="text-uppercase mb-4 pb-1">Subscribe Now</h5>
               <SearchInput />
 
-              <div>
+              <div className="mt-2">
                 <a
                   target="_blank"
                   href="https://www.facebook.com/groups/ecchenir"
                 >
-                  {" "}
-                  Join Our FaceBook Group{" "}
+               
+                  Join Our Facebook Group 
                 </a>
               </div>
             </div>
@@ -127,7 +126,7 @@ const Footer = () => {
           </div>
           {/*Grid row*/}
         </div>
-        
+
         <div
           className="text-center p-1"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}

@@ -173,7 +173,7 @@ const HomePage = () => {
       {/* show category product */}
       <ShowCategories />
 
-      <h2 className="p-2 text-center lg:mt-5 w-100%  md:mt-3 show">
+      <h2 className="p-2 text-center lg:mt-5 w-100% mt-3 show">
         EccheNir Products
       </h2>
       {/* .........❤️❤️❤️❤️❤️❤️....... */}
@@ -199,7 +199,7 @@ const HomePage = () => {
                 />
                 <div className="card-body">
                   <h5 className="cardTitle">
-                    {" "}
+                     
                     {p.name.length <= 20
                       ? p.name
                       : `${p.name.substring(0, 20)}...`}

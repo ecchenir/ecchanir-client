@@ -34,7 +34,7 @@ const LatestProduct = () => {
   // console.log(products);
   return (
     <div className="mb-5">
-      <h3 className="show p-2 text-center">Latest Product</h3>
+      <h3 className="show p-2 mt-3 text-center">Latest Product</h3>
 
       <div className="container">
         <Row xs={2} sm={3} md={4} lg={4} className="g-2">
@@ -46,20 +46,21 @@ const LatestProduct = () => {
               >
                 <img
                   style={{
-                    objectFit: "cove",
+                    objectFit: "cover",
                     width: "100%",
-                    minHeight: "200px",
+                    minHeight: "168px",
                   }}
                   src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${p._id}`}
                   className="card-img-top"
+                  // height={"150px"}
                   alt={p.name}
                 />
 
                 <div className="card-body">
-                  <div>
-                    <h5 className="cardTitle">{p.name}</h5>
-                    <p className="price">{p.price}Taka</p>
-                  </div>
+                  {p.name.length <= 15
+                    ? p.name
+                    : `${p.name.substring(0, 15)}...`}
+                  <p className="price">{p.price}Taka</p>
                 </div>
               </Card>
             </Col>

@@ -15,9 +15,14 @@ export default function BuyNow() {
   const [quantities, setQuantities] = useState(1);
   const [size, setSizes] = useState();
 
+  const [divisions, setDivisions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedUpazila, setSelectedUpazila] = useState("");
+
+  console.log(selectedDivision);
+  console.log(selectedDistrict);
 
   useEffect(() => {
     // Fetch order data from local storage
@@ -50,6 +55,7 @@ export default function BuyNow() {
       productData.append("size", size);
       productData.append("quantities", quantities);
       productData.append("productNumber", orderData.productNumber);
+      productData.append("selectedDivision", selectedDivision);
       productData.append("selectedDistrict", selectedDistrict);
       productData.append("amount", orderData.price);
       productData.append("delivery", deliveryCharge);
@@ -83,46 +89,38 @@ export default function BuyNow() {
     }
   };
 
-  //   console.log(orderData);
+  console.log(selectedDivision);
+  console.log(selectedDistrict);
 
   return (
     <Layout>
       <div>
-        <div className="border container">
-          <p className="text-center display-5 pt-3  fw-bold">Order Summary</p>
-          <table class="table">
+        <p className="text-center display-5 pt-3  fw-bold">Order Summary</p>
+
+        <div className="border p-1 container">
+          <img
+            height={100}
+            className="brand-image"
+            src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${orderData._id}`}
+            alt=""
+          />
+          <Table responsive="lg">
             <thead>
               <tr>
-                <img
-                  height={100}
-                  className="brand-image"
-                  src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${orderData._id}`}
-                  alt=""
-                />
-              </tr>
-              <tr>
-                <th scope="col">Product Name</th>
-                <th scope="col"> : {orderData.slug} </th>
+                <th>Product Name</th>
+                <th> : {orderData.slug} </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="fw-medium bg-primary p-5 w-100">Size</td>
-                <td style={{ width: "50%" }} className="bg-dark w-100">
-                  : {size}
-                </td>
+                <td className="fw-medium">Size</td>
+                <td className="">: {size}</td>
               </tr>
-              {/* <tr>
-                                <td><p>Product Number</p></td>
-                                <td><p> : {orderData.productNumber}</p></td>
-
-                            </tr> */}
 
               <tr>
                 <td className="fw-medium ">Quantity</td>
-                <p className="border d-flex justify-content-between pt-2 pb-0 ">
-                  {" "}
-                  <p className="btn" onClick={handleDecrease}>
+                <p className="border d-flex justify-content-between align-items-center   ">
+                  <p className="btn " onClick={handleDecrease}>
                     -
                   </p>
                   {quantities}
@@ -131,7 +129,7 @@ export default function BuyNow() {
                   </p>
                 </p>
               </tr>
-
+              {/* price  */}
               <tr>
                 <td>
                   <p className="fw-medium">Price</p>
@@ -146,19 +144,16 @@ export default function BuyNow() {
                 </td>
                 <td>
                   <p className="fw-medium">
-                    {" "}
                     : {orderData.price * quantities} Tk
                   </p>
                 </td>
               </tr>
-
               <tr>
                 <td className="fw-medium">Shipping Charge</td>
                 {/* <td>: {selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130}</td> */}
                 <td className="fw-medium">: {deliveryCharge}</td>
                 {/* <td>: {(quantities >= 3) ? 0 : (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
               </tr>
-
               <tr>
                 <td className="fw-medium">Payable Amount</td>
                 {/* <td>: {(orderData.price * quantities) + (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
@@ -166,87 +161,65 @@ export default function BuyNow() {
                 <td className="fw-medium">: {calculateTotalAmount()}</td>
               </tr>
             </tbody>
-            <div className="container-fluid d-flex m-3 p-3">
-              <div className="row w-100 ">
+          </Table>
+        </div>
+
+        <div className="container-fluid d-flex m-3 pt-3">
+          <div className="row w-100 ">
+            <div>
+              <h2 className="text-center text-success">Delivery Information</h2>
+              <div className="m-2 p-4 w-100">
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    value={names}
+                    placeholder="write a name"
+                    className="form-control"
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    type="number"
+                    value={phone}
+                    placeholder="write a phone"
+                    className="form-control"
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
                 <div>
-                  <h2 className="text-center text-success">
-                    Delivery Information
-                  </h2>
-                  <div className="m-2 p-4 w-100">
-                    <div className="mb-3">
-                      <input
-                        type="text"
-                        value={names}
-                        placeholder="write a name"
-                        className="form-control"
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <input
-                        type="number"
-                        value={phone}
-                        placeholder="write a phone"
-                        className="form-control"
-                        onChange={(e) => setPhone(e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <DistrictSelector
-                        selectedDistrict={selectedDistrict}
-                        setSelectedDistrict={setSelectedDistrict}
-                        selectedDivision={selectedDivision}
-                        setSelectedDivision={setSelectedDistrict}
-                        selectedUpazila={selectedUpazila}
-                        setSelectedUpazila={setSelectedUpazila}
-                      />
+                  <DistrictSelector
+                    selectedDistrict={selectedDistrict}
+                    setSelectedDistrict={setSelectedDistrict}
+                    selectedDivision={selectedDivision}
+                    districts={districts}
+                    setDistricts={setDistricts}
+                    setSelectedDivision={setSelectedDivision}
+                    divisions={divisions}
+                    setDivisions={setDivisions}
+                  />
+                </div>
 
-                      {/* <DistrictSelector setSelectedDistrict={setSelectedDistrict} selectedDistrict={selectedDistrict} /> */}
-                    </div>
-
-                    <div className="mb-3 mt-lg-3">
-                      <label htmlFor=""> Write a address</label>
-                      <textarea
-                        type="text"
-                        value={address}
-                        placeholder="example :  post / upozala "
-                        className="form-control"
-                        required
-                        onChange={(e) => setAddress(e.target.value)}
-                      />
-                    </div>
-                  </div>
+                <div className="mb-3 mt-lg-3">
+                  <label htmlFor=""> Write a address</label>
+                  <textarea
+                    type="text"
+                    value={address}
+                    placeholder="example :  post / upozala "
+                    className="form-control"
+                    required
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div>
-              <Table striped="columns">
-                <thead>
-                  <tr>
-                    <th width={75}> {orderData.price}</th>
-                    <th> {orderData.price} ut af adf askdf awfaer p</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td> ggggggggggggggggg</td>
-                    <td>Otto ffffffffffffffff</td>
-                  </tr>
-                  <tr>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
-
-            <div className="d-flex mt-2 justify-content-end">
-              <button className="btn btn-success" onClick={handleCreateOrder}>
-                Order Now
-              </button>
-            </div>
-          </table>
+        <div className="d-flex mt-1 mb-2 justify-content-center">
+          <button className="btn btn-success" onClick={handleCreateOrder}>
+            Order Now
+          </button>
         </div>
       </div>
     </Layout>

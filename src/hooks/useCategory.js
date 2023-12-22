@@ -4,24 +4,18 @@ import axios from "axios";
 export default function useCategory() {
   const [categories, setCategories] = useState([]);
 
-  // get cat
+  //get cat
   const getCategories = async () => {
     try {
       const { data } = await axios.get(
         "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
       );
-      // Extract subcategories from each category
-      const categoriesWithSubcategories = data?.category.map((category) => ({
-        ...category,
-        subcategories: category?.subCategory || [],
-      }));
-      setCategories(categoriesWithSubcategories);
+      // console.log(data?.category);
+      setCategories(data?.category);
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(categories);
 
   useEffect(() => {
     getCategories();
