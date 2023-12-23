@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout/Layout";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
@@ -10,18 +11,8 @@ import AdminMenu from "../../../components/Layout/AdminMenu";
 export default function CompleatOrder() {
   const { id } = useParams(); // Correctly extract 'id' from the URL parameters
   const [order, setOrder] = useState({});
+  const navigate = useNavigate();
   console.log(id);
-
-  // const getAllProducts = async () => {
-  //   try {
-  //     const { data } = await axios.get(
-  //       `https://new-ecchanir-server.vercel.app/api/v1/order/get-orders/${id}`
-  //     );
-  //     setOrder(data.product);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,40 +35,42 @@ export default function CompleatOrder() {
 
   // oder  confirm functionality
 
-  // const handleConfirm = async (id) => {
-  //   // console.log(_id);
+  const handleConfirm = async (id) => {
+    // console.log(_id);
 
-  //   try {
-  //     const data = { status: "complete" };
-  //     console.log("Button clicked");
-  //     const updateOrder = await axios.put(
-  //       `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
-  //       data
-  //     );
-  //     // navigate(`/dashboard/admin/compleatOrder/${_id}`);
-  //     console.log("Axios Response", updateOrder);
-  //   } catch (error) {
-  //     console.error("Error updating data", error);
-  //   }
-  // };
+    try {
+      const data = { status: "complete" };
+      console.log("Button clicked");
+      const updateOrder = await axios.put(
+        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
+        data
+      );
+
+      console.log("Axios Response", updateOrder);
+      navigate(`/dashboard/admin/orders`);
+    } catch (error) {
+      console.error("Error updating data", error);
+    }
+  };
 
   // oder delete functionality
-  // const handleCancel = async (id) => {
-  //   // console.log(_id);
 
-  //   try {
-  //     const data = { status: "cancel" };
-  //     // console.log("Button clicked");
-  //     const updateOrder = await axios.put(
-  //       `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
-  //       data
-  //     );
-  //     // navigate(`/dashboard/admin/compleatOrder/${_id}`);
-  //     console.log("Axios Response", updateOrder);
-  //   } catch (error) {
-  //     console.error("Error updating data", error);
-  //   }
-  // };
+  const handleCancel = async (id) => {
+    // console.log(_id);
+
+    try {
+      const data = { status: "cancel" };
+      // console.log("Button clicked");
+      const updateOrder = await axios.put(
+        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
+        data
+      );
+      console.log("Axios Response", updateOrder);
+      navigate(`/dashboard/admin/orders`);
+    } catch (error) {
+      console.error("Error updating data", error);
+    }
+  };
 
   // console.log(order);
 
@@ -151,14 +144,14 @@ export default function CompleatOrder() {
               <div className="d-flex justify-content-between px-2 pb-3">
                 <Button
                   variant="danger"
-                  // onClick={() => handleConfirm(order.id)}
+                  onClick={() => handleCancel(order._id)}
                 >
                   Cancel
                 </Button>
 
                 <Button
                   variant="success"
-                  // onClick={() => handleCancel(order._id)}
+                  onClick={() => handleConfirm(order._id)}
                 >
                   Confirm
                 </Button>

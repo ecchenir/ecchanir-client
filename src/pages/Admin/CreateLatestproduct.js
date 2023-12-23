@@ -29,12 +29,14 @@ const CreateLatestproduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [photo, setPhoto] = useState("");
-  const [rating, setRating] = useState("");
+  const [discount, setDiscount] = useState("");
   const [productNumber, setProductNumber] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const options = ["M", "L", "XL", "XXL"];
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [subcategories, setSubcategories] = useState([]);
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
   //get all category
   const getAllCategory = async () => {
@@ -58,31 +60,56 @@ const CreateLatestproduct = () => {
   //create product function
   const handleCreate = async (e) => {
     e.preventDefault();
+    // Validate required fields
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !selectedSubcategory ||
+      !discount ||
+      !selectedOptions ||
+      !productNumber
+    ) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
     try {
       const productData = new FormData();
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
-      productData.append("quantity", quantity);
       productData.append("photo", photo);
       productData.append("category", category);
-      productData.append("selectedOptions", selectedOptions);
-      productData.append("rating", rating);
+      productData.append("selectedSubcategory", selectedSubcategory);
+      productData.append("discount", discount);
+      productData.append("selectedOptions", JSON.stringify(selectedOptions));
       productData.append("productNumber", productNumber);
 
-      const { data } = axios.post(
+      const { data } = await axios.post(
         "https://new-ecchanir-server.vercel.app/api/v1/latestproduct/create-latestproduct",
         productData
       );
+
       if (data?.success) {
-        toast.error(data?.message);
-      } else {
         toast.success("Product Created Successfully");
-        // navigate("/dashboard/admin/latestproducts");
+        // Clear form fields
+        // setName("");
+        // setDescription("");
+        // setPrice("");
+        // setCategory("");
+        // setQuantity("");
+        // setPhoto("");
+        // setDiscount("");
+        // setRating("");
+        // setProductNumber("");
+        // setSelectedOptions([]);
+        // navigate("/dashboard/admin/products");
       }
     } catch (error) {
       console.log(error);
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
@@ -112,8 +139,82 @@ const CreateLatestproduct = () => {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Create Latest Product</h1>
+            <h1>Create latest Product</h1>
+
             <div className="m-1 w-75">
+              {/* image */}
+
+              <div className="mb-3">
+                <input
+                  type="text"
+                  value={name}
+                  placeholder="write a name"
+                  className="form-control"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <textarea
+                  type="text"
+                  value={description}
+                  placeholder="write a description"
+                  className="form-control"
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3 mt-3">
+                <div>
+                  <h4>Select Size Options:</h4>
+                  {options.map((option) => (
+                    <Checkbox
+                      key={option}
+                      option={option}
+                      onChange={handleOptionChange}
+                    />
+                  ))}
+                  {/* <div>
+                    <h4>Selected Size:</h4>
+                    <p>{selectedOptions.join(", ")}</p>
+                  </div> */}
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="number"
+                  value={price}
+                  placeholder="Write a Price"
+                  className="form-control"
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="number"
+                  value={discount}
+                  placeholder="Discount Price"
+                  className="form-control"
+                  onChange={(e) => setDiscount(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="text"
+                  value={productNumber}
+                  placeholder="Product code"
+                  className="form-control"
+                  onChange={(e) => setProductNumber(e.target.value)}
+                  required
+                />
+              </div>
+
+              <label htmlFor=""> Select Category</label>
               <Select
                 bordered={false}
                 placeholder="Select a category"
@@ -121,7 +222,14 @@ const CreateLatestproduct = () => {
                 showSearch
                 className="form-select mb-3"
                 onChange={(value) => {
+                  setSelectedCategory(value);
                   setCategory(value);
+                  // Fetch and set subcategories based on the selected category
+                  const selectedCategoryData = categories.find(
+                    (cat) => cat._id === value
+                  );
+                  setSubcategories(selectedCategoryData?.subCategory || []);
+                  setSelectedSubcategory(""); // Reset selected subcategory when category changes
                 }}
               >
                 {categories?.map((c) => (
@@ -130,6 +238,24 @@ const CreateLatestproduct = () => {
                   </Option>
                 ))}
               </Select>
+              <label htmlFor=""> Select Sub Category</label>
+              <Select
+                bordered={false}
+                placeholder="Select Subcategory"
+                size="large"
+                showSearch
+                className="form-select mb-3"
+                value={selectedSubcategory}
+                onChange={(value) => setSelectedSubcategory(value)}
+              >
+                {subcategories.map((subcat) => (
+                  <Option key={subcat} value={subcat}>
+                    {subcat}
+                  </Option>
+                ))}
+              </Select>
+
+              {/* image section */}
               <div className="mb-3">
                 <label className="btn btn-outline-success  col-md-12">
                   {photo ? photo.name : "Upload Photo"}
@@ -142,6 +268,7 @@ const CreateLatestproduct = () => {
                   />
                 </label>
               </div>
+              {/* show image */}
               <div className="mb-3">
                 {photo && (
                   <div className="text-center">
@@ -154,84 +281,10 @@ const CreateLatestproduct = () => {
                   </div>
                 )}
               </div>
-              <div className="mb-3 mt-3">
-                <div>
-                  <h4>Select Size Options:</h4>
-                  {options.map((option) => (
-                    <Checkbox
-                      key={option}
-                      option={option}
-                      onChange={handleOptionChange}
-                    />
-                  ))}
-                  <div>
-                    <h4>Selected Size:</h4>
-                    <p>{selectedOptions.join(", ")}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="text"
-                  value={name}
-                  placeholder="write a name"
-                  className="form-control"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <textarea
-                  type="text"
-                  value={description}
-                  placeholder="write a description"
-                  className="form-control"
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="number"
-                  value={price}
-                  placeholder="write a Price"
-                  className="form-control"
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="number"
-                  value={quantity}
-                  placeholder="write a quantity"
-                  className="form-control"
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="number"
-                  value={rating}
-                  placeholder="write a Rating"
-                  className="form-control"
-                  onChange={(e) => setRating(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  value={productNumber}
-                  placeholder="Write a Product Number"
-                  className="form-control"
-                  onChange={(e) => setProductNumber(e.target.value)}
-                  required
-                />
-              </div>
 
               <div className="mb-3">
                 <button className="btn btn-success" onClick={handleCreate}>
-                  CREATE Latest PRODUCT
+                  CREATE PRODUCT
                 </button>
               </div>
             </div>
