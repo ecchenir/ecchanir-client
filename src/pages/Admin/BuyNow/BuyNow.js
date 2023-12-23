@@ -14,15 +14,12 @@ export default function BuyNow() {
   const [orderData, setOrderData] = useState([]);
   const [quantities, setQuantities] = useState(1);
   const [size, setSizes] = useState();
-
   const [divisions, setDivisions] = useState([]);
   const [districts, setDistricts] = useState([]);
-
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
 
-  console.log(selectedDivision);
-  console.log(selectedDistrict);
+ 
 
   useEffect(() => {
     // Fetch order data from local storage

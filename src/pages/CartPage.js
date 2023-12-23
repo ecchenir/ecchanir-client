@@ -3,8 +3,11 @@ import Layout from "./../components/Layout/Layout";
 import { useCart } from "../context/cart";
 import { useAuth } from "../context/auth";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "antd";
+import toast from "react-hot-toast";
 import DistrictSelector from "./DistrictSelector";
+import { MdDelete } from "react-icons/md";
+import Table from "react-bootstrap/Table";
+import { Axios } from "axios";
 
 const CartPage = () => {
   const [auth, setAuth] = useAuth();
@@ -13,7 +16,10 @@ const CartPage = () => {
   const [names, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [divisions, setDivisions] = useState([]);
+  const [districts, setDistricts] = useState([]);
 
+  const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
 
   const navigate = useNavigate();
@@ -30,6 +36,7 @@ const CartPage = () => {
       console.log(error);
     }
   };
+
   //delete item
   const removeCartItem = (pid) => {
     try {
@@ -63,6 +70,41 @@ const CartPage = () => {
         ...prevQuantities,
         [pid]: prevQuantities[pid] - 1,
       }));
+    }
+  };
+
+  // handle create order
+
+  const handleCreateOrder = async (e) => {
+    e.preventDefault();
+    try {
+      const productData = new FormData();
+      productData.append("names", names);
+      productData.append("phone", phone);
+      productData.append("address", address);
+      // productData.append("size", size);
+      productData.append("quantities", quantities);
+      // productData.append("productNumber", orderData.productNumber);
+      productData.append("selectedDivision", selectedDivision);
+      productData.append("selectedDistrict", selectedDistrict);
+      // productData.append("amount", orderData.price);
+      productData.append("delivery", deliveryCharge);
+      //   productData.append('photo',   );
+      // productData.append("total", calculateTotalAmount());
+
+      const { data } = await Axios.post(
+        "https://new-ecchanir-server.vercel.app/api/v1/order/create-order",
+        productData
+      );
+      if (data?.success) {
+        toast.success(data?.message);
+        navigate("/thanks");
+      } else {
+        toast.success("SuccessFully Create order ,Thanks For Shopping");
+      }
+    } catch (error) {
+      //   console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -113,7 +155,9 @@ const CartPage = () => {
                   {/* quantity control */}
 
                   <div className="border  d-flex justify-content-between px-2 pt-2  ">
-                    <p onClick={() => decrementQuantity(p._id)}>-</p>
+                    <p className="btn" onClick={() => decrementQuantity(p._id)}>
+                      -
+                    </p>
                     <p
                       style={{
                         fontSize: "18px",
@@ -123,17 +167,19 @@ const CartPage = () => {
                     >
                       {quantities[p._id] || 1}
                     </p>
-                    <p onClick={() => incrementQuantity(p._id)}>+</p>
+                    <p className="btn" onClick={() => incrementQuantity(p._id)}>
+                      +
+                    </p>
                   </div>
                 </div>
 
                 {/* action */}
                 <div>
                   <button
-                    className="btn btn-danger ms-1"
+                    className="btn ms-1"
                     onClick={() => removeCartItem(p._id)}
                   >
-                    X
+                    <MdDelete style={{ fontSize: "18px" }} />
                   </button>
                 </div>
               </div>
@@ -144,27 +190,33 @@ const CartPage = () => {
         {/* Cart Summary */}
 
         <div className="container border">
-          <p className="text-center">Check Out</p>
-          <div className="table-responsive-sm">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Product Name</th>
-                  {/* <th scope="col"> : {orderData.price} </th> */}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Delivery Charge</td>
-                  <td>: {deliveryCharge}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td> : {totalWithDelivery}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <p className="text-center display-5 pt-3  fw-bold">Order Summary</p>
+
+          <Table responsive="lg">
+            <tbody>
+              <tr></tr>
+              <tr>
+                <td className="fw-medium">Sub Total</td>
+                <td>
+                  <td className="fw-medium">
+                    : {totalWithDelivery - deliveryCharge}
+                  </td>
+                </td>
+              </tr>
+              <tr>
+                <td className="fw-medium">Shipping Charge</td>
+                {/* <td>: {selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130}</td> */}
+                <td className="fw-medium">: {deliveryCharge}</td>
+                {/* <td>: {(quantities >= 3) ? 0 : (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
+              </tr>
+              <tr>
+                <td className="fw-medium">Payable Amount</td>
+                {/* <td>: {(orderData.price * quantities) + (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
+                {/* <td>: {(orderData.price * quantities) + ((quantities >= 3) ? 0 : (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130))}</td> */}
+                <td className="fw-medium">: {totalWithDelivery}</td>
+              </tr>
+            </tbody>
+          </Table>
         </div>
         <div>
           <div>
@@ -190,8 +242,14 @@ const CartPage = () => {
               </div>
               <div>
                 <DistrictSelector
-                  setSelectedDistrict={setSelectedDistrict}
                   selectedDistrict={selectedDistrict}
+                  setSelectedDistrict={setSelectedDistrict}
+                  selectedDivision={selectedDivision}
+                  districts={districts}
+                  setDistricts={setDistricts}
+                  setSelectedDivision={setSelectedDivision}
+                  divisions={divisions}
+                  setDivisions={setDivisions}
                 />
               </div>
 
@@ -207,7 +265,12 @@ const CartPage = () => {
             </div>
           </div>
           <div className="d-flex mt-2 justify-content-end">
-            <button className="btn btn-success">Order Now</button>
+            <button
+              className="btn btn-success px-5"
+              onClick={handleCreateOrder}
+            >
+              Order Now
+            </button>
           </div>
         </div>
       </div>

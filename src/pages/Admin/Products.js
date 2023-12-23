@@ -48,12 +48,12 @@ const Products = () => {
                       alt={p.name}
                     />
                     <div className="card-body">
-                      <h5 className="card-title">{p.name}</h5>
+                      <h5 className="card-title">Name : {p.name}</h5>
 
-                      <p className="card-text">{p.description}</p>
-                      <p className="card-text">{p.productNumber}</p>
-                      <p className="card-text price">{p.price}Taka</p>
-                      <p className="card-text discountPrice">
+                      <p className="card-text">Description : {p.description}</p>
+                      <p className="card-text">Product code :{p.productNumber}</p>
+                      <p className="card-text price"> Discount :{p.price}Taka</p>
+                      <p className="card-text discountPrice"> Price : 
                         {p.discount}Taka
                       </p>
                     </div>

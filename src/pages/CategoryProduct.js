@@ -21,6 +21,14 @@ const CategoryProduct = () => {
   useEffect(() => {
     if (params?.slug) getPrductsByCat();
   }, [params?.slug]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Adds smooth scrolling animation
+    });
+  }, []);
+
   const getPrductsByCat = async () => {
     try {
       const { data } = await axios.get(

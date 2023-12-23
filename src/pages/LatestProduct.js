@@ -39,7 +39,7 @@ const LatestProduct = () => {
           {products.map((p) => (
             <Col key={p._id}>
               <Card
-                onClick={() => navigate(`/latestproduct/${p.slug}`)}
+                onClick={() => navigate(`/latestproduct/${p._id}`)}
                 className="productCard"
               >
                 <img

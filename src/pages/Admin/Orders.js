@@ -3,18 +3,16 @@ import AdminMenu from "../../components/Layout/AdminMenu";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useOrder } from "../../context/order";
+
 import Table from "react-bootstrap/Table";
-import { Button, Badge } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 
 const Orders = () => {
   const [products, setProducts] = useState([]);
-  const [order, setOrder] = useOrder();
-  const [id, setId] = useState("");
+
   const navigate = useNavigate();
-  
+
   //getall products
   const getAllProducts = async () => {
     try {
@@ -27,52 +25,24 @@ const Orders = () => {
       toast.error("Something Went Wrong");
     }
   };
-  const handleDelete = async () => {
-    try {
-      let answer = window.prompt("Are You Sure want to delete this order ? ");
-      if (!answer) return;
-      const { data } = await axios.delete(
-        `https://new-ecchanir-server.vercel.app/api/v1/order/delete-order/${id}`
-      );
-      toast.success("Order Deleted Successfully");
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
-    }
-  };
-
-  const handleConfirm = async (_id) => {
-    console.log(_id);
-
-    try {
-      const data = { status: "complete" };
-      console.log("Button clicked");
-      const updateOrder = await axios.put(
-        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${_id}`,
-        data
-      );
-      navigate(`/dashboard/admin/compleatOrder/${_id}`);
-      console.log("Axios Response", updateOrder);
-    } catch (error) {
-      console.error("Error updating data", error);
-    }
-  };
 
   const reversedProduct = [...products].reverse();
+
   // console.log(products);
+
   //lifecycle method
   useEffect(() => {
     getAllProducts();
   }, []);
   return (
     <Layout>
-      <div className="container-fluid m-3 p-3">
+      <div className="container-fluid m-3 px-3">
         <div className="row">
           <div className="col-md-3">
             <AdminMenu />
           </div>
 
-          <div className="col-md-9">
+          <div className="col-md-9 ">
             <Table responsive="sm">
               <thead>
                 <tr>
@@ -114,15 +84,6 @@ const Orders = () => {
                         {product.status}
                       </Badge>
                     </td>
-                    {/* <td align="center">
-                      <Button
-                        variant="success"
-                        onClick={() => handleConfirm(product._id)}
-                        disabled={product.status === "complete"}
-                      >
-                        Confirm
-                      </Button>
-                    </td> */}
                   </tr>
                 ))}
               </tbody>

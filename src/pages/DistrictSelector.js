@@ -53,7 +53,7 @@ export default function DistrictSelector({
       <br />
 
       <select
-        className="mt-2 w-100"
+        className="mt-2  w-100"
         name="districts"
         id="districts"
         value={selectedDistrict}

@@ -5,8 +5,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/ProductDetailsStyles.css";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
-import Rating from "react-rating";
-import { FaRegStar, FaStar } from "react-icons/fa";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -29,6 +27,13 @@ const ProductDetails = () => {
   useEffect(() => {
     if (id) getProduct();
   }, [id]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Adds smooth scrolling animation
+    });
+  }, []);
 
   // ...
 

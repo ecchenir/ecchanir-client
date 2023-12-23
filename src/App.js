@@ -50,6 +50,14 @@ function App() {
   //   axios.defaults.baseURL = "http://localhost:5000";
   // }, []);
   // "proxy": "http://localhost:2000"
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Adds smooth scrolling animation
+    });
+  }, []);
+
   return (
     <>
       <Routes>
@@ -59,7 +67,8 @@ function App() {
         {/* <Route path="/product/:slug" element={<ProductDetails />} />
         <Route path="/product/:slug" element={<ProductDetails />} /> */}
 
-        <Route path="/latestproduct/:slug" element={<LatestProductDetails />} />
+        <Route path="/latestproduct/:id" element={<LatestProductDetails />} />
+        {/* <Route path="/latestproduct/:slug" element={<LatestProductDetails />} /> */}
         <Route path="/cart" element={<CartPage />} />
         <Route path="/CreateOrder" element={<CreateOrder />} />
         <Route path="/buyNow" element={<BuyNow />} />

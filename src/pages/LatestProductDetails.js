@@ -5,42 +5,53 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/ProductDetailsStyles.css";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
+import SizeSelector from "./SizeSelector";
 
 const LatestProductDetails = () => {
   const [cart, setCart] = useCart();
   const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
+ 
   const [selectedSize, setSelectedSize] = useState("");
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [availableSizes, setAvailableSizes] = useState([]);
 
   //initalp details
   useEffect(() => {
-    if (params?.slug) getProduct();
-  }, [params?.slug]);
+    if (id) getProduct();
+  }, [id]);
+
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Optional: Adds smooth scrolling animation
+    });
+  }, []);
+
+  console.log(id);
+
   //getProduct
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${id}`
       );
       setProduct(data?.product);
-      //   getSimilarProduct(data?.product._id, data?.product.category._id);
+      console.log(data);
+
+      if (
+        data?.product.selectedOptions &&
+        data?.product.selectedOptions.length > 0
+      ) {
+        setAvailableSizes(data?.product.selectedOptions);
+        setSelectedSize(data?.product.selectedOptions[0]); // Set the default selected size
+      }
     } catch (error) {
       console.log(error);
     }
   };
-  //get similar product
-  //   const getSimilarProduct = async (pid, cid) => {
-  //     try {
-  //       const { data } = await axios.get(
-  //         `https://new-ecchanir-server.vercel.app/api/v1/product/related-product/${pid}/${cid}`
-  //       );
-  //       setRelatedProducts(data?.products);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
@@ -76,69 +87,39 @@ const LatestProductDetails = () => {
             src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${product._id}`}
             className="card-img-top"
             alt={product.name}
+            style={{ objectFit: "contain", width: "100%" }}
             height="300"
             width={"350px"}
           />
         </div>
         <div className="col-md-6 product-details-info">
           <h1 className="text-center show">Product Details</h1>
-          <h6>Name : {product.name}</h6>
-          <h6>Description : {product.description}</h6>
-          <h6>Category : {product?.category?.name}</h6>
-          <h6>Price : {product.price} taka</h6>
-          <h6>Category : {product?.category?.name}</h6>
+          <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
+            {product.name}
+          </h6>
+          <h6>{product.description}</h6>
+          {/* <h6>{product?.category?.name}</h6> */}
+          <p className="discountPrice">৳ {product.price} </p>
+          <p className="price">৳ {product.discount} </p>
 
-          <div className="mb-3 ">
+          {/* <h6>Category : {product?.category?.name}</h6> */}
+          <div className=" ">
             <p className="mb-0">Size :</p>
-            <div className="d-flex gap-2">
-              <label>
-                <input
-                  type="radio"
-                  name="size"
-                  value="M"
-                  checked={selectedSize === "M"}
-                  onChange={() => handleSizeChange("M")}
-                />
-                M
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="size"
-                  value="L"
-                  checked={selectedSize === "M"}
-                  onChange={() => handleSizeChange("M")}
-                />
-                L
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="size"
-                  value="XL"
-                  checked={selectedSize === "L"}
-                  onChange={() => handleSizeChange("L")}
-                />
-                XL
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="size"
-                  value="XXL"
-                  checked={selectedSize === "XL"}
-                  onChange={() => handleSizeChange("XL")}
-                />
-                XXL
-              </label>
-            </div>
+            {availableSizes.length > 0 && (
+              <SizeSelector
+                sizes={availableSizes}
+                selectedSize={selectedSize}
+                onSizeChange={handleSizeChange}
+              />
+            )}
           </div>
 
-          <div className="d-flex">
-            <button
-              className="btn btn-success ms-1"
-              onClick={handleBuyNowClick}
-            >
+          {selectedSize && (
+            <p className="mt-2">Selected Size: {selectedSize}</p>
+          )}
+
+          {/* <div className="d-flex mt-3">
+            <button className="btn btn-dark ms-1" onClick={handleBuyNowClick}>
               Buy Now
             </button>
 
@@ -155,7 +136,7 @@ const LatestProductDetails = () => {
             >
               Add to cart
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <hr />
