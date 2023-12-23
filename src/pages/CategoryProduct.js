@@ -14,6 +14,7 @@ const CategoryProduct = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
+
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -33,6 +34,11 @@ const CategoryProduct = () => {
     }
   };
 
+  const trendingProduct = products.filter(
+    (item) => item.productType === "trending"
+  );
+
+  console.log(trendingProduct);
   // search input
 
   const handleSearch = () => {
@@ -59,14 +65,51 @@ const CategoryProduct = () => {
           }}
         />
 
-        <h6 className="text-center">{products?.length} result found </h6>
+        {/* <h6 className="text-center">{products?.length} result found </h6> */}
+
+        <div className="mb-5 mt-2">
+          <h6 className="text-center"> Trending Product</h6>
+
+          <div className="container">
+            <Row xs={2} sm={3} md={4} lg={5} className="g-2">
+              {trendingProduct.map((tp) => (
+                <Col key={tp._id}>
+                  <Card
+                    onClick={() => navigate(`/product/${tp._id}`)}
+                    className="productCard"
+                  >
+                    <img
+                      src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${tp._id}`}
+                      className="card-img-top"
+                      height={"150px"}
+                      alt={tp.name}
+                      onClick={() => navigate(`/product/${tp._id}`)}
+                    />
+                    <div className="card-body">
+                      <div>
+                        <h5 className="cardTitle">
+                          {tp.name.length <= 20
+                            ? tp.name
+                            : `${tp.name.substring(0, 20)}...`}
+                        </h5>
+                        <p className="price">৳ {tp.discount} </p>
+                        <p className="discountPrice">৳ {tp.price}</p>
+                      </div>
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </div>
 
         <div className="container">
+          <h6 className="text-center"> Category Product</h6>
           <Row xs={2} sm={3} md={4} lg={5} className="g-2">
             {filteredProducts.map((p) => (
               <Col key={p._id}>
                 <Card
-                  onClick={() => navigate(`/product/${p.slug}`)}
+                  onClick={() => navigate(`/product/${p._id}`)}
                   className="productCard"
                 >
                   <img
@@ -74,23 +117,17 @@ const CategoryProduct = () => {
                     className="card-img-top"
                     height={"150px"}
                     alt={p.name}
-                    onClick={() => navigate(`/product/${p.slug}`)}
+                    onClick={() => navigate(`/product/${p._id}`)}
                   />
                   <div className="card-body">
                     <div>
-                      <h5 className="cardTitle">{p.name}</h5>
-                      <p className="price">{p.discount}Taka</p>
-                      <p className="discountPrice">{p.price}Taka</p>
-                      <Rating
-                        className="ml-3"
-                        placeholderRating={p.rating}
-                        readonly
-                        emptySymbol={<FaRegStar></FaRegStar>}
-                        placeholderSymbol={
-                          <FaStar className="text-warning"></FaStar>
-                        }
-                        fullSymbol={<FaStar></FaStar>}
-                      />
+                      <h5 className="cardTitle">
+                        {p.name.length <= 20
+                          ? p.name
+                          : `${p.name.substring(0, 20)}...`}
+                      </h5>
+                      <p className="price">৳ {p.discount} </p>
+                      <p className="discountPrice">৳ {p.price}</p>
                     </div>
                   </div>
                 </Card>

@@ -36,7 +36,7 @@ export default function DistrictSelector({
   return (
     <div>
       <select
-        className="w-50 "
+        className="w-100 "
         name="division"
         id="division"
         value={selectedDivision}
@@ -53,7 +53,7 @@ export default function DistrictSelector({
       <br />
 
       <select
-        className="mt-2 w-50"
+        className="mt-2 w-100"
         name="districts"
         id="districts"
         value={selectedDistrict}

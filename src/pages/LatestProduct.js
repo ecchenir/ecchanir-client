@@ -3,8 +3,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import "../styles/Homepage.css";
 import { useNavigate } from "react-router-dom";
-import Rating from "react-rating";
-import { FaRegStar, FaStar } from "react-icons/fa";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";

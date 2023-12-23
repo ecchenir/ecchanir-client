@@ -68,9 +68,9 @@ export default function BuyNow() {
       );
       if (data?.success) {
         toast.success(data?.message);
+        navigate("/thanks");
       } else {
         toast.success("SuccessFully Create order ,Thanks For Shopping");
-        // navigate("/dashboard/admin/orders");
       }
     } catch (error) {
       //   console.log(error);
@@ -217,7 +217,7 @@ export default function BuyNow() {
         </div>
 
         <div className="d-flex mt-1 mb-2 justify-content-center">
-          <button className="btn btn-success" onClick={handleCreateOrder}>
+          <button className="btn btn-success px-5" onClick={handleCreateOrder}>
             Order Now
           </button>
         </div>

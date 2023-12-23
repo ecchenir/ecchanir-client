@@ -1,143 +1,178 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../../components/Layout/Layout";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import ReactToPrint from "react-to-print";
+
 import Card from "react-bootstrap/Card";
-import { Button, Badge } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import AdminMenu from "../../../components/Layout/AdminMenu";
 
 export default function CompleatOrder() {
   const { id } = useParams(); // Correctly extract 'id' from the URL parameters
   const [order, setOrder] = useState({});
   console.log(id);
 
-  const getAllProducts = async () => {
-    try {
-      const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/order/get-orders/${id}`
-      );
-      setOrder(data.product);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getAllProducts = async () => {
+  //   try {
+  //     const { data } = await axios.get(
+  //       `https://new-ecchanir-server.vercel.app/api/v1/order/get-orders/${id}`
+  //     );
+  //     setOrder(data.product);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  // oder  confirm functionality
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await axios.get(
+          `https://new-ecchanir-server.vercel.app/api/v1/order/get-orders/${id}`
+        );
+        setOrder(data?.product || {});
+        console.log(data);
+        // Use optional chaining to handle undefined data
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  const handleConfirm = async (_id) => {
-    console.log(_id);
-
-    try {
-      const data = { status: "complete" };
-      console.log("Button clicked");
-      const updateOrder = await axios.put(
-        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${_id}`,
-        data
-      );
-      // navigate(`/dashboard/admin/compleatOrder/${_id}`);
-      console.log("Axios Response", updateOrder);
-    } catch (error) {
-      console.error("Error updating data", error);
-    }
-  };
-
-  // oder delete functionality
-  const handleCancel = async (_id) => {
-    console.log(_id);
-
-    try {
-      const data = { status: "cancel" };
-      // console.log("Button clicked");
-      const updateOrder = await axios.put(
-        `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${_id}`,
-        data
-      );
-      // navigate(`/dashboard/admin/compleatOrder/${_id}`);
-      console.log("Axios Response", updateOrder);
-    } catch (error) {
-      console.error("Error updating data", error);
-    }
-  };
+    fetchData(); // Invoke the fetchData function
+  }, [id]);
 
   console.log(order);
 
-  useEffect(() => {
-    getAllProducts();
-  }, [id]); // Add 'id' as a dependency to the useEffect hook
+  // oder  confirm functionality
+
+  // const handleConfirm = async (id) => {
+  //   // console.log(_id);
+
+  //   try {
+  //     const data = { status: "complete" };
+  //     console.log("Button clicked");
+  //     const updateOrder = await axios.put(
+  //       `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
+  //       data
+  //     );
+  //     // navigate(`/dashboard/admin/compleatOrder/${_id}`);
+  //     console.log("Axios Response", updateOrder);
+  //   } catch (error) {
+  //     console.error("Error updating data", error);
+  //   }
+  // };
+
+  // oder delete functionality
+  // const handleCancel = async (id) => {
+  //   // console.log(_id);
+
+  //   try {
+  //     const data = { status: "cancel" };
+  //     // console.log("Button clicked");
+  //     const updateOrder = await axios.put(
+  //       `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
+  //       data
+  //     );
+  //     // navigate(`/dashboard/admin/compleatOrder/${_id}`);
+  //     console.log("Axios Response", updateOrder);
+  //   } catch (error) {
+  //     console.error("Error updating data", error);
+  //   }
+  // };
+
+  // console.log(order);
+
+  // useEffect(() => {
+  //   getAllProducts();
+  // }, [id]); // Add 'id' as a dependency to the useEffect hook
 
   return (
     <Layout>
-      <p className="text-center fw-bold  mt-5"> Order Details</p>
+      <div className="container-fluid m-3 p-3">
+        <div className="row">
+          <div className="col-md-3">
+            <AdminMenu />
+          </div>
+          <div className="col-md-9">
+            <p className="text-center fw-bold  mt-5"> Order Details</p>
 
-      <Card className="mx-auto w-75">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Customer Name</th>
-              <th scope="col"> : {order.slug} </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="fw-medium">Phone</td>
-              <td>: {order.phone}</td>
-            </tr>
-            <tr>
-              <td>Division </td>
-              <td>: {order.selectedDistrict}</td>
-            </tr>
-            <tr>
-              <td>District </td>
-              <td>: {order.selectedDistrict}</td>
-            </tr>
-            <tr>
-              <td>Address </td>
-              <td>: {order.address}</td>
-            </tr>
-            <tr>
-              <td>Order Date </td>
-              <td>: {new Date(order.createdAt).toLocaleString()}</td>
-            </tr>
-            <tr>
-              <td>Product Id </td>
-              <td>: {order.productNumber}</td>
-            </tr>
+            <Card className="mx-auto">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col"> : {order.slug} </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="fw-medium">Phone</td>
+                    <td>: {order.phone}</td>
+                  </tr>
+                  <tr>
+                    <td>Division </td>
+                    <td>: {order.selectedDistrict}</td>
+                  </tr>
+                  <tr>
+                    <td>District </td>
+                    <td>: {order.selectedDistrict}</td>
+                  </tr>
+                  <tr>
+                    <td>Address </td>
+                    <td>: {order.address}</td>
+                  </tr>
+                  <tr>
+                    <td>Order Date </td>
+                    <td>: {new Date(order.createdAt).toLocaleString()}</td>
+                  </tr>
+                  <tr>
+                    <td>Product Id </td>
+                    <td>: {order.productNumber}</td>
+                  </tr>
 
-            <tr>
-              <td className="fw-medium">Product Size</td>
-              <td>: {order.size}</td>
-            </tr>
-            <tr>
-              <td>Quantities </td>
-              <td>: {order.quantities}</td>
-            </tr>
-            <tr>
-              <td> Shaping Charge </td>
-              <td>: {order.delivery}</td>
-            </tr>
+                  <tr>
+                    <td className="fw-medium">Product Size</td>
+                    <td>: {order.size}</td>
+                  </tr>
+                  <tr>
+                    <td>Quantities </td>
+                    <td>: {order.quantities}</td>
+                  </tr>
+                  <tr>
+                    <td> Shaping Charge </td>
+                    <td>: {order.delivery}</td>
+                  </tr>
 
-            <tr>
-              <td>Total Amount </td>
-              <td>: {order.amount}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div className="d-flex justify-content-between">
-          <Button variant="danger" onClick={() => handleConfirm(order._id)}>
-            Cancel
-          </Button>
+                  <tr>
+                    <td>Total Amount </td>
+                    <td>: {order.amount}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className="d-flex justify-content-between px-2 pb-3">
+                <Button
+                  variant="danger"
+                  // onClick={() => handleConfirm(order.id)}
+                >
+                  Cancel
+                </Button>
 
-          <Button variant="success" onClick={() => handleCancel(order._id)}>
-            Confirm
-          </Button>
+                <Button
+                  variant="success"
+                  // onClick={() => handleCancel(order._id)}
+                >
+                  Confirm
+                </Button>
+              </div>
+
+              {/* <div className="d-flex justify-content-end mb-3">
+<Link to="/dashboard/admin/orders" className="btn btn-dark">
+  Check Other Orders
+</Link>
+</div> */}
+            </Card>
+          </div>
         </div>
-
-        {/* <div className="d-flex justify-content-end mb-3">
-          <Link to="/dashboard/admin/orders" className="btn btn-dark">
-            Check Other Orders
-          </Link>
-        </div> */}
-      </Card>
+      </div>
     </Layout>
   );
 }

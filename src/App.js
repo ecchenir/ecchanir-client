@@ -39,6 +39,8 @@ import BuyNow from "./pages/Admin/BuyNow/BuyNow";
 import CompleatOrder from "./pages/Admin/BuyNow/CompleatOrder";
 import { useEffect } from "react";
 import axios from "axios";
+import SubcategoryShow from "./pages/SubcategoryShow";
+import Thanks from "./pages/user/Thanks";
 
 function App() {
   useEffect(() => {
@@ -52,15 +54,18 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/product/:slug" element={<ProductDetails />} />
-        <Route path="/product/:slug" element={<ProductDetails />} />
-        
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        {/* <Route path="/product/:slug" element={<ProductDetails />} />
+        <Route path="/product/:slug" element={<ProductDetails />} /> */}
+
         <Route path="/latestproduct/:slug" element={<LatestProductDetails />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/CreateOrder" element={<CreateOrder />} />
         <Route path="/buyNow" element={<BuyNow />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/category/:slug" element={<CategoryProduct />} />
+        <Route path="/subcategory/:id" element={<SubcategoryShow />} />
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           {/* <Route path="user/orders"  element={<Orders/>}/> */}
@@ -93,6 +98,7 @@ function App() {
           <Route path="admin/users" element={<Users />} />
         </Route>
         <Route path="/register" element={<Register />} />
+        <Route path="/thanks" element={<Thanks />} />
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login />} />

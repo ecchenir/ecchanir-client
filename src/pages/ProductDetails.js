@@ -15,6 +15,7 @@ import SizeSelector from "./SizeSelector";
 const ProductDetails = () => {
   const [cart, setCart] = useCart();
   const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -22,29 +23,25 @@ const ProductDetails = () => {
   const [availableSizes, setAvailableSizes] = useState([]);
 
   console.log(product);
+  console.log(id);
 
   //initalp details
   useEffect(() => {
-    if (params?.slug) getProduct();
-  }, [params?.slug]);
+    if (id) getProduct();
+  }, [id]);
 
   // ...
 
-  useEffect(() => {
-    if (params?.slug) getProduct();
-  }, [params?.slug]);
-
-  // ...
-
-  // in getProduct function
+  console.log(relatedProducts);
 
   //getProduct
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${id}`
       );
       setProduct(data?.product);
+      console.log(data);
 
       if (
         data?.product.selectedOptions &&
@@ -59,6 +56,7 @@ const ProductDetails = () => {
       console.log(error);
     }
   };
+
   //get similar product
   const getSimilarProduct = async (pid, cid) => {
     try {
@@ -76,9 +74,9 @@ const ProductDetails = () => {
     setSelectedSize(size);
   };
 
-  const handleSimilarProductClick = (slug) => {
-    navigate(`/product/${slug}`);
-  };
+  // const handleSimilarProductClick = (slug) => {
+  //   navigate(`/product/${slug}`);
+  // };
 
   const handleBuyNowClick = () => {
     // Get existing order data from local storage
@@ -179,7 +177,7 @@ const ProductDetails = () => {
             {relatedProducts.map((p) => (
               <Col key={p._id}>
                 <Card
-                  onClick={() => handleSimilarProductClick(p.slug)}
+                  onClick={() => navigate(`/product/${p._id}`)}
                   className="productCard"
                 >
                   <img

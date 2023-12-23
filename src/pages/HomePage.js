@@ -4,14 +4,10 @@ import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import "../styles/Homepage.css";
-import { AiOutlineReload } from "react-icons/ai";
+import "../styles/Homepage.css"; 
 import LatestProduct from "./LatestProduct";
 import ShowCategories from "./ShowCategories";
 import { useCart } from "../context/cart";
-import { FaRegStar, FaStar } from "react-icons/fa";
-import Rating from "react-rating";
-
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -96,6 +92,10 @@ const HomePage = () => {
       setLoading(false);
       console.log(error);
     }
+  };
+
+  const handleSeeMore = () => {
+    setPage(page + 1);
   };
 
   //getTOtal COunt
@@ -183,7 +183,8 @@ const HomePage = () => {
           {products.map((p) => (
             <Col key={p._id}>
               <Card
-                onClick={() => navigate(`/product/${p.slug}`)}
+                onClick={() => navigate(`/product/${p._id}`)}
+                // onClick={() => navigate(`/product/${p.slug}`)}
                 className="productCard"
               >
                 <img
@@ -199,7 +200,6 @@ const HomePage = () => {
                 />
                 <div className="card-body">
                   <h5 className="cardTitle">
-                     
                     {p.name.length <= 20
                       ? p.name
                       : `${p.name.substring(0, 20)}...`}
@@ -220,6 +220,11 @@ const HomePage = () => {
             </Col>
           ))}
         </Row>
+        <div className="d-flex justify-content-center mt-3">
+          <button className="btn btn-primary  " onClick={handleSeeMore}>
+            See More
+          </button>
+        </div>
       </div>
 
       {/* latestProduct */}
