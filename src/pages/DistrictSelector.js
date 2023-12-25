@@ -36,11 +36,17 @@ export default function DistrictSelector({
   return (
     <div>
       <select
-        className="w-100 "
+        className="w-100 h-8 "
         name="division"
         id="division"
         value={selectedDivision}
         onChange={handleDivisionChange}
+        style={{
+          fontSize: "16px", // Adjust the font size as needed
+          border: "1px solid #ccc", // Set the border style and color
+          borderRadius: "5px", // Optionally, set border radius for rounded corners
+          padding: "8px", // Optionally, adjust the padding
+        }}
       >
         <option value="">Select Division</option>
         {divisions &&
@@ -58,6 +64,12 @@ export default function DistrictSelector({
         id="districts"
         value={selectedDistrict}
         onChange={handleDistrictChange}
+        style={{
+          fontSize: "16px", // Adjust the font size as needed
+          border: "1px solid #ccc", // Set the border style and color
+          borderRadius: "5px", // Optionally, set border radius for rounded corners
+          padding: "8px", // Optionally, adjust the padding
+        }}
       >
         <option value="">Select District</option>
         {districts &&

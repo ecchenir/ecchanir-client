@@ -13,7 +13,7 @@ const LatestProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
- 
+
   const [selectedSize, setSelectedSize] = useState("");
   const [availableSizes, setAvailableSizes] = useState([]);
 
@@ -21,7 +21,6 @@ const LatestProductDetails = () => {
   useEffect(() => {
     if (id) getProduct();
   }, [id]);
-
 
   useEffect(() => {
     window.scrollTo({
@@ -118,25 +117,36 @@ const LatestProductDetails = () => {
             <p className="mt-2">Selected Size: {selectedSize}</p>
           )}
 
-          {/* <div className="d-flex mt-3">
-            <button className="btn btn-dark ms-1" onClick={handleBuyNowClick}>
+          <div className="d-flex mt-3">
+            <button
+              className="btn btn-dark ms-1"
+              onClick={() => {
+                setCart([...cart, { ...product, selectedSize }]);
+                localStorage.setItem(
+                  "cart",
+                  JSON.stringify([...cart, { ...product, selectedSize }])
+                );
+                toast.success("Item Added to cart");
+                navigate("/cart");
+              }}
+            >
               Buy Now
             </button>
 
             <button
               className="btn btn-secondary ms-1"
               onClick={() => {
-                setCart([...cart, product]);
+                setCart([...cart, { ...product, selectedSize }]);
                 localStorage.setItem(
                   "cart",
-                  JSON.stringify([...cart, product])
+                  JSON.stringify([...cart, { ...product, selectedSize }])
                 );
                 toast.success("Item Added to cart");
               }}
             >
               Add to cart
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
       <hr />

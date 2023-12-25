@@ -3,6 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import CategoryForm from "../../components/Form/CategoryForm";
 
 import { Modal } from "antd";
@@ -17,6 +18,8 @@ const CreateCategory = () => {
   // const [value, setValue] = useState('');
   const [photo, setPhoto] = useState("");
   const [parentCategoryId, setParentCategoryId] = useState("");
+
+  const navigate = useNavigate();
 
   //handle Form
   const handleCreate = async (e) => {
@@ -102,9 +105,7 @@ const CreateCategory = () => {
     }
   };
 
-  console.log(parentCategoryId);
-
-  
+  // console.log(parentCategoryId);
 
   const handleCreateSubcategory = async (e) => {
     e.preventDefault();
@@ -116,6 +117,7 @@ const CreateCategory = () => {
 
       if (data?.success) {
         toast.success("Subcategory Created Successfully");
+        navigate("/dashboard/admin");
       } else {
         toast.error(data?.message || "Error creating subcategory");
       }

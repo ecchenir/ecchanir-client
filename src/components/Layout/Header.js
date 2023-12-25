@@ -14,6 +14,8 @@ const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
+
+  
   const handleLogout = () => {
     setAuth({
       ...auth,
@@ -151,9 +153,7 @@ const Header = () => {
         </div>
       </nav>
 
-      <div>
-      
-      </div>
+      <div></div>
     </>
   );
 };

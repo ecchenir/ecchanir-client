@@ -4,12 +4,13 @@ import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Select } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const { Option } = Select;
 
 const CreateBanner = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState("");
@@ -58,6 +59,22 @@ const CreateBanner = () => {
     }
   };
 
+  const getAllProducts = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner"
+      );
+      console.log(data);
+      setProducts(data.products);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong");
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
   return (
     <Layout title={"Dashboard-Create Product"}>
       <div className="container-fluid m-3 p-3">
@@ -66,7 +83,7 @@ const CreateBanner = () => {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h1>Create Product</h1>
+            <h1>Create Banner</h1>
             <div className="m-1 w-75">
               <Select
                 bordered={false}
@@ -122,6 +139,31 @@ const CreateBanner = () => {
                 <button className="btn btn-success" onClick={handleCreate}>
                   CREATE Banner
                 </button>
+              </div>
+            </div>
+
+            <div className="col-md-9">
+              <h1 className="text-center">All Banner List</h1>
+              <div className="d-flex flex-wrap">
+                {products?.map((p) => (
+                  <Link
+                    key={p._id}
+                    to={`/dashboard/admin/banner/${p.slug}`}
+                    className="product-link"
+                  >
+                    <div className="card m-2" style={{ width: "18rem" }}>
+                      <img
+                        src={`https://new-ecchanir-server.vercel.app/api/v1/banner/banner-photo/${p._id}`}
+                        className="card-img-top"
+                        height={"150px"}
+                        alt={p.name}
+                      />
+                      <div className="card-body">
+                        <h5 className="card-title"> Title: {p.name}</h5>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>

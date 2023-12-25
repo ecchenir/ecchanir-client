@@ -19,8 +19,6 @@ export default function BuyNow() {
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
 
- 
-
   useEffect(() => {
     // Fetch order data from local storage
     const existingOrderData =
@@ -86,8 +84,8 @@ export default function BuyNow() {
     }
   };
 
-  console.log(selectedDivision);
-  console.log(selectedDistrict);
+  // console.log(selectedDivision);
+  // console.log(selectedDistrict);
 
   return (
     <Layout>

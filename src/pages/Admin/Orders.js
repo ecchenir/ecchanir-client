@@ -19,7 +19,8 @@ const Orders = () => {
       const { data } = await axios.get(
         "https://new-ecchanir-server.vercel.app/api/v1/order/get-order"
       );
-      setProducts(data.products);
+      setProducts(data.product);
+      console.log(data);
     } catch (error) {
       console.log(error);
       toast.error("Something Went Wrong");
@@ -49,9 +50,9 @@ const Orders = () => {
                   <th>#</th>
                   <th>Customer Name</th>
                   <th>Phone</th>
+                  <th> Division </th>
                   <th>District</th>
-                  <th>Product Number</th>
-                  <th>Qty</th>
+
                   <th>Status</th>
                 </tr>
               </thead>
@@ -67,9 +68,9 @@ const Orders = () => {
                     <td>{index + 1}</td>
                     <td>{product.names}</td>
                     <td>{product.phone}</td>
+                    <td>{product.selectedDivision}</td>
                     <td>{product.selectedDistrict}</td>
-                    <td>{product.productNumber}</td>
-                    <td>{product.quantities}</td>
+
                     <td align="center">
                       <Badge
                         bg={

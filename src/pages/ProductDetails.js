@@ -79,32 +79,7 @@ const ProductDetails = () => {
     setSelectedSize(size);
   };
 
-  // const handleSimilarProductClick = (slug) => {
-  //   navigate(`/product/${slug}`);
-  // };
-
-  const handleBuyNowClick = () => {
-    // Get existing order data from local storage
-    const existingOrderData =
-      JSON.parse(localStorage.getItem("orderData")) || [];
-
-    // Create a new order object
-    const newOrder = {
-      product,
-      selectedSize,
-      // Add other relevant data
-    };
-
-    // Add the new order to the existing array
-    const updatedOrderData = [...existingOrderData, newOrder];
-
-    // Set the updated order data in local storage
-    localStorage.setItem("orderData", JSON.stringify(updatedOrderData));
-    console.log(updatedOrderData);
-    // Navigate to the order creation page
-    navigate("/buyNow");
-  };
-
+  
   // console.log(selectedSize);
   return (
     <Layout>
@@ -149,17 +124,28 @@ const ProductDetails = () => {
           )}
 
           <div className="d-flex mt-3">
-            <button className="btn btn-dark ms-1" onClick={handleBuyNowClick}>
+            <button
+              className="btn btn-dark ms-1"
+              onClick={() => {
+                setCart([...cart, { ...product, selectedSize }]);
+                localStorage.setItem(
+                  "cart",
+                  JSON.stringify([...cart, { ...product, selectedSize }])
+                );
+                toast.success("Item Added to cart");
+                navigate("/cart");
+              }}
+            >
               Buy Now
             </button>
 
             <button
               className="btn btn-secondary ms-1"
               onClick={() => {
-                setCart([...cart, product]);
+                setCart([...cart, { ...product, selectedSize }]);
                 localStorage.setItem(
                   "cart",
-                  JSON.stringify([...cart, product])
+                  JSON.stringify([...cart, { ...product, selectedSize }])
                 );
                 toast.success("Item Added to cart");
               }}

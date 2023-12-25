@@ -75,44 +75,45 @@ const CategoryProduct = () => {
 
         {/* <h6 className="text-center">{products?.length} result found </h6> */}
 
-        <div className="mb-5 mt-2">
-          <h6 className="text-center"> Trending Product</h6>
-
-          <div className="container">
-            <Row xs={2} sm={3} md={4} lg={5} className="g-2">
-              {trendingProduct.map((tp) => (
-                <Col key={tp._id}>
-                  <Card
-                    onClick={() => navigate(`/product/${tp._id}`)}
-                    className="productCard"
-                  >
-                    <img
-                      src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${tp._id}`}
-                      className="card-img-top"
-                      height={"150px"}
-                      alt={tp.name}
+        {trendingProduct.length >= 1 && (
+          <div className="mb-5 mt-2">
+            <h6 className="text-center display-6">Trending Product</h6>
+            <div className="container">
+              <Row xs={2} sm={3} md={4} lg={5} className="g-2">
+                {trendingProduct.map((tp) => (
+                  <Col key={tp._id}>
+                    <Card
                       onClick={() => navigate(`/product/${tp._id}`)}
-                    />
-                    <div className="card-body">
-                      <div>
-                        <h5 className="cardTitle">
-                          {tp.name.length <= 20
-                            ? tp.name
-                            : `${tp.name.substring(0, 20)}...`}
-                        </h5>
-                        <p className="price">৳ {tp.discount} </p>
-                        <p className="discountPrice">৳ {tp.price}</p>
+                      className="productCard"
+                    >
+                      <img
+                        src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${tp._id}`}
+                        className="card-img-top"
+                        height={"150px"}
+                        alt={tp.name}
+                        onClick={() => navigate(`/product/${tp._id}`)}
+                      />
+                      <div className="card-body">
+                        <div>
+                          <h5 className="cardTitle">
+                            {tp.name.length <= 20
+                              ? tp.name
+                              : `${tp.name.substring(0, 20)}...`}
+                          </h5>
+                          <p className="price">৳ {tp.discount} </p>
+                          <p className="discountPrice">৳ {tp.price}</p>
+                        </div>
                       </div>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="container">
-          <h6 className="text-center"> Category Product</h6>
+          <h6 className="text-center display-6"> Category Product</h6>
           <Row xs={2} sm={3} md={4} lg={5} className="g-2">
             {filteredProducts.map((p) => (
               <Col key={p._id}>

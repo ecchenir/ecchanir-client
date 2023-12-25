@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Tab, Nav, Dropdown } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import "./SubcategoryHeader.css";
 
 export default function SubcategoryHeader() {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [openDropdownId, setOpenDropdownId] = useState(null);
@@ -25,16 +27,12 @@ export default function SubcategoryHeader() {
     getCategories();
   }, []);
 
-  const handleToggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
-
   return (
-    <div className="d-flex  md:justify-content-center   bg-success  my-3 container">
+    <div
+      style={{ backgroundColor: "#D6EAF8" }}
+      className="d-flex justify-content-center   bg-success  my-3 container"
+    >
       <Tab.Container id="category-tabs" defaultActiveKey={categories[0]?._id}>
-        {/* Mobile Toggle Button */}
-        <FaBars className="mobile-toggle" onClick={handleToggleDropdown} />
-
         {/* Navigation Tabs */}
         <Nav variant="tabs" className={showDropdown ? "hidden" : ""}>
           {categories.map((category) => (
@@ -53,7 +51,12 @@ export default function SubcategoryHeader() {
 
                 <Dropdown.Menu>
                   {category.subCategory.map((subCat, index) => (
-                    <Dropdown.Item key={index}>{subCat}</Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => navigate(`/subcategory/${subCat}`)}
+                      key={index}
+                    >
+                      {subCat}
+                    </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>

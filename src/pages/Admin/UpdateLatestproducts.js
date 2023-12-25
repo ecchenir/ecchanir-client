@@ -14,9 +14,12 @@ const UpdateLatestproducts = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [discount, setDiscount] = useState("");
+
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState("");
+  const [productNumber, setProductNumber] = useState("");
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
 
@@ -26,13 +29,14 @@ const UpdateLatestproducts = () => {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${params.slug}`
       );
+      console.log(data);
       setName(data.product.name);
       setId(data.product._id);
       setDescription(data.product.description);
       setPrice(data.product.price);
       setPrice(data.product.price);
-      setQuantity(data.product.quantity);
-      setShipping(data.product.shipping);
+      setDiscount(data.product.discount);
+      setProductNumber(data.product.productNumber);
       setCategory(data.product.category._id);
     } catch (error) {
       console.log(error);
@@ -69,7 +73,8 @@ const UpdateLatestproducts = () => {
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
-      productData.append("quantity", quantity);
+      productData.append("discount", discount);
+      productData.append("productNumber", productNumber);
       photo && productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.put(
@@ -176,12 +181,21 @@ const UpdateLatestproducts = () => {
                 <textarea
                   type="text"
                   value={description}
-                  placeholder="write a description"
+                  placeholder="Write a Description"
                   className="form-control"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
 
+              <div className="mb-3">
+                <input
+                  type="number"
+                  value={discount}
+                  placeholder="write a discount Price"
+                  className="form-control"
+                  onChange={(e) => setDiscount(e.target.value)}
+                />
+              </div>
               <div className="mb-3">
                 <input
                   type="number"
@@ -191,31 +205,17 @@ const UpdateLatestproducts = () => {
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
+
               <div className="mb-3">
                 <input
-                  type="number"
-                  value={quantity}
-                  placeholder="write a quantity"
+                  type="text"
+                  value={productNumber}
+                  placeholder="write a product Number"
                   className="form-control"
-                  onChange={(e) => setQuantity(e.target.value)}
+                  onChange={(e) => setProductNumber(e.target.value)}
                 />
               </div>
-              <div className="mb-3">
-                <Select
-                  bordered={false}
-                  placeholder="Select Shipping "
-                  size="large"
-                  showSearch
-                  className="form-select mb-3"
-                  onChange={(value) => {
-                    setShipping(value);
-                  }}
-                  value={shipping ? "yes" : "No"}
-                >
-                  <Option value="0">No</Option>
-                  <Option value="1">Yes</Option>
-                </Select>
-              </div>
+
               <div className="mb-3">
                 <button className="btn btn-success" onClick={handleUpdate}>
                   UPDATE PRODUCT

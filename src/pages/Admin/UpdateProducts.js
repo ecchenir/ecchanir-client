@@ -4,6 +4,7 @@ import AdminMenu from "./../../components/Layout/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Select } from "antd";
+import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
@@ -15,11 +16,9 @@ const UpdateProducts = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
   const [discount, setDiscount] = useState("");
-  const [rating, setRating] = useState("");
   const [productNumber, setProductNumber] = useState("");
 
   //get single product
@@ -28,14 +27,13 @@ const UpdateProducts = () => {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${params.slug}`
       );
+      console.log(data.product);
       setName(data.product.name);
       setId(data.product._id);
       setDescription(data.product.description);
       setPrice(data.product.price);
-      setRating(data.product.rating);
       setDiscount(data.product.discount);
-      productNumber(data?.product?.productNumber);
-      setQuantity(data.product.quantity);
+      setProductNumber(data?.product?.productNumber);
       setCategory(data.product.category._id);
       console.log(data);
     } catch (error) {
@@ -46,6 +44,8 @@ const UpdateProducts = () => {
     getSingleProduct();
     //eslint-disable-next-line
   }, []);
+
+  // console.log(productNumber);
   //get all category
   const getAllCategory = async () => {
     try {
@@ -54,6 +54,7 @@ const UpdateProducts = () => {
       );
       if (data?.success) {
         setCategories(data?.category);
+        // console.log(data?.category);
       }
     } catch (error) {
       console.log(error);
@@ -74,9 +75,7 @@ const UpdateProducts = () => {
       productData.append("description", description);
       productData.append("price", price);
       productData.append("productNumber", productNumber);
-      productData.append("quantity", quantity);
       productData.append("discount", discount);
-      productData.append("rating", rating);
       photo && productData.append("photo", photo);
       productData.append("category", category);
       const { data } = axios.put(
@@ -110,6 +109,24 @@ const UpdateProducts = () => {
       toast.error("Something went wrong");
     }
   };
+
+  const handleConfirm = async (id) => {
+    console.log(id);
+    try {
+      const data = { productType: "trending" };
+      console.log("Button clicked");
+      const updateProduct = await axios.put(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/trending/${id}`,
+        data
+      );
+
+      console.log("Axios Response", updateProduct);
+      navigate(`/dashboard/admin/products`);
+    } catch (error) {
+      console.error("Error updating data", error);
+    }
+  };
+
   return (
     <Layout title={"Dashboard - Create Product"}>
       <div className="container-fluid m-3 p-3">
@@ -210,30 +227,11 @@ const UpdateProducts = () => {
 
               <div className="mb-3">
                 <input
-                  type="number"
-                  value={rating}
-                  placeholder="write a Rating"
-                  className="form-control"
-                  onChange={(e) => setRating(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
                   type="text"
                   value={productNumber}
                   placeholder="write a product Number"
                   className="form-control"
                   onChange={(e) => setProductNumber(e.target.value)}
-                />
-              </div>
-
-              <div className="mb-3">
-                <input
-                  type="number"
-                  value={quantity}
-                  placeholder="write a quantity"
-                  className="form-control"
-                  onChange={(e) => setQuantity(e.target.value)}
                 />
               </div>
 
@@ -246,6 +244,11 @@ const UpdateProducts = () => {
                 <button className="btn btn-danger" onClick={handleDelete}>
                   DELETE PRODUCT
                 </button>
+              </div>
+              <div className="mb-3">
+                <Button variant="success" onClick={() => handleConfirm(id)}>
+                  Create a tending Product
+                </Button>
               </div>
             </div>
           </div>

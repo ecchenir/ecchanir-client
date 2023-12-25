@@ -1,233 +1,229 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import AdminMenu from "../../components/Layout/AdminMenu";
-import { Select } from "antd";
+import Layout from "./../components/Layout/Layout";
+import { useCart } from "../context/cart";
+import { useAuth } from "../context/auth";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import DistrictSelector from "./DistrictSelector";
+
+import Table from "react-bootstrap/Table";
 import axios from "axios";
-import CategoryForm from "../../components/Form/CategoryForm";
-import { Modal } from "antd";
+import CartItem from "./CartItem";
 
-const { Option } = Select;
+const CartPage = () => {
+  const [auth, setAuth] = useAuth();
+  const [cart, setCart] = useCart();
+  const [products, setProducts] = useState([]);
+  const [quantities, setQuantities] = useState({});
+  const [names, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [divisions, setDivisions] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDivision, setSelectedDivision] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
 
-const CreateCategory = () => {
-  const [categories, setCategories] = useState([]);
-  const [name, setName] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState(null);
-  const [updatedName, setUpdatedName] = useState("");
-  const [category, setCategory] = useState("");
-  const [photo, setPhoto] = useState("");
-
-  //handle Form
-  const handleCreate = async (e) => {
-    e.preventDefault();
-    try {
-      const productData = new FormData();
-      productData.append("name", name);
-      productData.append("photo", photo);
-
-      const { data } = axios.post(
-        "https://new-ecchanir-server.vercel.app/api/v1/category/create-category",
-        productData
-      );
-      if (data?.success) {
-        toast.error(data?.message);
-      } else {
-        toast.success(`${name} is created Successfully`);
-        // navigate("/dashboard/admin/banners");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("something went wrong");
-    }
-  };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   try {
-  //     const { data } = await axios.post('https://new-ecchanir-server.vercel.app/api/v1/category/create-category', { name });
-  //     if (data?.success) {
-  //       toast.success(`${name} is created`);
-  //       getAllCategory();
-  //     } else {
-  //       toast.error(data.message);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("something went wrong in input form");
-  //   }
-  // }
-
-  //get all category
-  const getAllCategory = async () => {
-    try {
-      const { data } = await axios.get(
-        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
-      );
-      if (data?.success) {
-        setCategories(data?.category);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong in getting category");
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getAllCategory();
-  }, []);
+    let updatedCart = [];
+    cart.map((item) => {
+      updatedCart = [...updatedCart, { ...item, quantity: 1 }];
+    });
+    setProducts(updatedCart);
+  }, [cart]);
 
-  //update category
-
-  const handleUpdate = async (e) => {
+  //total price
+  const totalPrice = () => {
     try {
-      const { data } = await axios.put(
-        `https://new-ecchanir-server.vercel.app/api/v1/category/update-category/${selected._id}`,
-        { name: updatedName }
-      );
-      if (data?.success) {
-        toast.success(`${updatedName} is updated`);
-        setSelected(null);
-        setUpdatedName("");
-        setVisible(false);
-        getAllCategory();
-      } else {
-        toast.error(data.message);
-      }
+      let total = 0;
+      products?.map((item) => {
+        total = total + item.price * (quantities[item._id] || 1);
+      });
+      return total;
     } catch (error) {
       console.log(error);
-      toast.error("Somtihing went wrong");
     }
   };
 
-  //delete category
-  const handleDelete = async (pId) => {
-    try {
-      const { data } = await axios.delete(
-        `https://new-ecchanir-server.vercel.app/api/v1/category/delete-category/${pId}`
-      );
-      if (data?.success) {
-        toast.success(`category is deleted`);
+  // dalevary charge
+  const deliveryCharge = selectedDistrict.toLowerCase() === "dhaka" ? 60 : 130;
 
-        getAllCategory();
-      } else {
-        toast.error(data.message);
+  // total with dalevary charge
+  const totalWithDelivery = totalPrice() + deliveryCharge;
+
+  // handle create order
+  const handleCreateOrder = async (e) => {
+    e.preventDefault();
+    try {
+      const productData = {
+        names,
+        phone,
+        address,
+        selectedDistrict,
+        selectedDivision,
+        totalWithDelivery,
+        deliveryCharge,
+        products,
+        subTotal,
+      };
+      // console.log(productData);
+      try {
+        const response = await axios.post(
+          "https://new-ecchanir-server.vercel.app/api/v1/order/create-order",
+          productData
+        );
+        toast.success("Thanks For Shopping");
+        navigate("/thanks");
+        localStorage.removeItem("cart");
+        // console.log(response.data);
+      } catch (error) {
+        console.error("Error creating order:", error);
+        toast.error("Something went wrong");
       }
     } catch (error) {
-      toast.error("Sometihing went wrong");
+      console.error("Error preparing order data:", error);
+      toast.error("Something went wrong");
     }
   };
+
+  const subTotal = totalWithDelivery - deliveryCharge;
   return (
-    <Layout title={"Dashboard-Create Category"}>
-      <div className="container-fluid m-3 p-3">
+    <Layout>
+      <div className="container">
         <div className="row">
-          <div className="col-md-3">
-            <AdminMenu />
+          <div className="col-md-12">
+            <h1 className="text-center bg-light p-2 mb-1">
+              {`Hello ${auth?.token && auth?.user?.name}`}
+            </h1>
+            <h4 className="text-center">
+              {products?.length
+                ? `You Have ${products.length} items in your cart ${
+                    auth?.token ? "" : "please login to checkout"
+                  }`
+                : " Your Cart Is Empty"}
+            </h4>
           </div>
-          <div className="col-md-9">
-            <h1>Create Category</h1>
-
-            <div className="p-3  full">
-              <div className="m-1 w-75">
-                <div className="mb-3">
-                  {photo && (
-                    <div className="text-center">
-                      <img
-                        src={URL.createObjectURL(photo)}
-                        alt="product_photo"
-                        height={"200px"}
-                        className="img img-responsive"
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <div className="mb-3 w-full">
-                  <input
-                    type="text"
-                    value={name}
-                    placeholder="Write a Category name"
-                    className="form-control"
-                    onChange={(e) => setName(e.target.value)}
+        </div>
+        {products.length > 0 && (
+          <div>
+            <p className="text-center display-6">Cart Summary</p>
+            <div className="row">
+              <div style={{ wordSpacing: 1, lineHeight: 1 }} className="">
+                {products?.map((product) => (
+                  <CartItem
+                    setProducts={setProducts}
+                    products={products}
+                    product={product}
+                    setQuantities={setQuantities}
                   />
-                </div>
-
-                <div className="mb-3">
-                  <label className="btn btn-outline-success  col-md-12">
-                    {photo ? photo.name : "Upload Category Photo"}
-                    <input
-                      type="file"
-                      name="photo"
-                      accept="image/*"
-                      onChange={(e) => setPhoto(e.target.files[0])}
-                      hidden
-                    />
-                  </label>
-                </div>
-
-                <div className="mb-3 d-flex justify-content-center">
-                  <button className="btn btn-success" onClick={handleCreate}>
-                    Create Category
-                  </button>
-                </div>
+                ))}
               </div>
             </div>
 
-            <div className="w-75">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
+            {/* Cart Summary */}
+
+            <div className="container border">
+              <p className="text-center display-5 pt-3  fw-bold">
+                Order Summary
+              </p>
+
+              <Table responsive="lg">
                 <tbody>
-                  {categories?.map((c) => (
-                    <>
-                      <tr>
-                        <td key={c._id}>{c.name}</td>
-                        <td>
-                          <button
-                            className="btn btn-success ms-2"
-                            onClick={() => {
-                              setVisible(true);
-                              setUpdatedName(c.name);
-                              setSelected(c);
-                            }}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="btn btn-danger ms-2"
-                            onClick={() => {
-                              handleDelete(c._id);
-                            }}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    </>
-                  ))}
+                  <tr></tr>
+                  <tr>
+                    <td className="fw-medium">Sub Total</td>
+                    <td>
+                      <td className="fw-medium">
+                        : {totalWithDelivery - deliveryCharge}
+                      </td>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="fw-medium">Shipping Charge</td>
+                    {/* <td>: {selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130}</td> */}
+                    <td className="fw-medium">: {deliveryCharge}</td>
+                    {/* <td>: {(quantities >= 3) ? 0 : (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
+                  </tr>
+                  <tr>
+                    <td className="fw-medium">Payable Amount</td>
+                    {/* <td>: {(orderData.price * quantities) + (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
+                    {/* <td>: {(orderData.price * quantities) + ((quantities >= 3) ? 0 : (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130))}</td> */}
+                    <td className="fw-medium">: {totalWithDelivery}</td>
+                  </tr>
                 </tbody>
-              </table>
+              </Table>
             </div>
-            <Modal
-              onCancel={() => setVisible(false)}
-              footer={null}
-              visible={visible}
-            >
-              <CategoryForm
-                value={updatedName}
-                setValue={setUpdatedName}
-                handleSubmit={handleUpdate}
-              />
-            </Modal>
+            <div>
+              <div>
+                <h2 className="text-center text-success mt-3">
+                  Delivery Information
+                </h2>
+                <div className="m-2   w-100">
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      value={names}
+                      placeholder="Write a name"
+                      className="form-control border-2 border-black"
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      type="number"
+                      value={phone}
+                      placeholder="Write a phone"
+                      className="form-control border-2 border-black"
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <DistrictSelector
+                      selectedDistrict={selectedDistrict}
+                      setSelectedDistrict={setSelectedDistrict}
+                      selectedDivision={selectedDivision}
+                      districts={districts}
+                      setDistricts={setDistricts}
+                      setSelectedDivision={setSelectedDivision}
+                      divisions={divisions}
+                      setDivisions={setDivisions}
+                    />
+                  </div>
+
+                  <div className="mb-3 mt-2">
+                    <textarea
+                      type="text"
+                      value={address}
+                      placeholder="Write a address"
+                      className="form-control border-2 border-black"
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="d-flex mt-2 justify-content-center mb-3">
+                <button
+                  className="btn btn-success  w-100"
+                  onClick={handleCreateOrder}
+                >
+                  Order Now
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
+        {products.length === 0 && (
+          <div className="text-center mt-3">
+            <p>No items added to the cart.</p>
+            <button className="btn btn-primary" onClick={() => navigate("/")}>
+              Continue Shopping
+            </button>
+          </div>
+        )}
       </div>
     </Layout>
   );
 };
 
-export default CreateCategory;
+export default CartPage;

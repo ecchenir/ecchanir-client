@@ -19,7 +19,7 @@ import Users from "./pages/Admin/Users";
 import Profile from "./pages/user/Profile";
 import Products from "./pages/Admin/Products";
 import Orders from "./pages/Admin/Orders";
-import Banners from "./pages/Admin/Banners";
+import Banners from "./pages/Admin/blogs";
 import UpdateProducts from "./pages/Admin/UpdateProducts";
 import UpdateBanners from "./pages/Admin/UpdateBanners";
 import Search from "./pages/Search";
@@ -41,6 +41,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import SubcategoryShow from "./pages/SubcategoryShow";
 import Thanks from "./pages/user/Thanks";
+import CreateBloogs from "./pages/Admin/CreateBloogs";
 
 function App() {
   useEffect(() => {
@@ -74,7 +75,8 @@ function App() {
         <Route path="/buyNow" element={<BuyNow />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/category/:slug" element={<CategoryProduct />} />
-        <Route path="/subcategory/:id" element={<SubcategoryShow />} />
+        <Route path="/subcategory/:name" element={<SubcategoryShow />} />
+
         <Route path="/search" element={<Search />} />
         <Route path="/dashboard" element={<PrivateRoute />}>
           {/* <Route path="user/orders"  element={<Orders/>}/> */}
@@ -91,6 +93,8 @@ function App() {
             element={<CreateLatestproduct />}
           />
           <Route path="admin/create-banner" element={<CreateBanner />} />
+          <Route path="admin/create-blogs" element={<CreateBloogs />} />
+
           <Route path="admin/product/:slug" element={<UpdateProducts />} />
           <Route
             path="admin/latestproduct/:slug"

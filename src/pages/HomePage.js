@@ -4,7 +4,7 @@ import Layout from "../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import "../styles/Homepage.css"; 
+import "../styles/Homepage.css";
 import LatestProduct from "./LatestProduct";
 import ShowCategories from "./ShowCategories";
 import { useCart } from "../context/cart";
@@ -165,7 +165,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
-  // console.log(products);
+  console.log(products);
   return (
     <Layout>
       <SubcategoryHeader />
@@ -173,12 +173,12 @@ const HomePage = () => {
       {/* show category product */}
       <ShowCategories />
 
-      <h2 className="p-2 text-center lg:mt-5 w-100% mt-3 show">
-        EccheNir Products
-      </h2>
       {/* .........❤️❤️❤️❤️❤️❤️....... */}
       {/* show product */}
       <div className="container">
+        <h2 className="p-2 text-center lg:mt-5 w-100% mt-3 show">
+          EccheNir Products
+        </h2>
         <Row xs={2} sm={3} md={4} lg={4} className="xs:g-2 g-2">
           {products.map((p) => (
             <Col key={p._id}>

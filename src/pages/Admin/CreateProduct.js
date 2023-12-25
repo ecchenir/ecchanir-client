@@ -94,6 +94,7 @@ const CreateProduct = () => {
 
       if (data?.success) {
         toast.success("Product Created Successfully");
+        navigate("/dashboard/admin/products");
         // Clear form fields
         // setName("");
         // setDescription("");
@@ -105,7 +106,6 @@ const CreateProduct = () => {
         // setRating("");
         // setProductNumber("");
         // setSelectedOptions([]);
-        // navigate("/dashboard/admin/products");
       }
     } catch (error) {
       console.log(error);
@@ -162,7 +162,7 @@ const CreateProduct = () => {
                 <textarea
                   type="text"
                   value={description}
-                  placeholder="write a description"
+                  placeholder="Write a description"
                   className="form-control"
                   onChange={(e) => setDescription(e.target.value)}
                   required
@@ -286,7 +286,7 @@ const CreateProduct = () => {
                 )}
               </div>
 
-              <div className="mb-3">
+              <div className="mb-3 d-flex justify-content-end">
                 <button className="btn btn-success" onClick={handleCreate}>
                   CREATE PRODUCT
                 </button>

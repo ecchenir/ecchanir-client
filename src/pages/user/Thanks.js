@@ -6,22 +6,24 @@ export default function Thanks() {
   const navigate = useNavigate();
   return (
     <Layout>
-      <div className="mx-auto pt-3 w-50">
-        <p className="display-5 fw-bold">Thanks For Shopping</p>
+      <div>
+        <div className="d-flex w-100 justify-content-center mb-3">
+          <img
+            style={{ objectFit: "contain", width: "50%" }}
+            src="/ecchenir.jpg"
+            alt=""
+          />
 
-        <button onClick={() => navigate("/")} className="btn btn-primary">
-          {" "}
-          Continue Shopping
-        </button>
-
-        <br />
-        <button
-          onClick={() => navigate("/dashboard/user")}
-          className="btn btn-dark mt-3"
-        >
-          {" "}
-          Go to Dashboard{" "}
-        </button>
+        
+        </div>
+        <div>
+        <p className="display-6">Thanks for Shopping</p>
+        </div>
+        <div className="text-center mb-3">
+          <button onClick={() => navigate("/")} className="btn btn-dark">
+            Continue Shopping
+          </button>
+        </div>
       </div>
     </Layout>
   );
