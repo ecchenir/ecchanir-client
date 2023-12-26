@@ -36,7 +36,7 @@ const LatestProductDetails = () => {
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/v1/latestproduct/get-latestproduct/${id}`
+        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${id}`
         // `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${id}`
       );
       setProduct(data?.product);
