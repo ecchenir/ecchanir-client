@@ -23,7 +23,6 @@ const CartPage = () => {
   const [selectedDivision, setSelectedDivision] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [total, setTotal] = useState(0);
-   
 
   const navigate = useNavigate();
 
@@ -84,9 +83,9 @@ const CartPage = () => {
           productData
         );
         toast.success("Thanks For Shopping");
-        navigate("/thanks");
         localStorage.removeItem("cart");
-        // console.log(response.data);
+        console.log(response.data.orderProduct);
+        navigate(`/thanks/${response.data.orderProduct._id}`);
       } catch (error) {
         console.error("Error creating order:", error);
         toast.error("Something went wrong");

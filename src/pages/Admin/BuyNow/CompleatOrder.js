@@ -3,7 +3,6 @@ import Layout from "../../../components/Layout/Layout";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
 import AdminMenu from "../../../components/Layout/AdminMenu";
@@ -13,6 +12,7 @@ export default function CompleatOrder() {
   const [order, setOrder] = useState({});
   const [Product, setProduct] = useState([]);
   const navigate = useNavigate();
+
   console.log(id);
 
   useEffect(() => {
@@ -79,6 +79,9 @@ export default function CompleatOrder() {
             <p className="text-center fw-bold display-6  mt-5">
               {" "}
               Order Details
+            </p>
+            <p className="text-uppercase text-danger text-center d-flex justify-content-center gap-2">
+              <span> Order Id: </span> <p>EN{id.slice(-6)} </p>
             </p>
 
             <Card className="mx-auto">

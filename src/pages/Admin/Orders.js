@@ -4,7 +4,6 @@ import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
 import Table from "react-bootstrap/Table";
 import { Badge } from "react-bootstrap";
 
@@ -52,6 +51,7 @@ const Orders = () => {
                   <th>Phone</th>
                   <th> Division </th>
                   <th>District</th>
+                  <th>OrderNumber</th>
 
                   <th>Status</th>
                 </tr>
@@ -70,6 +70,9 @@ const Orders = () => {
                     <td>{product.phone}</td>
                     <td>{product.selectedDivision}</td>
                     <td>{product.selectedDistrict}</td>
+                    <td className="text-uppercase text-danger">
+                      EN{product._id.slice(-6)}
+                    </td>
 
                     <td align="center">
                       <Badge

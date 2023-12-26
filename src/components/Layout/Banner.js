@@ -5,6 +5,7 @@ import Carousel from "react-bootstrap/Carousel";
 
 const Banner = () => {
   const [products, setProducts] = useState([]);
+  const [banner, SetBanner] = useState([]);
 
   useEffect(() => {
     axios.defaults.baseURL = "https://new-ecchanir-server.vercel.app";
@@ -16,7 +17,7 @@ const Banner = () => {
         "https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner"
       );
       setProducts(data.products);
-      // console.log(data.products);
+      console.log(data.products.category || "");
     } catch (error) {
       console.error(error);
     }
@@ -25,6 +26,7 @@ const Banner = () => {
   useEffect(() => {
     getAllProducts();
   }, []);
+  console.log(products);
 
   return (
     <Carousel>
@@ -40,7 +42,7 @@ const Banner = () => {
             <p className="text-white">{p.name}</p>
 
             {/* <p>{p.slug}</p> */}
-            <a class="btn  btn-outline" href="/" role="button">
+            <a class="btn  btn-outline" href="/category/Shirt" role="button">
               Shop Now
             </a>
           </Carousel.Caption>

@@ -94,6 +94,7 @@ const CreateLatestproduct = () => {
 
       if (data?.success) {
         toast.success("Product Created Successfully");
+        navigate("/dashboard/admin/latestproducts");
         // Clear form fields
         // setName("");
         // setDescription("");

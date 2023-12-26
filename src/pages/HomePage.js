@@ -198,6 +198,7 @@ const HomePage = () => {
                   // height={"150px"}
                   alt={p.name}
                 />
+                
                 <div className="card-body">
                   <h5 className="cardTitle">
                     {p.name.length <= 20

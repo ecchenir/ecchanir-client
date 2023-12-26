@@ -44,12 +44,12 @@ import Thanks from "./pages/user/Thanks";
 import CreateBloogs from "./pages/Admin/CreateBloogs";
 
 function App() {
-  useEffect(() => {
-    axios.defaults.baseURL = "https://new-ecchanir-server.vercel.app";
-  }, []);
   // useEffect(() => {
-  //   axios.defaults.baseURL = "http://localhost:5000";
+  //   axios.defaults.baseURL = "https://new-ecchanir-server.vercel.app";
   // }, []);
+  useEffect(() => {
+    axios.defaults.baseURL = "http://localhost:5000";
+  }, []);
   // "proxy": "http://localhost:2000"
 
   useEffect(() => {
@@ -111,7 +111,7 @@ function App() {
           <Route path="admin/users" element={<Users />} />
         </Route>
         <Route path="/register" element={<Register />} />
-        <Route path="/thanks" element={<Thanks />} />
+        <Route path="/thanks/:id" element={<Thanks />} />
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/login" element={<Login />} />

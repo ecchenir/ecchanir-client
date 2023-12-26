@@ -30,12 +30,14 @@ const LatestProductDetails = () => {
   }, []);
 
   console.log(id);
+  console.log(product);
 
   //getProduct
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${id}`
+        `http://localhost:5000/api/v1/latestproduct/get-latestproduct/${id}`
+        // `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${id}`
       );
       setProduct(data?.product);
       console.log(data);
