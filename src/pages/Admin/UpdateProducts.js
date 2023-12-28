@@ -27,7 +27,7 @@ const UpdateProducts = () => {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${params.slug}`
       );
-      console.log(data.product);
+      // console.log(data.product);
       setName(data.product.name);
       setId(data.product._id);
       setDescription(data.product.description);

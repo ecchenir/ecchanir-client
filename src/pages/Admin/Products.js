@@ -9,28 +9,72 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { useNavigate } from "react-router-dom";
 
-
 const Products = () => {
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
   //getall products
-  const getAllProducts = async () => {
-    try {
-      const { data } = await axios.get(
-        "https://new-ecchanir-server.vercel.app/api/v1/product/get-product"
-      );
-      setProducts(data.products);
-    } catch (error) {
-      console.log(error);
-      toast.error("Something Went Wrong");
-    }
-  };
+  // const getAllProducts = async () => {
+  //   try {
+  //     const { data } = await axios.get(
+  //       // "https://new-ecchanir-server.vercel.app/api/v1/product/get-product"
+  //       "http://localhost:5000/api/v1/product/get-allProduct"
+  //     );
+  //     setProducts(data);
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Something Went Wrong");
+  //   }
+  // };
 
   //lifecycle method
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  const getAllProducts = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
+      );
+      setLoading(false);
+      setProducts(data.products);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (page === 1) return;
+    loadMore();
+  }, [page]);
+  //load more
+  const loadMore = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
+      );
+      setLoading(false);
+      setProducts([...products, ...data?.products]);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const handleSeeMore = () => {
+    setPage(page + 1);
+  };
+
+  // const reversedProduct = [...products].reverse();
+
+  // console.log(products);
   return (
     <Layout>
       <div className="container-fluid m-3 p-3">
@@ -77,6 +121,12 @@ const Products = () => {
                     </Col>
                   ))}
                 </Row>
+
+                <div className="d-flex justify-content-center mt-3">
+                  <button className="btn btn-primary  " onClick={handleSeeMore}>
+                    See More
+                  </button>
+                </div>
               </div>
 
               {/* {products?.map((p) => (

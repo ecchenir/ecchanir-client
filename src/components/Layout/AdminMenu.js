@@ -1,7 +1,32 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
+import { Badge } from "antd";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 const AdminMenu = () => {
+  const [products, setProducts] = useState([]);
+
+  const trendingProduct = products.filter((item) => item.status === "pending");
+
+  // console.log(trendingProduct);
+
+  const getAllProducts = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://new-ecchanir-server.vercel.app/api/v1/order/get-order"
+      );
+      setProducts(data.product);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      // toast.error("Something Went Wrong");
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
   return (
     <>
       <div className="text-center ">
@@ -11,7 +36,9 @@ const AdminMenu = () => {
             to="/dashboard/admin/orders"
             className="list-group-item list-group-item-action rounded-1 mt-2"
           >
-            Orders List
+            <Badge className="m-2 p-2" count={trendingProduct.length} showZero>
+              Orders List
+            </Badge>
           </NavLink>
           <NavLink
             to="/dashboard/admin/create-product"

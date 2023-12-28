@@ -36,7 +36,10 @@ export default function Thanks() {
     <Layout>
       <div className="container">
         <div>
-          <p className="text-center fw-bold display-6  mt-5"> Order Details</p>
+          <p className="text-center fw-bold display-6  mt-5">
+            EccheNir E-commerce
+          </p>
+          <p className="text-center fw-bold display-6  "> Order Details</p>
           <p className="text-uppercase text-danger text-center d-flex justify-content-center gap-2">
             <span> Order Id: </span> <p>EN{id.slice(-6)} </p>
           </p>
@@ -91,19 +94,18 @@ export default function Thanks() {
                 </tr>
 
                 <tr>
-                  <td> Shaping Charge </td>
-                  <td>: {order?.deliveryCharge}</td>
+                  <td className="fw-bold"> Shaping Charge </td>
+                  <td className="fw-bold">: {order?.deliveryCharge}</td>
                 </tr>
 
                 <tr>
-                  <td>Total Amount </td>
-                  <td>: {order?.subTotal}</td>
+                  <td className="fw-bold">Total Amount </td>
+                  <td className="fw-bold">: {order?.subTotal}</td>
                 </tr>
                 <tr>
-                  <td>Total Payable Amount </td>
-                  <td>: {order?.totalWithDelivery}</td>
+                  <td className="fw-bold">Total Payable Amount </td>
+                  <td className="fw-bold">: {order?.totalWithDelivery}</td>
                 </tr>
-                
               </tbody>
             </table>
 
@@ -114,6 +116,7 @@ export default function Thanks() {
                 <thead>
                   <tr>
                     <th scope="col">SL</th>
+                    <th scope="col">Photo</th>
                     <th scope="col">Product Code</th>
                     <th scope="col">Size</th>
                     <th scope="col">Quantity</th>
@@ -124,10 +127,20 @@ export default function Thanks() {
                   <tbody key={index}>
                     <tr>
                       <th scope="row">{index + 1}</th>
+                      <td>
+                        {" "}
+                        <img
+                          height={100}
+                          className="cart-image"
+                          src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                          alt=""
+                        />{" "}
+                      </td>
                       <td>{p.productNumber}</td>
                       <td>{p.selectedSize}</td>
                       <td>{p.quantity}</td>
                       <td>{p.price}</td>
+                      {/* <td>{p.price}</td> */}
                     </tr>
                   </tbody>
                 ))}

@@ -40,10 +40,10 @@ const CartPage = () => {
     try {
       let Newtotal = 0;
       products?.map((item) => {
-        console.log(item.price, item.quantity);
+        // console.log(item.price, item.quantity);
         Newtotal = Newtotal + item.price * item.quantity;
       });
-      console.log(Newtotal);
+      // console.log(Newtotal);
       setTotal(Newtotal);
     } catch (error) {
       console.log(error);
@@ -79,6 +79,7 @@ const CartPage = () => {
       // console.log(productData);
       try {
         const response = await axios.post(
+          // "http://localhost:5000/api/v1/order/create-order",
           "https://new-ecchanir-server.vercel.app/api/v1/order/create-order",
           productData
         );

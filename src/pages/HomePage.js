@@ -48,18 +48,7 @@ const HomePage = () => {
   }, []);
 
   // //get products
-  // const getAllProducts = async () =>{
-  //   try {
-  //     const {data} = await axios.get("https://new-ecchanir-server.vercel.app/api/v1/product/get-product");
-  //     setProducts(data.products);
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // };
-
-  // useEffect(()=>{
-  //   getAllProducts();
-  // });
+  
 
   // filter by cat
   // const handleFilter = (value, id) => {
@@ -165,7 +154,7 @@ const HomePage = () => {
       console.log(error);
     }
   };
-  console.log(products);
+  // console.log(products);
   return (
     <Layout>
       <SubcategoryHeader />

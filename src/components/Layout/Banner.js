@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Carousel from "react-bootstrap/Carousel";
+import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
   const [products, setProducts] = useState([]);
-  const [banner, SetBanner] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.defaults.baseURL = "https://new-ecchanir-server.vercel.app";
@@ -17,7 +18,7 @@ const Banner = () => {
         "https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner"
       );
       setProducts(data.products);
-      console.log(data.products.category || "");
+      // console.log(data.products);
     } catch (error) {
       console.error(error);
     }
@@ -26,7 +27,6 @@ const Banner = () => {
   useEffect(() => {
     getAllProducts();
   }, []);
-  console.log(products);
 
   return (
     <Carousel>
@@ -40,9 +40,14 @@ const Banner = () => {
           />
           <Carousel.Caption>
             <p className="text-white">{p.name}</p>
+            {/* Access the category property for each product */}
+            {/* {p.category && <p className="text-white">{p.category.name}</p>} */}
 
-            {/* <p>{p.slug}</p> */}
-            <a class="btn  btn-outline" href="/category/Shirt" role="button">
+            <a
+              className="btn text-primary"
+              onClick={() => navigate(`/category/${p.category.slug}`)}
+              role="button"
+            >
               Shop Now
             </a>
           </Carousel.Caption>

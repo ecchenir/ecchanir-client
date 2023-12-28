@@ -137,16 +137,26 @@ export default function CompleatOrder() {
                   <thead>
                     <tr>
                       <th scope="col">SL</th>
+                      <th scope="col">Photo</th>
                       <th scope="col">Product Code</th>
                       <th scope="col">Size</th>
                       <th scope="col">Quantity</th>
                       <th scope="col"> Price</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   {Product.map((p, index) => (
                     <tbody key={index}>
                       <tr>
                         <th scope="row">{index + 1}</th>
+                        <td>
+                          {" "}
+                          <img
+                            height={100}
+                            src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                            alt=""
+                          />{" "}
+                        </td>
                         <td>{p.productNumber}</td>
                         <td>{p.selectedSize}</td>
                         <td>{p.quantity}</td>

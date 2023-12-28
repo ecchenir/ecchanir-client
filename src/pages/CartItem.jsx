@@ -16,7 +16,8 @@ export default function CartItem({
   }, [qty]);
 
   useEffect(() => {
-    // console.log(products, product);
+    // console.log(products);
+    // console.log(product);
 
     if (product?.quantity > 0) setQty(product.quantity);
   }, []);
@@ -29,7 +30,7 @@ export default function CartItem({
 
     setProducts(updatedProducts);
 
-    // console.log(updatedProducts);
+    console.log(updatedProducts);
   };
 
   const handleDec = () => {
@@ -87,7 +88,7 @@ export default function CartItem({
       {/* product image */}
       <div>
         <img
-          src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${product._id}`}
+        src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${product._id}`}
           className="cart-image"
           alt={product.name}
           width="100px"
