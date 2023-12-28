@@ -53,8 +53,6 @@ const CartPage = () => {
   // dalevary charge
   const deliveryCharge = selectedDistrict.toLowerCase() === "dhaka" ? 60 : 130;
 
-  // total with dalevary charge
-
   // handle create order
   const handleCreateOrder = async (e) => {
     e.preventDefault();
@@ -168,7 +166,7 @@ const CartPage = () => {
                 <h2 className="text-center text-success mt-3">
                   Delivery Information
                 </h2>
-                <div className="m-2   w-100">
+                <div className="w-100">
                   <div className="mb-3">
                     <input
                       type="text"

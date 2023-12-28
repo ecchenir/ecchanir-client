@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { useCart } from "../context/cart";
 
 export default function CartItem({
   products,
@@ -8,6 +9,7 @@ export default function CartItem({
   totalPrice,
 }) {
   const [qty, setQty] = useState(1);
+  const [cart, setCart] = useCart();
 
   const { _id } = product;
 
@@ -44,7 +46,7 @@ export default function CartItem({
     setProducts(updatedProducts);
   };
 
-  const removeCartItem = () => {
+  const removeCartItem = (pid) => {
     try {
       // Create a new array excluding the item with the specified _id
       const updatedProducts = products.filter((item) => item._id !== _id);
@@ -53,7 +55,14 @@ export default function CartItem({
       setProducts(updatedProducts);
 
       // Update localStorage with the new array
-      localStorage.setItem("cart", JSON.stringify(updatedProducts));
+      let myCart = [...cart];
+      let index = myCart.findIndex((item) => item._id === pid);
+      myCart.splice(index, 1);
+
+      setCart(myCart);
+
+      // Update localStorage with the modified cart array
+      localStorage.setItem("cart", JSON.stringify(myCart));
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +97,7 @@ export default function CartItem({
       {/* product image */}
       <div>
         <img
-        src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${product._id}`}
+          src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${product._id}`}
           className="cart-image"
           alt={product.name}
           width="100px"

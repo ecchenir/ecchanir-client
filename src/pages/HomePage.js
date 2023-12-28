@@ -45,28 +45,7 @@ const HomePage = () => {
   useEffect(() => {
     getAllCategory();
     getTotal();
-  }, []);
-
-  // //get products
-  
-
-  // filter by cat
-  // const handleFilter = (value, id) => {
-  //   let all = [...checked];
-  //   if (value) {
-  //     all.push(id);
-  //   } else {
-  //     all = all.filter((c) => c !== id);
-  //   }
-  //   setChecked(all);
-  // };
-  // useEffect(() => {
-  //   if (!checked.length || !radio.length) getAllProducts();
-  // }, [checked.length, radio.length]);
-
-  // useEffect(() => {
-  //   if (checked.length || radio.length) filterProduct();
-  // }, [checked, radio]);
+  }, []); 
 
   //get products
   const getAllProducts = async () => {

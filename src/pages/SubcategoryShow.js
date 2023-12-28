@@ -11,6 +11,8 @@ export default function SubcategoryShow() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const params = useParams();
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   // console.log(params.name);
 
@@ -20,13 +22,15 @@ export default function SubcategoryShow() {
 
   const getAllProducts = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/product/get-product`
+        `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
       );
-      // setLoading(false);
+      setLoading(false);
       setProducts(data.products);
-      // console.log(data.products);
+      console.log(data.products);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -34,6 +38,10 @@ export default function SubcategoryShow() {
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  const handleSeeMore = () => {
+    setPage(page + 1);
+  };
 
   const fetchProduct = products.filter(
     (item) => item.selectedSubcategory === `${params?.name}`
@@ -76,14 +84,7 @@ export default function SubcategoryShow() {
 
                     <p className="discountPrice">৳ {p.price}</p>
                     <p className="price">৳ {p.discount}</p>
-                    {/* <Rating
-                    className="ml-3"
-                    placeholderRating={p.rating}
-                    readonly
-                    emptySymbol={<FaRegStar></FaRegStar>}
-                    placeholderSymbol={<FaStar className='text-warning'></FaStar>}
-                    fullSymbol={<FaStar></FaStar>}
-                  /> */}
+                  
                   </div>
                 </Card>
               </Col>
