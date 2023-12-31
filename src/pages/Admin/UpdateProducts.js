@@ -108,7 +108,7 @@ const UpdateProducts = () => {
       photo && productData.append("photo", imageUploadResult.secure_url);
 
       const { data } = axios.put(
-        `http://localhost:5000/api/v1/product/update-product/${id}`,
+        `https://new-ecchanir-server.vercel.app/api/v1/product/update-product/${id}`,
         productData
       );
       if (data?.success) {

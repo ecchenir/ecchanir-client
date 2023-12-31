@@ -48,7 +48,7 @@ const CreateBloogs = () => {
       productData.append("title", title);
       productData.append("photo", result.secure_url);
       const { data } = axios.post(
-        "http://localhost:5000/api/v1/blogs/create-blogs",
+        "https://new-ecchanir-server.vercel.app/api/v1/blogs/create-blogs",
         productData
       );
       if (data?.success) {
@@ -68,7 +68,7 @@ const CreateBloogs = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:5000/api/v1/blogs/get-blogs"
+        "https://new-ecchanir-server.vercel.app/api/v1/blogs/get-blogs"
       );
       if (data?.success) {
         setBlogs(data?.blogs);
