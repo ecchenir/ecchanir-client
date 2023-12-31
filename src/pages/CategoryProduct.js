@@ -33,7 +33,7 @@ const CategoryProduct = () => {
   const getPrductsByCat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/v1/product/get-allProduct`
+        `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
       );
       console.log(data);
       setProducts(data);
