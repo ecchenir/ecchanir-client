@@ -71,7 +71,7 @@ const CreateBanner = () => {
       productData.append("photo", result.secure_url);
       productData.append("category", category);
       const { data } = axios.post(
-        "http://localhost:5000/api/v1/banner/create-banner",
+        "https://new-ecchanir-server.vercel.app/api/v1/banner/create-banner",
         productData
       );
       if (data?.success) {
