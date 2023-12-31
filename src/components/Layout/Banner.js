@@ -56,13 +56,13 @@ const Banner = () => {
             alt={`Banner ${index + 1}`}
           />
           <Carousel.Caption>
-            <p className="text-white">{p.name}</p>
-            <p className="text-white">{p.category}</p>
+            <p className="text-white mt-2">{p.name}</p>
+
             {/* Access the category property for each product */}
             {/* {setId(p.category)} */}
 
             <a
-              className="btn text-primary text-black"
+              className="btn text-black"
               onClick={() => navigate(`/category/${p.category}`)}
               role="button"
             >

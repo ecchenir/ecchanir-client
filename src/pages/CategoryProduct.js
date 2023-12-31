@@ -93,9 +93,13 @@ const CategoryProduct = () => {
                       className="productCard"
                     >
                       <img
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                          minHeight: "168px",
+                        }}
                         src={tp.photo}
                         className="card-img-top"
-                        height={"150px"}
                         alt={tp.name}
                         onClick={() => navigate(`/product/${tp._id}`)}
                       />
@@ -128,9 +132,13 @@ const CategoryProduct = () => {
                   className="productCard"
                 >
                   <img
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      minHeight: "168px",
+                    }}
                     src={p.photo}
-                    className="card-img-top"
-                    height={"150px"}
+                    className="card-img-top"                  
                     alt={p.name}
                     onClick={() => navigate(`/product/${p._id}`)}
                   />
