@@ -132,7 +132,7 @@ export default function Thanks() {
                         <img
                           height={100}
                           className="cart-image"
-                          src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                          src={p.photo}
                           alt=""
                         />{" "}
                       </td>

@@ -79,7 +79,6 @@ const ProductDetails = () => {
     setSelectedSize(size);
   };
 
-  
   // console.log(selectedSize);
   return (
     <Layout>
@@ -89,7 +88,7 @@ const ProductDetails = () => {
           style={{ position: "relative", maxHeight: "380px" }}
         >
           <img
-            src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${product._id}`}
+            src={product.photo}
             className="card-img-top"
             alt={product.name}
             style={{ objectFit: "contain", width: "100%" }}
@@ -172,7 +171,7 @@ const ProductDetails = () => {
                   className="productCard"
                 >
                   <img
-                    src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                    src={p.photo}
                     className="card-img-top"
                     height={"150px"}
                     alt={p.name}

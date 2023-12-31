@@ -15,9 +15,9 @@ export default function SubcategoryHeader() {
   const getCategories = async () => {
     try {
       const { data } = await axios.get(
-        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-allcategory"
       );
-      setCategories(data?.category);
+      setCategories(data);
     } catch (error) {
       console.log(error);
     }

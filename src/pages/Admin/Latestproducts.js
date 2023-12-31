@@ -56,7 +56,7 @@ const Latestproducts = () => {
                           width: "100%",
                           minHeight: "168px",
                         }}
-                        src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${p._id}`}
+                        src={p.photo}
                         className="card-img-top"
                         // height={"150px"}
                         alt={p.name}
@@ -76,7 +76,6 @@ const Latestproducts = () => {
                 ))}
               </Row>
             </div>
-            
           </div>
         </div>
       </div>

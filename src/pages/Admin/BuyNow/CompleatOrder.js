@@ -151,11 +151,7 @@ export default function CompleatOrder() {
                         <th scope="row">{index + 1}</th>
                         <td>
                           {" "}
-                          <img
-                            height={100}
-                            src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
-                            alt=""
-                          />{" "}
+                          <img height={100} src={p.photo} alt="" />{" "}
                         </td>
                         <td>{p.productNumber}</td>
                         <td>{p.selectedSize}</td>

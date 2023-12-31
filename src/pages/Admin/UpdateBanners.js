@@ -12,17 +12,18 @@ const UpdateBanners = () => {
   const params = useParams();
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
-
   const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
 
+  console.log(params);
   //get single product
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner/${params.slug}`
       );
+      console.log(data);
       setName(data.product.name);
       setId(data.product._id);
 
@@ -39,7 +40,7 @@ const UpdateBanners = () => {
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-allcategory"
       );
       if (data?.success) {
         setCategories(data?.category);

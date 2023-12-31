@@ -45,7 +45,7 @@ const HomePage = () => {
   useEffect(() => {
     getAllCategory();
     getTotal();
-  }, []); 
+  }, []);
 
   //get products
   const getAllProducts = async () => {
@@ -161,12 +161,12 @@ const HomePage = () => {
                     width: "100%",
                     minHeight: "168px",
                   }}
-                  src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                  src={p.photo}
                   className="card-img-top"
                   // height={"150px"}
                   alt={p.name}
                 />
-                
+
                 <div className="card-body">
                   <h5 className="cardTitle">
                     {p.name.length <= 20

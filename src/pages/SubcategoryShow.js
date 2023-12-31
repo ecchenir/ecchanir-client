@@ -27,6 +27,7 @@ export default function SubcategoryShow() {
         `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
       );
       setLoading(false);
+      console.log(data);
       setProducts(data.products);
       console.log(data.products);
     } catch (error) {
@@ -45,10 +46,11 @@ export default function SubcategoryShow() {
 
   const fetchProduct = products.filter(
     (item) => item.selectedSubcategory === `${params?.name}`
+
     // (item) => item.selectedSubcategory === " Denaim shart"
   );
-
-  // console.log(products);
+  console.log(fetchProduct);
+  console.log(products);
   // console.log(fetchProduct);
 
   return (
@@ -70,7 +72,7 @@ export default function SubcategoryShow() {
                       width: "100%",
                       minHeight: "168px",
                     }}
-                    src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                    src={p.photo}
                     className="card-img-top"
                     // height={"150px"}
                     alt={p.name}
@@ -84,7 +86,6 @@ export default function SubcategoryShow() {
 
                     <p className="discountPrice">৳ {p.price}</p>
                     <p className="price">৳ {p.discount}</p>
-                  
                   </div>
                 </Card>
               </Col>

@@ -3,11 +3,9 @@ import Layout from "../components/Layout/Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/CategoryProductStyles.css";
 import axios from "axios";
-import { FaRegStar, FaStar } from "react-icons/fa";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Rating from "react-rating";
 
 const CategoryProduct = () => {
   const params = useParams();
@@ -34,6 +32,7 @@ const CategoryProduct = () => {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/product/product-category/${params.slug}`
       );
+      console.log(data);
       setProducts(data?.products);
       setFilteredProducts(data?.products);
       setCategory(data?.category);

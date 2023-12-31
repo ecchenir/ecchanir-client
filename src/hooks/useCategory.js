@@ -8,10 +8,10 @@ export default function useCategory() {
   const getCategories = async () => {
     try {
       const { data } = await axios.get(
-        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-allcategory"
       );
-      // console.log(data?.category);
-      setCategories(data?.category);
+      // console.log(data);
+      setCategories(data);
     } catch (error) {
       console.log(error);
     }

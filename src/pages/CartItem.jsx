@@ -47,20 +47,14 @@ export default function CartItem({
   };
 
   const removeCartItem = (pid) => {
-    try {
-      // Create a new array excluding the item with the specified _id
-      const updatedProducts = products.filter((item) => item._id !== _id);
-
-      // Update state with the new array
-      setProducts(updatedProducts);
-
-      // Update localStorage with the new array
+    try {       
+      const updatedProducts = products.filter((item) => item._id !== _id);     
+      setProducts(updatedProducts);       
       let myCart = [...cart];
       let index = myCart.findIndex((item) => item._id === pid);
       myCart.splice(index, 1);
 
       setCart(myCart);
-
       // Update localStorage with the modified cart array
       localStorage.setItem("cart", JSON.stringify(myCart));
     } catch (error) {
@@ -97,7 +91,7 @@ export default function CartItem({
       {/* product image */}
       <div>
         <img
-          src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${product._id}`}
+          src={product.photo}
           className="cart-image"
           alt={product.name}
           width="100px"

@@ -85,7 +85,7 @@ const LatestProductDetails = () => {
       <div className="row container  product-details">
         <div className="col-md-6">
           <img
-            src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${product._id}`}
+            src={product.photo}
             className="card-img-top"
             alt={product.name}
             style={{ objectFit: "contain", width: "100%" }}

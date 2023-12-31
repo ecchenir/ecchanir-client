@@ -42,6 +42,7 @@ const Products = () => {
         `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
       );
       setLoading(false);
+      console.log(data.products);
       setProducts(data.products);
     } catch (error) {
       setLoading(false);
@@ -102,7 +103,7 @@ const Products = () => {
                             width: "100%",
                             minHeight: "168px",
                           }}
-                          src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                          src={p.photo}
                           className="card-img-top"
                           // height={"150px"}
                           alt={p.name}

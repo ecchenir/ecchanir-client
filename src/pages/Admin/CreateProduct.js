@@ -29,7 +29,6 @@ const CreateProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-  const [photo, setPhoto] = useState("");
   const [discount, setDiscount] = useState("");
   const [productNumber, setProductNumber] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -37,16 +36,17 @@ const CreateProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [file, setFile] = useState();
+  const [imageUrl, setImageURL] = useState(null);
 
   //get all category
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get(
-        "https://new-ecchanir-server.vercel.app/api/v1/category/get-category"
+        "https://new-ecchanir-server.vercel.app/api/v1/category/get-allcategory"
       );
-      if (data?.success) {
-        setCategories(data?.category);
-      }
+      setCategories(data);
+      console.log(data);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong in getting category");
@@ -57,8 +57,34 @@ const CreateProduct = () => {
     getAllCategory();
   }, []);
 
+  function handleImage(event) {
+    setFile(event.target.files[0]);
+    setImageURL(URL.createObjectURL(event.target.files[0]));
+  }
+
   //create product function
   const handleCreate = async (e) => {
+    if (!file) {
+      console.error("Please select an image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ddlqhzgu"); // Replace with your upload preset
+    formData.append("api_key", "938218558923326"); // Replace with your API key
+
+    const response = await fetch(
+      "https://api.cloudinary.com/v1_1/duqer4nsr/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const result = await response.json();
+    console.log("Image uploaded:", result.secure_url);
+
     e.preventDefault();
     // Validate required fields
     if (
@@ -80,13 +106,13 @@ const CreateProduct = () => {
       productData.append("name", name);
       productData.append("description", description);
       productData.append("price", price);
-      productData.append("photo", photo);
+      productData.append("photo", result.secure_url);
       productData.append("category", category);
       productData.append("selectedSubcategory", selectedSubcategory);
       productData.append("discount", discount);
       productData.append("selectedOptions", JSON.stringify(selectedOptions));
       productData.append("productNumber", productNumber);
-
+      console.log(productData);
       const { data } = await axios.post(
         "https://new-ecchanir-server.vercel.app/api/v1/product/create-product",
         productData
@@ -259,31 +285,26 @@ const CreateProduct = () => {
                 ))}
               </Select>
 
-              {/* image section */}
-              <div className="mb-3">
-                <label className="btn btn-outline-success  col-md-12">
-                  {photo ? photo.name : "Upload Photo"}
-                  <input
-                    type="file"
-                    name="photo"
-                    accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                    hidden
+              {imageUrl && ( // Display the image only when imageURL is not empty
+                <div item xs={12}>
+                  <img
+                    src={imageUrl}
+                    alt="Uploaded"
+                    placeholder="photo"
+                    height={"200px"}
+                    className="h-40 w-40 border-2"
+                    style={{ maxWidth: "100%" }}
                   />
-                </label>
-              </div>
-              {/* show image */}
-              <div className="mb-3">
-                {photo && (
-                  <div className="text-center">
-                    <img
-                      src={URL.createObjectURL(photo)}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                )}
+                </div>
+              )}
+              <div item xs={6}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  id=""
+                  onChange={handleImage}
+                />
               </div>
 
               <div className="mb-3 d-flex justify-content-end">

@@ -15,7 +15,6 @@ const UpdateLatestproducts = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [discount, setDiscount] = useState("");
-
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
   const [shipping, setShipping] = useState("");
@@ -32,6 +31,7 @@ const UpdateLatestproducts = () => {
       console.log(data);
       setName(data.product.name);
       setId(data.product._id);
+      setPhoto(data.product.photo)
       setDescription(data.product.description);
       setPrice(data.product.price);
       setPrice(data.product.price);
@@ -135,38 +135,19 @@ const UpdateLatestproducts = () => {
                   </Option>
                 ))}
               </Select>
-              <div className="mb-3">
-                <label className="btn btn-outline-secondary col-md-12">
-                  {photo ? photo.name : "Upload Photo"}
-                  <input
-                    type="file"
-                    name="photo"
-                    accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                    hidden
-                  />
-                </label>
-              </div>
-              <div className="mb-3">
-                {photo ? (
-                  <div className="text-center">
-                    <img
-                      src={URL.createObjectURL(photo)}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <img
-                      src={`https://new-ecchanir-server.vercel.app/api/v1/latestproduct/latestproduct-photo/${id}`}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                )}
+            
+              <div>
+                <img
+                  style={{
+                    objectFit: "cover",
+                    width: "100%",
+                    minHeight: "168px",
+                  }}
+                  src={photo}
+                  className="card-img-top"
+                  // height={"150px"}
+                  alt={name}
+                />
               </div>
               <div className="mb-3">
                 <input
