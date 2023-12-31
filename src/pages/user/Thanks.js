@@ -116,8 +116,7 @@ export default function Thanks() {
                 <thead>
                   <tr>
                     <th scope="col">SL</th>
-                    <th scope="col">Photo</th>
-                    <th scope="col">Product Code</th>
+                    <th scope="col">Photo</th>               
                     <th scope="col">Size</th>
                     <th scope="col">Quantity</th>
                     <th scope="col"> Price</th>
@@ -130,13 +129,13 @@ export default function Thanks() {
                       <td>
                         {" "}
                         <img
-                          height={100}
+                          height={50}
                           className="cart-image"
                           src={p.photo}
                           alt=""
                         />{" "}
                       </td>
-                      <td>{p.productNumber}</td>
+                 
                       <td>{p.selectedSize}</td>
                       <td>{p.quantity}</td>
                       <td>{p.price}</td>

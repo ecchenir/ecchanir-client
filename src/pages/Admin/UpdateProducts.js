@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const { Option } = Select;
 
 const UpdateProducts = () => {
+  const [file, setFile] = useState();
   const navigate = useNavigate();
   const params = useParams();
   const [categories, setCategories] = useState([]);
@@ -20,6 +21,12 @@ const UpdateProducts = () => {
   const [id, setId] = useState("");
   const [discount, setDiscount] = useState("");
   const [productNumber, setProductNumber] = useState("");
+  const [imageURL, setImageURL] = useState("");
+
+  function handleImage(event) {
+    setFile(event.target.files[0]);
+    setImageURL(URL.createObjectURL(event.target.files[0]));
+  }
 
   //get single product
   const getSingleProduct = async () => {
@@ -32,6 +39,7 @@ const UpdateProducts = () => {
       setId(data.product._id);
       setDescription(data.product.description);
       setPrice(data.product.price);
+      setPhoto(data.product.photo);
       setDiscount(data.product.discount);
       setProductNumber(data?.product?.productNumber);
       setCategory(data.product.category._id);
@@ -68,6 +76,27 @@ const UpdateProducts = () => {
 
   //create product function
   const handleUpdate = async (e) => {
+    if (!file) {
+      console.error("Please select an image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ddlqhzgu"); // Replace with your upload preset
+    formData.append("api_key", "938218558923326"); // Replace with your API key
+
+    const response = await fetch(
+      "https://api.cloudinary.com/v1_1/duqer4nsr/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const imageUploadResult = await response.json();
+    console.log("Image uploaded:", imageUploadResult.secure_url);
+
     e.preventDefault();
     try {
       const productData = new FormData();
@@ -76,10 +105,10 @@ const UpdateProducts = () => {
       productData.append("price", price);
       productData.append("productNumber", productNumber);
       productData.append("discount", discount);
-      photo && productData.append("photo", photo);
-      productData.append("category", category);
+      photo && productData.append("photo", imageUploadResult.secure_url);
+
       const { data } = axios.put(
-        `https://new-ecchanir-server.vercel.app/api/v1/product/update-product/${id}`,
+        `http://localhost:5000/api/v1/product/update-product/${id}`,
         productData
       );
       if (data?.success) {
@@ -137,24 +166,8 @@ const UpdateProducts = () => {
           <div className="col-md-9">
             <h1>Update Product</h1>
             <div className="m-1 w-75">
-              <Select
-                bordered={false}
-                placeholder="Select a category"
-                size="large"
-                showSearch
-                className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
-                value={category}
-              >
-                {categories?.map((c) => (
-                  <Option key={c._id} value={c._id}>
-                    {c.name}
-                  </Option>
-                ))}
-              </Select>
-              <div className="mb-3">
+              <div>
+                {/* <div className="mb-3">
                 <label className="btn btn-outline-secondary col-md-12">
                   {photo ? photo.name : "Upload Photo"}
                   <input
@@ -164,9 +177,9 @@ const UpdateProducts = () => {
                     onChange={(e) => setPhoto(e.target.files[0])}
                     hidden
                   />
-                </label>
+                </label> */}
               </div>
-              <div className="mb-3">
+              {/* <div className="mb-3">
                 {photo ? (
                   <div className="text-center">
                     <img
@@ -186,6 +199,34 @@ const UpdateProducts = () => {
                     />
                   </div>
                 )}
+              </div> */}
+
+              {imageURL && ( // Display the image only when imageURL is not empty
+                <div className="mb-3">
+                  <p className="text-xl"> New Photo</p>
+                  <img
+                    src={imageURL}
+                    alt="Uploaded"
+                    placeholder="photo"
+                    height={200}
+                    className="h-40 w-40 border-2"
+                    style={{ maxWidth: "100%" }}
+                  />
+                </div>
+              )}
+
+              <div className="mb-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  id=""
+                  onChange={handleImage}
+                />
+              </div>
+
+              <div className="mb-3">
+                <img height={200} src={photo} alt="" />
               </div>
               <div className="mb-3">
                 <input

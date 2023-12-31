@@ -62,7 +62,7 @@ const Banner = () => {
             {/* {setId(p.category)} */}
 
             <a
-              className="btn text-primary"
+              className="btn text-primary text-black"
               onClick={() => navigate(`/category/${p.category}`)}
               role="button"
             >
