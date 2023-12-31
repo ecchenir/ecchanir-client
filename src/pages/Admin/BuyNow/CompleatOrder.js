@@ -77,6 +77,9 @@ export default function CompleatOrder() {
           </div>
           <div className="col-md-9">
             <p className="text-center fw-bold display-6  mt-5">
+              EccheNir E-commerce
+            </p>
+            <p className="text-center fw-bold display-6 ">
               {" "}
               Order Details
             </p>

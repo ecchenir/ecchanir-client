@@ -57,7 +57,7 @@ const Banner = () => {
           />
           <Carousel.Caption>
             <p className="text-white">{p.name}</p>
-            <p className="text-white"> setId{p.category}</p>
+            <p className="text-white">{p.category}</p>
             {/* Access the category property for each product */}
             {/* {setId(p.category)} */}
 

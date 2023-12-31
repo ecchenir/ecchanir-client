@@ -7,7 +7,7 @@ import useCategory from "../hooks/useCategory";
 
 const CategoryCard = React.memo(({ category, navigate }) => (
   <Col key={category._id}>
-    <Card onClick={() => navigate(`/category/${category.name}`)}>
+    <Card onClick={() => navigate(`/category/${category._id}`)}>
       <div>
         <Card.Img variant="top" height={120} src={category.photo} />
         <p style={{ textAlign: "center", marginBottom: "0" }}>

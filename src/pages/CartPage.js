@@ -69,10 +69,10 @@ const CartPage = () => {
         address: address,
         selectedDistrict: selectedDistrict,
         selectedDivision: selectedDivision,
-        totalWithDelivery: total - deliveryCharge,
+        totalWithDelivery: total + deliveryCharge,
         deliveryCharge: deliveryCharge,
         products: updateProducts,
-        subTotal: subTotal,
+        subTotal: total,
       };
       // console.log(productData);
       try {
@@ -95,7 +95,7 @@ const CartPage = () => {
     }
   };
 
-  const subTotal = total - deliveryCharge;
+  // const subTotal = total + deliveryCharge;
   return (
     <Layout>
       <div className="container">

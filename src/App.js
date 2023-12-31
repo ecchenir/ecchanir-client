@@ -75,7 +75,7 @@ function App() {
         <Route path="/CreateOrder" element={<CreateOrder />} />
         <Route path="/buyNow" element={<BuyNow />} />
         <Route path="/categories" element={<Categories />} />
-        <Route path="/category/:slug" element={<CategoryProduct />} />
+        <Route path="/category/:id" element={<CategoryProduct />} />
         <Route path="/subcategory/:name" element={<SubcategoryShow />} />
 
         <Route path="/search" element={<Search />} />

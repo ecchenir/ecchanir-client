@@ -145,15 +145,11 @@ const CreateBloogs = () => {
               Create Blogs
             </button>
 
-            <div className="col-md-9 ">
+            <div className="col-md-6">
               <h1 className="text-center">All Blogs List</h1>
               <div className="d-flex flex-wrap">
                 {blogs?.map((p) => (
-                  <Link
-                    key={p._id}
-                    // to={`/dashboard/admin/banner/${p.slug}`}
-                    className="product-link"
-                  >
+                  <Link key={p._id} className="product-link">
                     <div className="card m-2" style={{ width: "18rem" }}>
                       <img
                         src={p.photo}

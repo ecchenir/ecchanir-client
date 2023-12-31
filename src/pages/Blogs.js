@@ -30,16 +30,18 @@ export default function Blogs() {
   console.log(blogs);
   return (
     <Layout>
-      <div className="row container ">
-        <p className="text-center display-6 "> Recent Blogs</p>
+      <div className="container">
+        <p className="text-center display-6">Recent Blogs</p>
         {reversedProduct.map((b, index) => (
-          <div key={index} className="row ">
-            <div className="col-md-6 mt-3">
-              <img src="blog1.jpg" alt="" />
+          <div key={index} className="row">
+            <div className="col-md-6 mt-3 d-flex align-items-center justify-content-center">
+              <img src={b.photo} alt="" className="img-fluid" />
             </div>
-            <div className="col-md-6">
-              <h1> {b.title}</h1>
+            <div className="col-md-6 mt-3">
+              <h1>{b.title}</h1>
               <p>{b.name}</p>
+              <p><span>Meting date :  </span>{new Date(b?.createdAt).toLocaleDateString()}</p>
+
             </div>
           </div>
         ))}

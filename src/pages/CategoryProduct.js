@@ -3,12 +3,14 @@ import Layout from "../components/Layout/Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/CategoryProductStyles.css";
 import axios from "axios";
+import { FaRegStar, FaStar } from "react-icons/fa";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import Rating from "react-rating";
 
 const CategoryProduct = () => {
-  const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -17,8 +19,8 @@ const CategoryProduct = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (params?.slug) getPrductsByCat();
-  }, [params?.slug]);
+    if (id) getPrductsByCat();
+  }, [id]);
 
   useEffect(() => {
     window.scrollTo({
@@ -27,21 +29,26 @@ const CategoryProduct = () => {
     });
   }, []);
 
+  console.log(id);
   const getPrductsByCat = async () => {
     try {
       const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/product/product-category/${params.slug}`
+        `http://localhost:5000/api/v1/product/get-allProduct`
       );
       console.log(data);
-      setProducts(data?.products);
-      setFilteredProducts(data?.products);
-      setCategory(data?.category);
+      setProducts(data);
+      setFilteredProducts(data);
+      // setCategory(data?.category);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const trendingProduct = products.filter(
+  const cateGoryProduct = products.filter((item) => item.category === `${id}`);
+
+  console.log(cateGoryProduct);
+
+  const trendingProduct = cateGoryProduct.filter(
     (item) => item.productType === "trending"
   );
 
@@ -49,16 +56,16 @@ const CategoryProduct = () => {
   // search input
 
   const handleSearch = () => {
-    const filteredProducts = products.filter((product) =>
+    const filtered = cateGoryProduct.filter((product) =>
       product.name.toLowerCase().includes(search.toLowerCase())
     );
-    setFilteredProducts(filteredProducts);
+    setFilteredProducts(filtered);
   };
 
   return (
     <Layout>
       <div className="container mt-3 ">
-        <h4 className="text-center">{category?.name}</h4>
+        {/* <h4 className="text-center">{category?.name}</h4> */}
 
         {/* search input  */}
         <input
@@ -86,7 +93,7 @@ const CategoryProduct = () => {
                       className="productCard"
                     >
                       <img
-                        src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${tp._id}`}
+                        src={tp.photo}
                         className="card-img-top"
                         height={"150px"}
                         alt={tp.name}
@@ -112,16 +119,16 @@ const CategoryProduct = () => {
         )}
 
         <div className="container">
-          <h6 className="text-center display-6"> Category Product</h6>
+          <h6 className="text-center display-6"> Category Products</h6>
           <Row xs={2} sm={3} md={4} lg={5} className="g-2">
-            {filteredProducts.map((p) => (
+            {cateGoryProduct.map((p) => (
               <Col key={p._id}>
                 <Card
                   onClick={() => navigate(`/product/${p._id}`)}
                   className="productCard"
                 >
                   <img
-                    src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${p._id}`}
+                    src={p.photo}
                     className="card-img-top"
                     height={"150px"}
                     alt={p.name}
