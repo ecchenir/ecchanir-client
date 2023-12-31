@@ -21,6 +21,13 @@ const UpdateLatestproducts = () => {
   const [productNumber, setProductNumber] = useState("");
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
+  const [imageURL, setImageURL] = useState("");
+  const [file, setFile] = useState();
+
+  function handleImage(event) {
+    setFile(event.target.files[0]);
+    setImageURL(URL.createObjectURL(event.target.files[0]));
+  }
 
   //get single product
   const getSingleProduct = async () => {
@@ -28,15 +35,13 @@ const UpdateLatestproducts = () => {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/get-latestproduct/${params.slug}`
       );
-      console.log(data);
       setName(data.product.name);
       setId(data.product._id);
-      setPhoto(data.product.photo)
       setDescription(data.product.description);
       setPrice(data.product.price);
-      setPrice(data.product.price);
+      setPhoto(data.product.photo);
       setDiscount(data.product.discount);
-      setProductNumber(data.product.productNumber);
+      setProductNumber(data?.product?.productNumber);
       setCategory(data.product.category._id);
     } catch (error) {
       console.log(error);
@@ -67,6 +72,27 @@ const UpdateLatestproducts = () => {
 
   //create product function
   const handleUpdate = async (e) => {
+    if (!file) {
+      console.error("Please select an image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ddlqhzgu"); // Replace with your upload preset
+    formData.append("api_key", "938218558923326"); // Replace with your API key
+
+    const response = await fetch(
+      "https://api.cloudinary.com/v1_1/duqer4nsr/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const imageUploadResult = await response.json();
+    console.log("Image uploaded:", imageUploadResult.secure_url);
+
     e.preventDefault();
     try {
       const productData = new FormData();
@@ -75,8 +101,8 @@ const UpdateLatestproducts = () => {
       productData.append("price", price);
       productData.append("discount", discount);
       productData.append("productNumber", productNumber);
-      photo && productData.append("photo", photo);
-      productData.append("category", category);
+      photo && productData.append("photo", imageUploadResult.secure_url);
+
       const { data } = axios.put(
         `https://new-ecchanir-server.vercel.app/api/v1/latestproduct/update-latestproduct/${id}`,
         productData
@@ -118,37 +144,34 @@ const UpdateLatestproducts = () => {
           <div className="col-md-9">
             <h1>Update Product</h1>
             <div className="m-1 w-75">
-              <Select
-                bordered={false}
-                placeholder="Select a category"
-                size="large"
-                showSearch
-                className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
-                value={category}
-              >
-                {categories?.map((c) => (
-                  <Option key={c._id} value={c._id}>
-                    {c.name}
-                  </Option>
-                ))}
-              </Select>
-            
-              <div>
-                <img
-                  style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    minHeight: "168px",
-                  }}
-                  src={photo}
-                  className="card-img-top"
-                  // height={"150px"}
-                  alt={name}
+              {imageURL && ( // Display the image only when imageURL is not empty
+                <div className="mb-3">
+                  <p className="text-xl"> New Photo</p>
+                  <img
+                    src={imageURL}
+                    alt="Uploaded"
+                    placeholder="photo"
+                    height={200}
+                    className="h-40 w-40 border-2"
+                    style={{ maxWidth: "100%" }}
+                  />
+                </div>
+              )}
+
+              <div className="mb-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  id=""
+                  onChange={handleImage}
                 />
               </div>
+
+              <div className="mb-3">
+                <img height={200} src={photo} alt="" />
+              </div>
+
               <div className="mb-3">
                 <input
                   type="text"

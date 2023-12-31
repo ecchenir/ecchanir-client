@@ -93,7 +93,6 @@ const UpdateProducts = () => {
         body: formData,
       }
     );
-
     const imageUploadResult = await response.json();
     console.log("Image uploaded:", imageUploadResult.secure_url);
 
@@ -115,7 +114,7 @@ const UpdateProducts = () => {
         toast.error(data?.message);
       } else {
         toast.success("Product Updated Successfully");
-        // navigate("/dashboard/admin/products");
+        navigate("/dashboard/admin/products");
       }
     } catch (error) {
       console.log(error);
