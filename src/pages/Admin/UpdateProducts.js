@@ -138,6 +138,7 @@ const UpdateProducts = () => {
     }
   };
 
+  // trendind product
   const handleConfirm = async (id) => {
     console.log(id);
     try {

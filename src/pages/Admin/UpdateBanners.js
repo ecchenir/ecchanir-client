@@ -3,31 +3,28 @@ import Layout from "./../../components/Layout/Layout";
 import AdminMenu from "./../../components/Layout/AdminMenu";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { Select } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-const { Option } = Select;
 
 const UpdateBanners = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
   const [photo, setPhoto] = useState("");
   const [id, setId] = useState("");
+  const [imageURL, setImageURL] = useState("");
+  const [file, setFile] = useState();
 
-  console.log(params);
+  console.log(params.name);
   //get single product
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner/${params.slug}`
+        `https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner/${params.name}`
       );
       console.log(data);
       setName(data.product.name);
       setId(data.product._id);
-
-      setCategory(data.product.category._id);
+      setPhoto(data.product.photo);
     } catch (error) {
       console.log(error);
     }
@@ -36,34 +33,41 @@ const UpdateBanners = () => {
     getSingleProduct();
     //eslint-disable-next-line
   }, []);
-  //get all category
-  const getAllCategory = async () => {
-    try {
-      const { data } = await axios.get(
-        "https://new-ecchanir-server.vercel.app/api/v1/category/get-allcategory"
-      );
-      if (data?.success) {
-        setCategories(data?.category);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong in getting category");
-    }
-  };
 
-  useEffect(() => {
-    getAllCategory();
-  }, []);
+  function handleImage(event) {
+    setFile(event.target.files[0]);
+    setImageURL(URL.createObjectURL(event.target.files[0]));
+  }
 
   //create product function
   const handleUpdate = async (e) => {
+    if (!file) {
+      console.error("Please select an image");
+      toast.error("Please select an image");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ddlqhzgu");
+    formData.append("api_key", "938218558923326");
+
+    const response = await fetch(
+      "https://api.cloudinary.com/v1_1/duqer4nsr/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+    const imageUploadResult = await response.json();
+    console.log("Image uploaded:", imageUploadResult.secure_url);
+
     e.preventDefault();
     try {
       const productData = new FormData();
       productData.append("name", name);
+      productData.append("photo", imageUploadResult.secure_url);
 
-      photo && productData.append("photo", photo);
-      productData.append("category", category);
       const { data } = axios.put(
         `https://new-ecchanir-server.vercel.app/api/v1/banner/update-banner/${id}`,
         productData
@@ -72,7 +76,7 @@ const UpdateBanners = () => {
         toast.error(data?.message);
       } else {
         toast.success("Product Updated Successfully");
-        navigate("/dashboard/admin/banners");
+        navigate("/dashboard/admin");
       }
     } catch (error) {
       console.log(error);
@@ -89,7 +93,7 @@ const UpdateBanners = () => {
         `https://new-ecchanir-server.vercel.app/api/v1/banner/delete-banner/${id}`
       );
       toast.success("Product Deleted Successfully");
-      navigate("/dashboard/admin/banners");
+      navigate("/dashboard/admin");
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -105,56 +109,42 @@ const UpdateBanners = () => {
           <div className="col-md-9">
             <h1>Update Product</h1>
             <div className="m-1 w-75">
-              <Select
-                bordered={false}
-                placeholder="Select a category"
-                size="large"
-                showSearch
-                className="form-select mb-3"
-                onChange={(value) => {
-                  setCategory(value);
-                }}
-                value={category}
-              >
-                {categories?.map((c) => (
-                  <Option key={c._id} value={c._id}>
-                    {c.name}
-                  </Option>
-                ))}
-              </Select>
               <div className="mb-3">
-                <label className="btn btn-outline-secondary col-md-12">
-                  {photo ? photo.name : "Upload Photo"}
-                  <input
-                    type="file"
-                    name="photo"
-                    accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                    hidden
+                <div className="text-center">
+                  <img
+                    src={photo}
+                    alt="product_photo"
+                    height={"200px"}
+                    className="img img-responsive"
                   />
-                </label>
+                </div>
               </div>
               <div className="mb-3">
-                {photo ? (
-                  <div className="text-center">
+                {imageURL && ( // Display the image only when imageURL is not empty
+                  <div className="mb-3">
+                    <p className="text-xl"> New Photo</p>
                     <img
-                      src={URL.createObjectURL(photo)}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <img
-                      src={`https://new-ecchanir-server.vercel.app/api/v1/banner/banner-photo/${id}`}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
+                      src={imageURL}
+                      alt="Uploaded"
+                      placeholder="photo"
+                      height={200}
+                      className="h-40 w-40 border-2"
+                      style={{ maxWidth: "100%" }}
                     />
                   </div>
                 )}
+
+                <div className="mb-3">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="image"
+                    id=""
+                    onChange={handleImage}
+                  />
+                </div>
               </div>
+
               <div className="mb-3">
                 <input
                   type="text"
@@ -166,12 +156,12 @@ const UpdateBanners = () => {
               </div>
               <div className="mb-3">
                 <button className="btn btn-success" onClick={handleUpdate}>
-                  UPDATE PRODUCT
+                  UPDATE Banner
                 </button>
               </div>
               <div className="mb-3">
                 <button className="btn btn-danger" onClick={handleDelete}>
-                  DELETE PRODUCT
+                  DELETE Banner
                 </button>
               </div>
             </div>

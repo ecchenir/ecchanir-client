@@ -102,7 +102,7 @@ function App() {
             element={<UpdateLatestproducts />}
           />
           <Route path="admin/compleatOrder/:id" element={<CompleatOrder />} />
-          <Route path="admin/banner/:slug" element={<UpdateBanners />} />
+          <Route path="admin/banner/:name" element={<UpdateBanners />} />
           <Route path="admin/order/:slug" element={<UpdateOrders />} />
 
           <Route path="admin/products" element={<Products />} />
