@@ -6,6 +6,8 @@ import axios from "axios";
 import { Select } from "antd";
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const { Option } = Select;
 
 const UpdateProducts = () => {
@@ -43,7 +45,7 @@ const UpdateProducts = () => {
       setDiscount(data.product.discount);
       setProductNumber(data?.product?.productNumber);
       setCategory(data.product.category._id);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -78,6 +80,7 @@ const UpdateProducts = () => {
   const handleUpdate = async (e) => {
     if (!file) {
       console.error("Please select an image");
+       toast.error("Please select an image");
       return;
     }
 
@@ -140,10 +143,10 @@ const UpdateProducts = () => {
 
   // trendind product
   const handleConfirm = async (id) => {
-    console.log(id);
+    // console.log(id);
     try {
       const data = { productType: "trending" };
-      console.log("Button clicked");
+
       const updateProduct = await axios.put(
         `https://new-ecchanir-server.vercel.app/api/v1/product/trending/${id}`,
         data
@@ -167,84 +170,53 @@ const UpdateProducts = () => {
             <h1>Update Product</h1>
             <div className="m-1 w-75">
               <div>
-                {/* <div className="mb-3">
-                <label className="btn btn-outline-secondary col-md-12">
-                  {photo ? photo.name : "Upload Photo"}
-                  <input
-                    type="file"
-                    name="photo"
-                    accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                    hidden
-                  />
-                </label> */}
-              </div>
-              {/* <div className="mb-3">
-                {photo ? (
-                  <div className="text-center">
+                {imageURL && ( // Display the image only when imageURL is not empty
+                  <div className="mb-3">
+                    <p className="text-xl"> New Photo</p>
                     <img
-                      src={URL.createObjectURL(photo)}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
-                    />
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <img
-                      src={`https://new-ecchanir-server.vercel.app/api/v1/product/product-photo/${id}`}
-                      alt="product_photo"
-                      height={"200px"}
-                      className="img img-responsive"
+                      src={imageURL}
+                      alt="Uploaded"
+                      placeholder="photo"
+                      height={200}
+                      className="h-40 w-40 border-2"
+                      style={{ maxWidth: "100%" }}
                     />
                   </div>
                 )}
-              </div> */}
 
-              {imageURL && ( // Display the image only when imageURL is not empty
                 <div className="mb-3">
-                  <p className="text-xl"> New Photo</p>
-                  <img
-                    src={imageURL}
-                    alt="Uploaded"
-                    placeholder="photo"
-                    height={200}
-                    className="h-40 w-40 border-2"
-                    style={{ maxWidth: "100%" }}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="image"
+                    id=""
+                    onChange={handleImage}
                   />
                 </div>
-              )}
 
-              <div className="mb-3">
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="image"
-                  id=""
-                  onChange={handleImage}
-                />
-              </div>
-
-              <div className="mb-3">
-                <img height={200} src={photo} alt="" />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  value={name}
-                  placeholder="write a name"
-                  className="form-control"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <textarea
-                  type="text"
-                  value={description}
-                  placeholder="Write a Description"
-                  className="form-control"
-                  onChange={(e) => setDescription(e.target.value)}
-                />
+                <div className="mb-3">
+                  <img height={200} src={photo} alt="" />
+                </div>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    value={name}
+                    placeholder="write a name"
+                    className="form-control"
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <CKEditor
+                  data={description}
+                    editor={ClassicEditor}
+                    onReady={(editor) => {}}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setDescription(data); // Assuming you have state for shortDescription
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="mb-3">

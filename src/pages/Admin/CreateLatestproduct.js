@@ -5,6 +5,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Select } from "antd";
 import { useNavigate } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const { Option } = Select;
 
 const Checkbox = ({ option, onChange }) => (
@@ -33,7 +35,7 @@ const CreateLatestproduct = () => {
   const [discount, setDiscount] = useState("");
   const [productNumber, setProductNumber] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const options = ["M", "L", "XL", "XXL"];
+  const options = ["S", "M", "L", "XL", "XXL"];
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
@@ -47,7 +49,7 @@ const CreateLatestproduct = () => {
         "https://new-ecchanir-server.vercel.app/api/v1/category/get-allcategory"
       );
       setCategories(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong in getting category");
@@ -182,13 +184,13 @@ const CreateLatestproduct = () => {
               </div>
 
               <div className="mb-3">
-                <textarea
-                  type="text"
-                  value={description}
-                  placeholder="write a description"
-                  className="form-control"
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
+                <CKEditor
+                  editor={ClassicEditor}
+                  onReady={(editor) => {}}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    setDescription(data); // Assuming you have state for shortDescription
+                  }}
                 />
               </div>
 

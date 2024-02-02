@@ -11,7 +11,7 @@ export default function Thanks() {
   const [order, setOrder] = useState({});
   const [Product, setProduct] = useState([]);
   const navigate = useNavigate();
-  console.log(id);
+  // console.log(id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +30,7 @@ export default function Thanks() {
     fetchData(); // Invoke the fetchData function
   }, [id]);
 
-  console.log(order);
+  // console.log(order);
 
   return (
     <Layout>

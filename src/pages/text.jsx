@@ -27,7 +27,7 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(cart);
+    // console.log(cart);
     let updatedCart = [];
     cart.map((item) => {
       updatedCart = [...updatedCart, { ...item, quantity: 1 }];
@@ -83,7 +83,7 @@ const CartPage = () => {
         products,
       };
 
-      console.log(productData);
+      // console.log(productData);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");

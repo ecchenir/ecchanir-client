@@ -6,6 +6,7 @@ import "../styles/ProductDetailsStyles.css";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
 import SizeSelector from "./SizeSelector";
+import Spinner from "../components/Loader/Spinner";
 
 const LatestProductDetails = () => {
   const [cart, setCart] = useCart();
@@ -13,7 +14,7 @@ const LatestProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
-
+  const [loading, setLoading] = useState(false);
   const [selectedSize, setSelectedSize] = useState("");
   const [availableSizes, setAvailableSizes] = useState([]);
 
@@ -41,6 +42,7 @@ const LatestProductDetails = () => {
       );
       setProduct(data?.product);
       console.log(data);
+      setLoading(false);
 
       if (
         data?.product.selectedOptions &&
@@ -82,75 +84,86 @@ const LatestProductDetails = () => {
 
   return (
     <Layout>
-      <div className="row container  product-details">
-        <div className="col-md-6">
-          <img
-            src={product.photo}
-            className="card-img-top"
-            alt={product.name}
-            style={{ objectFit: "contain", width: "100%" }}
-            height="300"
-            width={"350px"}
-          />
-        </div>
-        <div className="col-md-6 product-details-info">
-          <h1 className="text-center show">Product Details</h1>
-          <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
-            {product.name}
-          </h6>
-          <h6>{product.description}</h6>
-          {/* <h6>{product?.category?.name}</h6> */}
-          <p className="discountPrice">৳ {product.price} </p>
-          <p className="price">৳ {product.discount} </p>
-
-          {/* <h6>Category : {product?.category?.name}</h6> */}
-          <div className=" ">
-            <p className="mb-0">Size :</p>
-            {availableSizes.length > 0 && (
-              <SizeSelector
-                sizes={availableSizes}
-                selectedSize={selectedSize}
-                onSizeChange={handleSizeChange}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="container">
+          <div className="row container  product-details">
+            <div
+              className="col-md-6"
+              style={{ position: "relative", maxHeight: "380px" }}
+            >
+              <img
+                src={product.photo}
+                className="card-img-top"
+                alt={product.name}
+                style={{ objectFit: "contain", width: "100%" }}
+                height="300"
+                width={"350px"}
               />
-            )}
+            </div>
+            <div className="col-md-6 product-details-info">
+              <h1 className="text-center show">Product Details</h1>
+              <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
+                {product.name}
+              </h6>
+
+              <p className="discountPrice">৳ {product.price} </p>
+              <p className="price">৳ {product.discount} </p>
+
+              {/* <h6>Category : {product?.category?.name}</h6> */}
+              <div className=" ">
+                <p className="mb-0">Size :</p>
+                {availableSizes.length > 0 && (
+                  <SizeSelector
+                    sizes={availableSizes}
+                    selectedSize={selectedSize}
+                    onSizeChange={handleSizeChange}
+                  />
+                )}
+              </div>
+
+              {selectedSize && (
+                <p className="mt-2">Selected Size: {selectedSize}</p>
+              )}
+
+              <div className="d-flex mt-3">
+                <button
+                  className="btn btn-dark ms-1"
+                  onClick={() => {
+                    setCart([...cart, { ...product, selectedSize }]);
+                    localStorage.setItem(
+                      "cart",
+                      JSON.stringify([...cart, { ...product, selectedSize }])
+                    );
+                    toast.success("Item Added to cart");
+                    navigate("/cart");
+                  }}
+                >
+                  Buy Now
+                </button>
+
+                <button
+                  className="btn btn-secondary ms-1"
+                  onClick={() => {
+                    setCart([...cart, { ...product, selectedSize }]);
+                    localStorage.setItem(
+                      "cart",
+                      JSON.stringify([...cart, { ...product, selectedSize }])
+                    );
+                    toast.success("Item Added to cart");
+                  }}
+                >
+                  Add to cart
+                </button>
+              </div>
+            </div>
           </div>
-
-          {selectedSize && (
-            <p className="mt-2">Selected Size: {selectedSize}</p>
-          )}
-
-          <div className="d-flex mt-3">
-            <button
-              className="btn btn-dark ms-1"
-              onClick={() => {
-                setCart([...cart, { ...product, selectedSize }]);
-                localStorage.setItem(
-                  "cart",
-                  JSON.stringify([...cart, { ...product, selectedSize }])
-                );
-                toast.success("Item Added to cart");
-                navigate("/cart");
-              }}
-            >
-              Buy Now
-            </button>
-
-            <button
-              className="btn btn-secondary ms-1"
-              onClick={() => {
-                setCart([...cart, { ...product, selectedSize }]);
-                localStorage.setItem(
-                  "cart",
-                  JSON.stringify([...cart, { ...product, selectedSize }])
-                );
-                toast.success("Item Added to cart");
-              }}
-            >
-              Add to cart
-            </button>
+          <div className="mt-3">
+            <div dangerouslySetInnerHTML={{ __html: product.description }} />
           </div>
         </div>
-      </div>
+      )}
       <hr />
       {/* <div className="row container similar-products">
         <h6>Similar Products ➡️</h6>

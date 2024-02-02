@@ -15,7 +15,7 @@ const Banners = () => {
       const { data } = await axios.get(
         "https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner"
       );
-      console.log(data);
+      // console.log(data);
       setProducts(data.products);
     } catch (error) {
       console.log(error);

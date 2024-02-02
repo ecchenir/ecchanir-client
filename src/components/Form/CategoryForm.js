@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const CategoryForm = () => {
   const  id = useParams();
-  console.log(id);
+  // console.log(id);
   return (
     <>
       ssssss ddddddddddddd

@@ -32,7 +32,7 @@ export default function CartItem({
 
     setProducts(updatedProducts);
 
-    console.log(updatedProducts);
+    // console.log(updatedProducts);
   };
 
   const handleDec = () => {

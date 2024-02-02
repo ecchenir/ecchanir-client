@@ -36,7 +36,7 @@ const CartPage = () => {
 
   //total price
   const totalPrice = () => {
-    // console.log("taaa");
+    
     try {
       let Newtotal = 0;
       products?.map((item) => {
@@ -61,7 +61,7 @@ const CartPage = () => {
       return { ...item, category: null };
     });
 
-    console.log(updateProducts);
+    // console.log(updateProducts);
     try {
       const productData = {
         names: names,
@@ -83,7 +83,7 @@ const CartPage = () => {
         );
         toast.success("Thanks For Shopping");
         localStorage.removeItem("cart");
-        console.log(response.data.orderProduct);
+        // console.log(response.data.orderProduct);
         navigate(`/thanks/${response.data.orderProduct._id}`);
       } catch (error) {
         console.error("Error creating order:", error);

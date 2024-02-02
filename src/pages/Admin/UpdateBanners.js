@@ -21,7 +21,7 @@ const UpdateBanners = () => {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner/${params.name}`
       );
-      console.log(data);
+      // console.log(data);
       setName(data.product.name);
       setId(data.product._id);
       setPhoto(data.product.photo);

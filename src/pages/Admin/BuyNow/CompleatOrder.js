@@ -13,7 +13,7 @@ export default function CompleatOrder() {
   const [Product, setProduct] = useState([]);
   const navigate = useNavigate();
 
-  console.log(id);
+  // console.log(id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,13 +32,13 @@ export default function CompleatOrder() {
     fetchData(); // Invoke the fetchData function
   }, [id]);
 
-  console.log(Product);
+  // console.log(Product);
 
   // oder  confirm functionality
   const handleConfirm = async (id) => {
     try {
       const data = { status: "complete" };
-      console.log("Button clicked");
+      // console.log("Button clicked");
       const updateOrder = await axios.put(
         `https://new-ecchanir-server.vercel.app/api/v1/order/update-order/${id}`,
         data

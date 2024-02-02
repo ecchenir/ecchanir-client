@@ -4,12 +4,14 @@ import axios from "axios";
 import Carousel from "react-bootstrap/Carousel";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Spinner from "../Loader/Spinner";
 
 const Banner = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [id, setId] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const getAllCategory = async () => {
     try {
@@ -33,7 +35,8 @@ const Banner = () => {
         "https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner"
       );
       setProducts(data);
-      console.log(data);
+      setLoading(false);
+      // console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -44,34 +47,40 @@ const Banner = () => {
     getAllCategory();
   }, []);
 
-  console.log(products);
+  // console.log(products);
   return (
-    <Carousel>
-      {products.map((p, index) => (
-        <Carousel.Item className="" key={index}>
-          <img
-            style={{ objectFit: "cover" }}
-            className="d-block banner-image w-100"
-            src={p.photo}
-            alt={`Banner ${index + 1}`}
-          />
-          <Carousel.Caption>
-            <p className="text-white mt-2">{p.name}</p>
+    <div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <Carousel>
+          {products.map((p, index) => (
+            <Carousel.Item className="" key={index}>
+              <img
+                style={{ objectFit: "cover" }}
+                className="d-block banner-image w-100"
+                src={p.photo}
+                alt={`Banner ${index + 1}`}
+              />
+              <Carousel.Caption>
+                <p className="text-white mt-2">{p.name}</p>
 
-            {/* Access the category property for each product */}
-            {/* {setId(p.category)} */}
+                {/* Access the category property for each product */}
+                {/* {setId(p.category)} */}
 
-            <a
-              className="btn text-black"
-              onClick={() => navigate(`/category/${p.category}`)}
-              role="button"
-            >
-              Shop Now
-            </a>
-          </Carousel.Caption>
-        </Carousel.Item>
-      ))}
-    </Carousel>
+                <a
+                  className="btn text-black"
+                  onClick={() => navigate(`/category/${p.category}`)}
+                  role="button"
+                >
+                  Shop Now
+                </a>
+              </Carousel.Caption>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      )}
+    </div>
   );
 };
 

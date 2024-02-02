@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import SizeSelector from "./SizeSelector";
+import Spinner from "../components/Loader/Spinner";
 
 const ProductDetails = () => {
   const [cart, setCart] = useCart();
@@ -19,9 +20,9 @@ const ProductDetails = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
   const [availableSizes, setAvailableSizes] = useState([]);
-
-  console.log(product);
-  console.log(id);
+  const [loading, setLoading] = useState(false);
+  // console.log(product);
+  // console.log(id);
 
   //initalp details
   useEffect(() => {
@@ -37,7 +38,7 @@ const ProductDetails = () => {
 
   // ...
 
-  console.log(relatedProducts);
+  // console.log(relatedProducts);
 
   //getProduct
   const getProduct = async () => {
@@ -46,7 +47,8 @@ const ProductDetails = () => {
         `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${id}`
       );
       setProduct(data?.product);
-      console.log(data);
+      setLoading(false);
+      // console.log(data);
 
       if (
         data?.product.selectedOptions &&
@@ -82,78 +84,86 @@ const ProductDetails = () => {
   // console.log(selectedSize);
   return (
     <Layout>
-      <div className="row container  product-details">
-        <div
-          className="col-md-6"
-          style={{ position: "relative", maxHeight: "380px" }}
-        >
-          <img
-            src={product.photo}
-            className="card-img-top"
-            alt={product.name}
-            style={{ objectFit: "contain", width: "100%" }}
-            height="300"
-            width={"350px"}
-          />
-        </div>
-        <div className="col-md-6 product-details-info">
-          <h1 className="text-center show">Product Details</h1>
-          <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
-            {product.name}
-          </h6>
-          <h6>{product.description}</h6>
-          {/* <h6>{product?.category?.name}</h6> */}
-          <p className="discountPrice">৳ {product.price} </p>
-          <p className="price">৳ {product.discount} </p>
-
-          {/* <h6>Category : {product?.category?.name}</h6> */}
-          <div className=" ">
-            <p className="mb-0">Size :</p>
-            {availableSizes.length > 0 && (
-              <SizeSelector
-                sizes={availableSizes}
-                selectedSize={selectedSize}
-                onSizeChange={handleSizeChange}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="container">
+          <div className="row container  product-details">
+            <div
+              className="col-md-6"
+              style={{ position: "relative", maxHeight: "380px" }}
+            >
+              <img
+                src={product.photo}
+                className="card-img-top"
+                alt={product.name}
+                style={{ objectFit: "contain", width: "100%" }}
+                height="300"
+                width={"350px"}
               />
-            )}
+            </div>
+            <div className="col-md-6 product-details-info">
+              <h1 className="text-center show">Product Details</h1>
+              <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
+                {product.name}
+              </h6>
+
+              <p className="discountPrice">৳ {product.price} </p>
+              <p className="price">৳ {product.discount} </p>
+
+              {/* <h6>Category : {product?.category?.name}</h6> */}
+              <div className=" ">
+                <p className="mb-0">Size :</p>
+                {availableSizes.length > 0 && (
+                  <SizeSelector
+                    sizes={availableSizes}
+                    selectedSize={selectedSize}
+                    onSizeChange={handleSizeChange}
+                  />
+                )}
+              </div>
+
+              {selectedSize && (
+                <p className="mt-2">Selected Size: {selectedSize}</p>
+              )}
+
+              <div className="d-flex mt-3">
+                <button
+                  className="btn btn-dark ms-1"
+                  onClick={() => {
+                    setCart([...cart, { ...product, selectedSize }]);
+                    localStorage.setItem(
+                      "cart",
+                      JSON.stringify([...cart, { ...product, selectedSize }])
+                    );
+                    toast.success("Item Added to cart");
+                    navigate("/cart");
+                  }}
+                >
+                  Buy Now
+                </button>
+
+                <button
+                  className="btn btn-secondary ms-1"
+                  onClick={() => {
+                    setCart([...cart, { ...product, selectedSize }]);
+                    localStorage.setItem(
+                      "cart",
+                      JSON.stringify([...cart, { ...product, selectedSize }])
+                    );
+                    toast.success("Item Added to cart");
+                  }}
+                >
+                  Add to cart
+                </button>
+              </div>
+            </div>
           </div>
-
-          {selectedSize && (
-            <p className="mt-2">Selected Size: {selectedSize}</p>
-          )}
-
-          <div className="d-flex mt-3">
-            <button
-              className="btn btn-dark ms-1"
-              onClick={() => {
-                setCart([...cart, { ...product, selectedSize }]);
-                localStorage.setItem(
-                  "cart",
-                  JSON.stringify([...cart, { ...product, selectedSize }])
-                );
-                toast.success("Item Added to cart");
-                navigate("/cart");
-              }}
-            >
-              Buy Now
-            </button>
-
-            <button
-              className="btn btn-secondary ms-1"
-              onClick={() => {
-                setCart([...cart, { ...product, selectedSize }]);
-                localStorage.setItem(
-                  "cart",
-                  JSON.stringify([...cart, { ...product, selectedSize }])
-                );
-                toast.success("Item Added to cart");
-              }}
-            >
-              Add to cart
-            </button>
+          <div className="mt-3">
+            <div dangerouslySetInnerHTML={{ __html: product.description }} />
           </div>
         </div>
-      </div>
+      )}
       <hr />
 
       <div>
@@ -167,13 +177,21 @@ const ProductDetails = () => {
             {relatedProducts.map((p) => (
               <Col key={p._id}>
                 <Card
-                  onClick={() => navigate(`/product/${p._id}`)}
+                  onClick={() => {
+                    navigate(`/product/${p._id}`);
+                    window.scrollTo(0, 0);  
+                  }}
                   className="productCard"
                 >
                   <img
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      minHeight: "168px",
+                    }}
                     src={p.photo}
                     className="card-img-top"
-                    height={"150px"}
+                    // height={"150px"}
                     alt={p.name}
                   />
                   <div className="card-body">

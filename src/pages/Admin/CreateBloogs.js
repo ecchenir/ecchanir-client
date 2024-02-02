@@ -4,6 +4,7 @@ import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CreateBloogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -12,6 +13,7 @@ const CreateBloogs = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState();
   const [imageUrl, setImageURL] = useState(null);
+  const navigate = useNavigate();
 
   function handleImage(event) {
     setFile(event.target.files[0]);
@@ -55,7 +57,7 @@ const CreateBloogs = () => {
         toast.error(data?.message);
       } else {
         toast.success("create Created Successfully");
-        // navigate("/dashboard/admin/banners");
+        navigate("/dashboard/admin/banners");
       }
     } catch (error) {
       console.log(error);
@@ -72,7 +74,7 @@ const CreateBloogs = () => {
       );
       if (data?.success) {
         setBlogs(data?.blogs);
-        console.log(data);
+        // console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -84,7 +86,7 @@ const CreateBloogs = () => {
     getAllCategory();
   }, []);
 
-  console.log(blogs);
+  // console.log(blogs);
 
   return (
     <Layout>

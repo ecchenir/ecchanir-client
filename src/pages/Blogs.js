@@ -13,7 +13,7 @@ export default function Blogs() {
       );
       if (data?.success) {
         setBlogs(data?.blogs);
-        console.log(data);
+        // console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -27,7 +27,7 @@ export default function Blogs() {
 
   const reversedProduct = [...blogs].reverse();
 
-  console.log(blogs);
+  // console.log(blogs);
   return (
     <Layout>
       <div className="container">

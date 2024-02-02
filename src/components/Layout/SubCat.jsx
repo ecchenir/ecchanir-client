@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function SubCat({ subCat }) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(subCat);
+  // console.log(subCat);
   return (
     <div
       onClick={() => setIsOpen(!isOpen)}

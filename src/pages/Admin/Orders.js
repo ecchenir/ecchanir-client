@@ -19,7 +19,7 @@ const Orders = () => {
         "https://new-ecchanir-server.vercel.app/api/v1/order/get-order"
       );
       setProducts(data.product);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
       toast.error("Something Went Wrong");

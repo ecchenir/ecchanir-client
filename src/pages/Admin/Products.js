@@ -42,7 +42,7 @@ const Products = () => {
         `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
       );
       setLoading(false);
-      console.log(data.products);
+      // console.log(data.products);
       setProducts(data.products);
     } catch (error) {
       setLoading(false);

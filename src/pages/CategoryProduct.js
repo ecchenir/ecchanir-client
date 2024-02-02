@@ -29,13 +29,13 @@ const CategoryProduct = () => {
     });
   }, []);
 
-  console.log(id);
+  // console.log(id);
   const getPrductsByCat = async () => {
     try {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
       );
-      console.log(data);
+      // console.log(data);
       setProducts(data);
       setFilteredProducts(data);
       // setCategory(data?.category);
@@ -46,13 +46,13 @@ const CategoryProduct = () => {
 
   const cateGoryProduct = products.filter((item) => item.category === `${id}`);
 
-  console.log(cateGoryProduct);
+  // console.log(cateGoryProduct);
 
   const trendingProduct = cateGoryProduct.filter(
     (item) => item.productType === "trending"
   );
 
-  console.log(trendingProduct);
+  // console.log(trendingProduct);
   // search input
 
   const handleSearch = () => {

@@ -29,7 +29,7 @@ const CreateBanner = () => {
         "https://new-ecchanir-server.vercel.app/api/v1/category/get-allcategory"
       );
       setCategories(data);
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong in getting category");
@@ -78,7 +78,7 @@ const CreateBanner = () => {
         toast.error(data?.message);
       } else {
         toast.success("Banner Created Successfully");
-        // navigate("/dashboard/admin/banners");
+        navigate("/dashboard/admin/banners");
       }
     } catch (error) {
       console.log(error);
@@ -91,7 +91,7 @@ const CreateBanner = () => {
       const { data } = await axios.get(
         "https://new-ecchanir-server.vercel.app/api/v1/banner/get-banner"
       );
-      console.log(data);
+      // console.log(data);
       setProducts(data);
     } catch (error) {
       console.log(error);
@@ -188,7 +188,7 @@ const CreateBanner = () => {
                 {products?.map((p) => (
                   <Link
                     key={p._id}
-                    to={`/dashboard/admin/banner/${p.name}`}
+                    to={`/dashboard/admin/banner/${p._id}`}
                     className="product-link"
                   >
                     <div className="card m-2" style={{ width: "18rem" }}>

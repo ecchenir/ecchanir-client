@@ -27,9 +27,9 @@ export default function SubcategoryShow() {
         `https://new-ecchanir-server.vercel.app/api/v1/product/product-list/${page}`
       );
       setLoading(false);
-      console.log(data);
+      // console.log(data);
       setProducts(data.products);
-      console.log(data.products);
+      // console.log(data.products);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -49,8 +49,7 @@ export default function SubcategoryShow() {
 
     // (item) => item.selectedSubcategory === " Denaim shart"
   );
-  console.log(fetchProduct);
-  console.log(products);
+ 
   // console.log(fetchProduct);
 
   return (
