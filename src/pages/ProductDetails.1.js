@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import "../styles/ProductDetailsStyles.css";
 import { useCart } from "../context/cart";
 import toast from "react-hot-toast";
 import Row from "react-bootstrap/Row";
@@ -11,7 +10,7 @@ import Card from "react-bootstrap/Card";
 import SizeSelector from "./SizeSelector";
 import Spinner from "../components/Loader/Spinner";
 
-const ProductDetails = () => {
+export const ProductDetails = () => {
   const [cart, setCart] = useCart();
   const params = useParams();
   const { id } = useParams();
@@ -21,10 +20,9 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [availableSizes, setAvailableSizes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [categoryId, setCategoryId] = useState();
+  const [categoryId, setCagegoryId] = useState();
   // console.log(product);
   // console.log(id);
-
   //initalp details
   useEffect(() => {
     if (id) getProduct();
@@ -38,9 +36,7 @@ const ProductDetails = () => {
   }, []);
 
   // ...
-
   // console.log(relatedProducts);
-
   //getProduct
   const getProduct = async () => {
     try {
@@ -50,7 +46,6 @@ const ProductDetails = () => {
       setProduct(data?.product);
       setLoading(false);
       // console.log(data);
-
       if (
         data?.product.selectedOptions &&
         data?.product.selectedOptions.length > 0
@@ -59,36 +54,25 @@ const ProductDetails = () => {
         setSelectedSize(data?.product.selectedOptions[0]); // Set the default selected size
       }
       console.log(data.product.category._id);
-      setCategoryId(data.product.selectedSubcategory);
+      setCagegoryId(data.product.category._id);
       getSimilarProduct(data?.product._id, data?.product.category._id);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(categoryId);
-
   //get similar product
   const getSimilarProduct = async (pid, cid) => {
     try {
       const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
+        `https://new-ecchanir-server.vercel.app/api/v1/product/related-product/${pid}/${cid}`
       );
-      setRelatedProducts(data);
-      console.log(data);
+      setRelatedProducts(data?.products);
     } catch (error) {
       console.log(error);
     }
   };
-
   // handle size control
-
-  const relProduct = relatedProducts.filter(
-    (item) => item.selectedSubcategory === `${categoryId}`
-  );
-
-  console.log(relProduct);
-
   const handleSizeChange = (size) => {
     setSelectedSize(size);
   };
@@ -182,12 +166,12 @@ const ProductDetails = () => {
       <div>
         <h6 className="container mb-3">Similar Products ➡️</h6>
 
-        {relProduct.length < 1 && (
+        {relatedProducts.length < 1 && (
           <p className="text-center">No Similar Products found</p>
         )}
         <div className="container">
           <Row xs={2} sm={3} md={4} lg={5} className="g-2 ">
-            {relProduct.slice(0, 4).map((p) => (
+            {relatedProducts.map((p) => (
               <Col key={p._id}>
                 <Card
                   onClick={() => {
@@ -221,5 +205,3 @@ const ProductDetails = () => {
     </Layout>
   );
 };
-
-export default ProductDetails;

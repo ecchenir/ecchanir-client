@@ -175,8 +175,29 @@ const CreateProduct = () => {
 
             <div className="m-1 w-75">
               {/* image */}
+              {imageUrl && ( // Display the image only when imageURL is not empty
+                <div item xs={12}>
+                  <img
+                    src={imageUrl}
+                    alt="Uploaded"
+                    placeholder="photo"
+                    height={"200px"}
+                    className="h-40 w-40 border-2"
+                    style={{ maxWidth: "100%" }}
+                  />
+                </div>
+              )}
+              <div item xs={6}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  id=""
+                  onChange={handleImage}
+                />
+              </div>
 
-              <div className="mb-3">
+              <div className="mb-3 mt-3">
                 <input
                   type="text"
                   value={name}
@@ -295,28 +316,6 @@ const CreateProduct = () => {
                   </Option>
                 ))}
               </Select>
-
-              {imageUrl && ( // Display the image only when imageURL is not empty
-                <div item xs={12}>
-                  <img
-                    src={imageUrl}
-                    alt="Uploaded"
-                    placeholder="photo"
-                    height={"200px"}
-                    className="h-40 w-40 border-2"
-                    style={{ maxWidth: "100%" }}
-                  />
-                </div>
-              )}
-              <div item xs={6}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="image"
-                  id=""
-                  onChange={handleImage}
-                />
-              </div>
 
               <div className="mb-3 d-flex justify-content-end">
                 <button className="btn btn-success" onClick={handleCreate}>

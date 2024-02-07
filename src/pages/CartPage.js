@@ -36,12 +36,11 @@ const CartPage = () => {
 
   //total price
   const totalPrice = () => {
-    
     try {
       let Newtotal = 0;
       products?.map((item) => {
         // console.log(item.price, item.quantity);
-        Newtotal = Newtotal + item.price * item.quantity;
+        Newtotal = Newtotal + item.discount * item.quantity;
       });
       // console.log(Newtotal);
       setTotal(Newtotal);
@@ -51,7 +50,11 @@ const CartPage = () => {
   };
 
   // dalevary charge
-  const deliveryCharge = selectedDistrict.toLowerCase() === "dhaka" ? 60 : 130;
+  const deliveryCharge =
+    selectedDistrict.toLowerCase() === "dhaka" ||
+    selectedDistrict.toLowerCase() === ""
+      ? 60
+      : 130;
 
   // handle create order
   const handleCreateOrder = async (e) => {
@@ -168,6 +171,7 @@ const CartPage = () => {
                 </h2>
                 <div className="w-100">
                   <div className="mb-3">
+                    <label htmlFor="">*Write a Name</label>
                     <input
                       type="text"
                       value={names}
@@ -177,10 +181,11 @@ const CartPage = () => {
                     />
                   </div>
                   <div className="mb-3">
+                    <label htmlFor="">*Contact Number </label>
                     <input
                       type="number"
                       value={phone}
-                      placeholder="Write a phone"
+                      placeholder="017345...."
                       className="form-control border-2 border-black"
                       onChange={(e) => setPhone(e.target.value)}
                     />
@@ -199,10 +204,11 @@ const CartPage = () => {
                   </div>
 
                   <div className="mb-3 mt-2">
+                    <label htmlFor="">*Write your full address</label>
                     <textarea
                       type="text"
                       value={address}
-                      placeholder="Write a address"
+                      placeholder="Exemple: Post,Thanka/Upazila"
                       className="form-control border-2 border-black"
                       onChange={(e) => setAddress(e.target.value)}
                     />

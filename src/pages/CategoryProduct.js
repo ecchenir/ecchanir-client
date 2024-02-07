@@ -3,11 +3,10 @@ import Layout from "../components/Layout/Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/CategoryProductStyles.css";
 import axios from "axios";
-import { FaRegStar, FaStar } from "react-icons/fa";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Rating from "react-rating";
+
 
 const CategoryProduct = () => {
   const { id } = useParams();
@@ -105,11 +104,12 @@ const CategoryProduct = () => {
                       />
                       <div className="card-body">
                         <div>
-                          <h5 className="cardTitle">
+                          <h5 className="cardTitle">{tp.name}</h5>
+                          {/* <h5 className="cardTitle">
                             {tp.name.length <= 20
                               ? tp.name
                               : `${tp.name.substring(0, 20)}...`}
-                          </h5>
+                          </h5> */}
                           <p className="price">৳ {tp.discount} </p>
                           <p className="discountPrice">৳ {tp.price}</p>
                         </div>
@@ -138,17 +138,18 @@ const CategoryProduct = () => {
                       minHeight: "168px",
                     }}
                     src={p.photo}
-                    className="card-img-top"                  
+                    className="card-img-top"
                     alt={p.name}
                     onClick={() => navigate(`/product/${p._id}`)}
                   />
                   <div className="card-body">
                     <div>
-                      <h5 className="cardTitle">
+                      <h5 className="cardTitle">{p.name}</h5>
+                      {/* <h5 className="cardTitle">
                         {p.name.length <= 20
                           ? p.name
                           : `${p.name.substring(0, 20)}...`}
-                      </h5>
+                      </h5> */}
                       <p className="price">৳ {p.discount} </p>
                       <p className="discountPrice">৳ {p.price}</p>
                     </div>

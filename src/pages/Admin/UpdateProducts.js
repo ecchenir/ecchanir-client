@@ -80,7 +80,7 @@ const UpdateProducts = () => {
   const handleUpdate = async (e) => {
     if (!file) {
       console.error("Please select an image");
-       toast.error("Please select an image");
+      toast.error("Please select an image");
       return;
     }
 
@@ -158,6 +158,22 @@ const UpdateProducts = () => {
       console.error("Error updating data", error);
     }
   };
+  const handleRemove = async (id) => {
+    // console.log(id);
+    try {
+      const data = { productType: "local" };
+
+      const updateProduct = await axios.put(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/trending/${id}`,
+        data
+      );
+
+      console.log("Axios Response", updateProduct);
+      navigate(`/dashboard/admin/products`);
+    } catch (error) {
+      console.error("Error updating data", error);
+    }
+  };
 
   return (
     <Layout title={"Dashboard - Create Product"}>
@@ -208,7 +224,7 @@ const UpdateProducts = () => {
                 </div>
                 <div className="mb-3">
                   <CKEditor
-                  data={description}
+                    data={description}
                     editor={ClassicEditor}
                     onReady={(editor) => {}}
                     onChange={(event, editor) => {
@@ -261,6 +277,11 @@ const UpdateProducts = () => {
               <div className="mb-3">
                 <Button variant="success" onClick={() => handleConfirm(id)}>
                   Create a tending Product
+                </Button>
+              </div>
+              <div className="mb-3">
+                <Button variant="primary" onClick={() => handleRemove(id)}>
+                  Remove Trending Product
                 </Button>
               </div>
             </div>

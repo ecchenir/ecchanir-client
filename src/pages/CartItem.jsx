@@ -47,9 +47,9 @@ export default function CartItem({
   };
 
   const removeCartItem = (pid) => {
-    try {       
-      const updatedProducts = products.filter((item) => item._id !== _id);     
-      setProducts(updatedProducts);       
+    try {
+      const updatedProducts = products.filter((item) => item._id !== _id);
+      setProducts(updatedProducts);
       let myCart = [...cart];
       let index = myCart.findIndex((item) => item._id === pid);
       myCart.splice(index, 1);
@@ -62,7 +62,7 @@ export default function CartItem({
     }
   };
 
-  const total = product.price * qty;
+  const total = product.discount * qty;
 
   useEffect(() => {
     // Listen for changes in local storage
@@ -83,6 +83,7 @@ export default function CartItem({
     };
   }, [setProducts]);
 
+  // console.log(product);
   return (
     <div
       key={product._id}

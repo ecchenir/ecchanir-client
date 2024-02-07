@@ -174,11 +174,12 @@ const HomePage = () => {
                   />
 
                   <div className="card-body">
-                    <h5 className="cardTitle">
+                    <h5 className="cardTitle">{p.name}</h5>
+                    {/* <h5 className="cardTitle">
                       {p.name.length <= 20
                         ? p.name
                         : `${p.name.substring(0, 20)}...`}
-                    </h5>
+                    </h5> */}
 
                     <p className="discountPrice">৳ {p.price}</p>
                     <p className="price">৳ {p.discount}</p>

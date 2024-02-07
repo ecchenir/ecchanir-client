@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import AdminMenu from "../../components/Layout/AdminMenu";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
-import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -15,20 +13,7 @@ const Products = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
-  //getall products
-  // const getAllProducts = async () => {
-  //   try {
-  //     const { data } = await axios.get(
-  //       // "https://new-ecchanir-server.vercel.app/api/v1/product/get-product"
-  //       "http://localhost:5000/api/v1/product/get-allProduct"
-  //     );
-  //     setProducts(data);
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Something Went Wrong");
-  //   }
-  // };
+
 
   //lifecycle method
   useEffect(() => {
