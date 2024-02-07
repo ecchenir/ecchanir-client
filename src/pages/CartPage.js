@@ -208,7 +208,7 @@ const CartPage = () => {
                     <textarea
                       type="text"
                       value={address}
-                      placeholder="Exemple: Post,Thanka/Upazila"
+                      placeholder="Exemple: Post,Thana/Upazila"
                       className="form-control border-2 border-black"
                       onChange={(e) => setAddress(e.target.value)}
                     />

@@ -1,9 +1,8 @@
-import React from 'react' 
-import Header from "./Header"
+import React from "react";
+import Header from "./Header";
 import { Helmet } from "react-helmet";
-import { Toaster } from 'react-hot-toast';
-import Footer from './Footer';
- 
+import { Toaster } from "react-hot-toast";
+import Footer from "./Footer";
 
 const Layout = ({ children, title, description, keywords, author }) => {
   return (
@@ -21,16 +20,16 @@ const Layout = ({ children, title, description, keywords, author }) => {
         <Toaster />
         {children}
       </main>
-      <Footer/>
+      <Footer />
     </div>
-  )
+  );
 };
 
 Layout.defaultProps = {
-  title: "Eccha-Nir - shope now",
-  description: "mern stack project",
-  keywords: "mern,react,node,mongodb",
-  author: "MahinTechinfo"
-}
+  title: "Ecche-Nir - shope now",
+  description: "E-Comose  project",
+  keywords: "Shirt, Hoodies, T-shirt, Denim Shirt",
+  author: "MahinTechinfo",
+};
 
-export default Layout
+export default Layout;
