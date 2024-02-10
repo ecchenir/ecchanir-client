@@ -42,7 +42,7 @@ export default function SubcategoryShow() {
   }, []);
 
   const fetchProduct = products.filter(
-    (item) => item.selectedSubcategory.trim() === `${params?.name.trim()}`
+    (item) => item.selectedSubcategory?.trim() === `${params?.name?.trim()}`
   );
 
   // console.log(fetchProduct);
