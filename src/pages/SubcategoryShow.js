@@ -41,12 +41,9 @@ export default function SubcategoryShow() {
     getAllProducts();
   }, []);
 
- 
-
   const fetchProduct = products.filter(
-    (item) => item.selectedSubcategory === `${params?.name}`
+    (item) => item.selectedSubcategory.trim() === `${params?.name.trim()}`
   );
-
 
   // console.log(fetchProduct);
 
