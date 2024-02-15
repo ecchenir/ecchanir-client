@@ -26,10 +26,10 @@ const Layout = ({ children, title, description, keywords, author }) => {
 };
 
 Layout.defaultProps = {
-  title: "EccheNir - shope now",
-  description: "E-Comose  project",
+  title: "EccheNir - Clothing Brand",
+  description: "E-Comose  Website",
   keywords: "Shirt, Hoodies, T-shirt, Denim Shirt",
-  author: "MahinTechinfo",
+  author: "Hashebur Rahman",
 };
 
 export default Layout;

@@ -57,6 +57,7 @@ export default function CartItem({
       setCart(myCart);
       // Update localStorage with the modified cart array
       localStorage.setItem("cart", JSON.stringify(myCart));
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

@@ -30,7 +30,7 @@ export default function Thanks() {
     fetchData(); // Invoke the fetchData function
   }, [id]);
 
-  // console.log(order);
+  console.log(order);
 
   return (
     <Layout>
@@ -116,7 +116,7 @@ export default function Thanks() {
                 <thead>
                   <tr>
                     <th scope="col">SL</th>
-                    <th scope="col">Photo</th>               
+                    <th scope="col">Photo</th>
                     <th scope="col">Size</th>
                     <th scope="col">Quantity</th>
                     <th scope="col"> Price</th>
@@ -135,10 +135,10 @@ export default function Thanks() {
                           alt=""
                         />{" "}
                       </td>
-                 
+
                       <td>{p.selectedSize}</td>
                       <td>{p.quantity}</td>
-                      <td>{p.price}</td>
+                      <td>{p.discount}</td>
                       {/* <td>{p.price}</td> */}
                     </tr>
                   </tbody>

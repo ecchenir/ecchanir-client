@@ -79,10 +79,7 @@ export default function CompleatOrder() {
             <p className="text-center fw-bold display-6  mt-5">
               EccheNir E-commerce
             </p>
-            <p className="text-center fw-bold display-6 ">
-              {" "}
-              Order Details
-            </p>
+            <p className="text-center fw-bold display-6 "> Order Details</p>
             <p className="text-uppercase text-danger text-center d-flex justify-content-center gap-2">
               <span> Order Id: </span> <p>EN{id.slice(-6)} </p>
             </p>
@@ -159,7 +156,7 @@ export default function CompleatOrder() {
                         <td>{p.productNumber}</td>
                         <td>{p.selectedSize}</td>
                         <td>{p.quantity}</td>
-                        <td>{p.price}</td>
+                        <td>{p.discount}</td>
                       </tr>
                     </tbody>
                   ))}
