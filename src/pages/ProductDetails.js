@@ -47,6 +47,7 @@ const ProductDetails = () => {
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${id}`
       );
+
       setProduct(data?.product);
       setLoading(false);
       // console.log(data);
@@ -58,7 +59,7 @@ const ProductDetails = () => {
         setAvailableSizes(data?.product.selectedOptions);
         setSelectedSize(data?.product.selectedOptions[0]); // Set the default selected size
       }
-      console.log(data.product.category._id);
+      // console.log(data.product.category._id);
       setCategoryId(data.product.selectedSubcategory);
       getSimilarProduct(data?.product._id, data?.product.category._id);
     } catch (error) {
@@ -75,7 +76,8 @@ const ProductDetails = () => {
         `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
       );
       setRelatedProducts(data);
-      console.log(data);
+      setLoading(false);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -105,70 +107,87 @@ const ProductDetails = () => {
               className="col-md-6"
               style={{ position: "relative", maxHeight: "380px" }}
             >
-              <img
-                src={product.photo}
-                className="card-img-top"
-                alt={product.name}
-                style={{ objectFit: "contain", width: "100%" }}
-                height="300"
-                width={"350px"}
-              />
+              {loading ? (
+                <Spinner />
+              ) : (
+                <img
+                  src={product.photo}
+                  className="card-img-top"
+                  alt={product.name}
+                  style={{ objectFit: "contain", width: "100%" }}
+                  height="300"
+                  width={"350px"}
+                />
+              )}
             </div>
             <div className="col-md-6 product-details-info">
-              <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
-                {product.name}
-              </h6>
+              {loading ? (
+                <Spinner />
+              ) : (
+                <div>
+                  <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
+                    {product.name}
+                  </h6>
 
-              <p className="discountPrice">৳ {product.price} </p>
-              <p className="price">৳ {product.discount} </p>
+                  <p className="discountPrice">৳ {product.price} </p>
+                  <p className="price">৳ {product.discount} </p>
 
-              {/* <h6>Category : {product?.category?.name}</h6> */}
-              <div className=" ">
-                <p className="mb-0">Size :</p>
-                {availableSizes.length > 0 && (
-                  <SizeSelector
-                    sizes={availableSizes}
-                    selectedSize={selectedSize}
-                    onSizeChange={handleSizeChange}
-                  />
-                )}
-              </div>
+                  {/* <h6>Category : {product?.category?.name}</h6> */}
+                  <div className=" ">
+                    <p className="mb-0">Size :</p>
+                    {availableSizes.length > 0 && (
+                      <SizeSelector
+                        sizes={availableSizes}
+                        selectedSize={selectedSize}
+                        onSizeChange={handleSizeChange}
+                      />
+                    )}
+                  </div>
 
-              {selectedSize && (
-                <p className="mt-2">Selected Size: {selectedSize}</p>
+                  {selectedSize && (
+                    <p className="mt-2">Selected Size: {selectedSize}</p>
+                  )}
+
+                  <div className="d-flex mt-3">
+                    <button
+                      className="btn btn-dark ms-1"
+                      onClick={() => {
+                        setCart([...cart, { ...product, selectedSize }]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([
+                            ...cart,
+                            { ...product, selectedSize },
+                          ])
+                        );
+                        toast.success("Item Added to cart");
+                        navigate("/cart");
+                      }}
+                    >
+                      Buy Now
+                    </button>
+
+                    <button
+                      className="btn btn-secondary ms-1"
+                      onClick={() => {
+                        setCart([...cart, { ...product, selectedSize }]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([
+                            ...cart,
+                            { ...product, selectedSize },
+                          ])
+                        );
+                        toast.success("Item Added to cart");
+                      }}
+                    >
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
               )}
-
-              <div className="d-flex mt-3">
-                <button
-                  className="btn btn-dark ms-1"
-                  onClick={() => {
-                    setCart([...cart, { ...product, selectedSize }]);
-                    localStorage.setItem(
-                      "cart",
-                      JSON.stringify([...cart, { ...product, selectedSize }])
-                    );
-                    toast.success("Item Added to cart");
-                    navigate("/cart");
-                  }}
-                >
-                  Buy Now
-                </button>
-
-                <button
-                  className="btn btn-secondary ms-1"
-                  onClick={() => {
-                    setCart([...cart, { ...product, selectedSize }]);
-                    localStorage.setItem(
-                      "cart",
-                      JSON.stringify([...cart, { ...product, selectedSize }])
-                    );
-                    toast.success("Item Added to cart");
-                  }}
-                >
-                  Add to cart
-                </button>
-              </div>
             </div>
+            {/* mmm */}
           </div>
           <div className="mt-3">
             <h1 className="text-center show">Product Details</h1>
