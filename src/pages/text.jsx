@@ -1,214 +1,250 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Layout from "./../components/Layout/Layout";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import "../styles/ProductDetailsStyles.css";
 import { useCart } from "../context/cart";
-import { useAuth } from "../context/auth";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import DistrictSelector from "./DistrictSelector";
-import { MdDelete } from "react-icons/md";
-import Table from "react-bootstrap/Table";
-import { Axios } from "axios";
-import CartItem from "./CartItem";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import SizeSelector from "./SizeSelector";
+import Spinner from "../components/Loader/Spinner";
 
-const CartPage = () => {
-  const [auth, setAuth] = useAuth();
+const ProductDetails = () => {
   const [cart, setCart] = useCart();
-  const [products, setProducts] = useState([]);
-  const [quantities, setQuantities] = useState({});
-  const [names, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [divisions, setDivisions] = useState([]);
-  const [districts, setDistricts] = useState([]);
-
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-
+  const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [product, setProduct] = useState({});
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [availableSizes, setAvailableSizes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [categoryId, setCategoryId] = useState();
+  // console.log(product);
+  const hasReloaded = useRef(false);
+  // console.log(id);
+
+  //initalp details
+  useEffect(() => {
+    if (id && !hasReloaded.current) {
+      getProduct();
+      hasReloaded.current = true;
+    }
+  }, [id]); // Only depend on id
 
   useEffect(() => {
-    // console.log(cart);
-    let updatedCart = [];
-    cart.map((item) => {
-      updatedCart = [...updatedCart, { ...item, quantity: 1 }];
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+
+      // Optional: Adds smooth scrolling animation
     });
-    setProducts(updatedCart);
-  }, [cart]);
+  }, []);
 
-  //total price
-  const totalPrice = () => {
+  // ...
+
+  // console.log(relatedProducts);
+
+  //getProduct
+  const getProduct = async () => {
     try {
-      let total = 0;
-      products?.map((item) => {
-        total = total + item.price * (quantities[item._id] || 1);
-      });
-      return total;
+      const { data } = await axios.get(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${id}`
+      );
+
+      setProduct(data?.product);
+      setLoading(false);
+      // console.log(data);
+
+      if (
+        data?.product.selectedOptions &&
+        data?.product.selectedOptions.length > 0
+      ) {
+        setAvailableSizes(data?.product.selectedOptions);
+        setSelectedSize(data?.product.selectedOptions[0]); // Set the default selected size
+      }
+      // console.log(data.product.category._id);
+      setCategoryId(data.product.selectedSubcategory);
+      getSimilarProduct(data?.product._id, data?.product.category._id);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // dalevary charge
-  const deliveryCharge = selectedDistrict.toLowerCase() === "dhaka" ? 60 : 130;
+  // console.log(categoryId);
 
-  // total with dalevary charge
-  const totalWithDelivery = totalPrice() + deliveryCharge;
-
-  // handle create order
-
-  const handleCreateOrder = async (e) => {
-    e.preventDefault();
+  //get similar product
+  const getSimilarProduct = async (pid, cid) => {
     try {
-      // productData.append("names", names);
-      // productData.append("phone", phone);
-      // productData.append("address", address);
-      // productData.append("quantities", quantities);
-      // // productData.append("size", size);
-      // // productData.append("productNumber", orderData.productNumber);
-      // productData.append("selectedDivision", selectedDivision);
-      // productData.append("selectedDistrict", selectedDistrict);
-      // productData.append("amount", totalWithDelivery);
-      // productData.append("delivery", deliveryCharge);
-      //   productData.append('photo',   );
-      // productData.append("total", calculateTotalAmount());
-
-      const productData = {
-        names,
-        phone,
-        address,
-        selectedDistrict,
-        selectedDivision,
-        totalWithDelivery,
-        deliveryCharge,
-        products,
-      };
-
-      // console.log(productData);
+      const { data } = await axios.get(
+        `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
+      );
+      setRelatedProducts(data);
+      setLoading(false);
+      // console.log(data);
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong");
     }
   };
 
+  // handle size control
+
+  const relProduct = relatedProducts.filter(
+    (item) => item.selectedSubcategory === `${categoryId}`
+  );
+
+  console.log(relProduct);
+
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+  };
+
+  // console.log(selectedSize);
   return (
     <Layout>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12">
-            <h1 className="text-center bg-light p-2 mb-1">
-              {`Hello ${auth?.token && auth?.user?.name}`}
-            </h1>
-            <h4 className="text-center">
-              {products?.length
-                ? `You Have ${products.length} items in your cart ${
-                    auth?.token ? "" : "please login to checkout"
-                  }`
-                : " Your Cart Is Empty"}
-            </h4>
-          </div>
-        </div>
-        <p>Cart Summary</p>
-        <div className="row">
-          <div style={{ wordSpacing: 1, lineHeight: 1 }} className="">
-            {products?.map((product) => (
-              <CartItem
-                setProducts={setProducts}
-                products={products}
-                product={product}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Cart Summary */}
-
-        <div className="container border">
-          <p className="text-center display-5 pt-3  fw-bold">Order Summary</p>
-
-          <Table responsive="lg">
-            <tbody>
-              <tr></tr>
-              <tr>
-                <td className="fw-medium">Sub Total</td>
-                <td>
-                  <td className="fw-medium">
-                    : {totalWithDelivery - deliveryCharge}
-                  </td>
-                </td>
-              </tr>
-              <tr>
-                <td className="fw-medium">Shipping Charge</td>
-                {/* <td>: {selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130}</td> */}
-                <td className="fw-medium">: {deliveryCharge}</td>
-                {/* <td>: {(quantities >= 3) ? 0 : (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
-              </tr>
-              <tr>
-                <td className="fw-medium">Payable Amount</td>
-                {/* <td>: {(orderData.price * quantities) + (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130)}</td> */}
-                {/* <td>: {(orderData.price * quantities) + ((quantities >= 3) ? 0 : (selectedDistrict.toLowerCase() === 'dhaka' ? 60 : 130))}</td> */}
-                <td className="fw-medium">: {totalWithDelivery}</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
-        <div>
-          <div>
-            <h2 className="text-center text-success">Delivery Information</h2>
-            <div className="m-2 p-4 w-100">
-              <div className="mb-3">
-                <input
-                  type="text"
-                  value={names}
-                  placeholder="write a name"
-                  className="form-control"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="number"
-                  value={phone}
-                  placeholder="write a phone"
-                  className="form-control"
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-              <div>
-                <DistrictSelector
-                  selectedDistrict={selectedDistrict}
-                  setSelectedDistrict={setSelectedDistrict}
-                  selectedDivision={selectedDivision}
-                  districts={districts}
-                  setDistricts={setDistricts}
-                  setSelectedDivision={setSelectedDivision}
-                  divisions={divisions}
-                  setDivisions={setDivisions}
-                />
-              </div>
-
-              <div className="mb-3">
-                <textarea
-                  type="text"
-                  value={address}
-                  placeholder="write a address"
-                  className="form-control"
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="d-flex mt-2 justify-content-end">
-            <button
-              className="btn btn-success px-5"
-              onClick={handleCreateOrder}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="container">
+          <div className="row container  product-details">
+            <div
+              className="col-md-6"
+              style={{ position: "relative", maxHeight: "380px" }}
             >
-              Order Now
-            </button>
+              {loading ? (
+                <Spinner />
+              ) : (
+                <img
+                  src={product.photo}
+                  className="card-img-top"
+                  alt={product.name}
+                  style={{ objectFit: "contain", width: "100%" }}
+                  height="300"
+                  width={"350px"}
+                />
+              )}
+            </div>
+            <div className="col-md-6 product-details-info">
+              {loading ? (
+                <Spinner />
+              ) : (
+                <div>
+                  <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
+                    {product.name}
+                  </h6>
+
+                  <p className="discountPrice">৳ {product.price} </p>
+                  <p className="price">৳ {product.discount} </p>
+
+                  {/* <h6>Category : {product?.category?.name}</h6> */}
+                  <div className=" ">
+                    <p className="mb-0">Size :</p>
+                    {availableSizes.length > 0 && (
+                      <SizeSelector
+                        sizes={availableSizes}
+                        selectedSize={selectedSize}
+                        onSizeChange={handleSizeChange}
+                      />
+                    )}
+                  </div>
+
+                  {selectedSize && (
+                    <p className="mt-2">Selected Size: {selectedSize}</p>
+                  )}
+
+                  <div className="d-flex mt-3">
+                    <button
+                      className="btn btn-dark ms-1"
+                      onClick={() => {
+                        setCart([...cart, { ...product, selectedSize }]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([
+                            ...cart,
+                            { ...product, selectedSize },
+                          ])
+                        );
+                        toast.success("Item Added to cart");
+                        navigate("/cart");
+                      }}
+                    >
+                      Buy Now
+                    </button>
+
+                    <button
+                      className="btn btn-secondary ms-1"
+                      onClick={() => {
+                        setCart([...cart, { ...product, selectedSize }]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([
+                            ...cart,
+                            { ...product, selectedSize },
+                          ])
+                        );
+                        toast.success("Item Added to cart");
+                      }}
+                    >
+                      Add to cart
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+            {/* mmm */}
           </div>
+          <div className="mt-3">
+            <h1 className="text-center show">Product Details</h1>
+
+            <div dangerouslySetInnerHTML={{ __html: product.description }} />
+          </div>
+        </div>
+      )}
+      <hr />
+
+      <div>
+        <h6 className="container mb-3">Similar Products ➡️</h6>
+
+        {relProduct.length < 1 && (
+          <p className="text-center">No Similar Products found</p>
+        )}
+        <div className="container">
+          <Row xs={2} sm={3} md={4} lg={5} className="g-2 ">
+            {relProduct.slice(0, 4).map((p) => (
+              <Col key={p._id}>
+                <Card
+                  onClick={() => {
+                    navigate(`/product/${p._id}`);
+                    window.scrollTo(0, 0);
+                  }}
+                  className="productCard"
+                >
+                  <img
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      minHeight: "168px",
+                    }}
+                    src={p.photo}
+                    className="card-img-top"
+                    // height={"150px"}
+                    alt={p.name}
+                  />
+                  <div className="card-body">
+                    <h5 className="cardTitle">{p.name}</h5>
+                    <p className="discountPrice">৳ {p.price}</p>
+                    <p className="price">৳ {p.discount}</p>
+                  </div>
+                </Card>
+              </Col>
+            ))}
+          </Row>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default CartPage;
+export default ProductDetails;

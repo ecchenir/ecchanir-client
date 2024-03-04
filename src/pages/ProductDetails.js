@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Layout from "./../components/Layout/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -20,70 +20,45 @@ const ProductDetails = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
   const [availableSizes, setAvailableSizes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [categoryId, setCategoryId] = useState();
-  // console.log(product);
-  // console.log(id);
+  const hasReloaded = useRef(false);
 
-  //initalp details
+  // Fetch product details and related products
   useEffect(() => {
-    if (id) getProduct();
+    const fetchData = async () => {
+      try {
+        setLoading(true); // Set loading to true before fetching data
+        const { data } = await axios.get(
+          `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${id}`
+        );
+        setProduct(data?.product);
+
+        if (
+          data?.product.selectedOptions &&
+          data?.product.selectedOptions.length > 0
+        ) {
+          setAvailableSizes(data?.product.selectedOptions);
+          setSelectedSize(data?.product.selectedOptions[0]);
+        }
+
+        setCategoryId(data.product.selectedSubcategory);
+
+        const similarProductsResponse = await axios.get(
+          `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
+        );
+        setRelatedProducts(similarProductsResponse.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching data
+      }
+    };
+
+    fetchData();
   }, [id]);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // Optional: Adds smooth scrolling animation
-    });
-  }, []);
-
-  // ...
-
-  // console.log(relatedProducts);
-
-  //getProduct
-  const getProduct = async () => {
-    try {
-      const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/product/get-product/${id}`
-      );
-
-      setProduct(data?.product);
-      setLoading(false);
-      // console.log(data);
-
-      if (
-        data?.product.selectedOptions &&
-        data?.product.selectedOptions.length > 0
-      ) {
-        setAvailableSizes(data?.product.selectedOptions);
-        setSelectedSize(data?.product.selectedOptions[0]); // Set the default selected size
-      }
-      // console.log(data.product.category._id);
-      setCategoryId(data.product.selectedSubcategory);
-      getSimilarProduct(data?.product._id, data?.product.category._id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // console.log(categoryId);
-
-  //get similar product
-  const getSimilarProduct = async (pid, cid) => {
-    try {
-      const { data } = await axios.get(
-        `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
-      );
-      setRelatedProducts(data);
-      setLoading(false);
-      // console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // handle size control
+  // Handle size change
 
   const relProduct = relatedProducts.filter(
     (item) => item.selectedSubcategory === `${categoryId}`
@@ -95,148 +70,129 @@ const ProductDetails = () => {
     setSelectedSize(size);
   };
 
-  // console.log(selectedSize);
   return (
     <Layout>
-      {loading ? (
+      {loading ? ( // Show loading spinner if data is still loading
         <Spinner />
       ) : (
         <div className="container">
+          {/* Product details */}
           <div className="row container  product-details">
+            {/* Product image */}
             <div
               className="col-md-6"
               style={{ position: "relative", maxHeight: "380px" }}
             >
-              {loading ? (
-                <Spinner />
-              ) : (
-                <img
-                  src={product.photo}
-                  className="card-img-top"
-                  alt={product.name}
-                  style={{ objectFit: "contain", width: "100%" }}
-                  height="300"
-                  width={"350px"}
-                />
-              )}
+              <img
+                src={product.photo}
+                className="card-img-top"
+                alt={product.name}
+                style={{ objectFit: "contain", width: "100%" }}
+                height="300"
+                width={"350px"}
+              />
             </div>
+            {/* Product information */}
             <div className="col-md-6 product-details-info">
-              {loading ? (
-                <Spinner />
-              ) : (
-                <div>
-                  <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
-                    {product.name}
-                  </h6>
-
-                  <p className="discountPrice">৳ {product.price} </p>
-                  <p className="price">৳ {product.discount} </p>
-
-                  {/* <h6>Category : {product?.category?.name}</h6> */}
-                  <div className=" ">
-                    <p className="mb-0">Size :</p>
-                    {availableSizes.length > 0 && (
-                      <SizeSelector
-                        sizes={availableSizes}
-                        selectedSize={selectedSize}
-                        onSizeChange={handleSizeChange}
-                      />
-                    )}
-                  </div>
-
-                  {selectedSize && (
-                    <p className="mt-2">Selected Size: {selectedSize}</p>
-                  )}
-
-                  <div className="d-flex mt-3">
-                    <button
-                      className="btn btn-dark ms-1"
-                      onClick={() => {
-                        setCart([...cart, { ...product, selectedSize }]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([
-                            ...cart,
-                            { ...product, selectedSize },
-                          ])
-                        );
-                        toast.success("Item Added to cart");
-                        navigate("/cart");
-                      }}
-                    >
-                      Buy Now
-                    </button>
-
-                    <button
-                      className="btn btn-secondary ms-1"
-                      onClick={() => {
-                        setCart([...cart, { ...product, selectedSize }]);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify([
-                            ...cart,
-                            { ...product, selectedSize },
-                          ])
-                        );
-                        toast.success("Item Added to cart");
-                      }}
-                    >
-                      Add to cart
-                    </button>
-                  </div>
-                </div>
+              <h6 style={{ fontSize: "20px", fontWeight: "bolder" }}>
+                {product.name}
+              </h6>
+              <p className="discountPrice">৳ {product.price} </p>
+              <p className="price">৳ {product.discount} </p>
+              <div className=" ">
+                <p className="mb-0">Size :</p>
+                {availableSizes.length > 0 && (
+                  <SizeSelector
+                    sizes={availableSizes}
+                    selectedSize={selectedSize}
+                    onSizeChange={handleSizeChange}
+                  />
+                )}
+              </div>
+              {selectedSize && (
+                <p className="mt-2">Selected Size: {selectedSize}</p>
               )}
+              <div className="d-flex mt-3">
+                <button
+                  className="btn btn-dark ms-1"
+                  onClick={() => {
+                    setCart([...cart, { ...product, selectedSize }]);
+                    localStorage.setItem(
+                      "cart",
+                      JSON.stringify([...cart, { ...product, selectedSize }])
+                    );
+                    toast.success("Item Added to cart");
+                    navigate("/cart");
+                  }}
+                >
+                  Buy Now
+                </button>
+                <button
+                  className="btn btn-secondary ms-1"
+                  onClick={() => {
+                    setCart([...cart, { ...product, selectedSize }]);
+                    localStorage.setItem(
+                      "cart",
+                      JSON.stringify([...cart, { ...product, selectedSize }])
+                    );
+                    toast.success("Item Added to cart");
+                  }}
+                >
+                  Add to cart
+                </button>
+              </div>
             </div>
-            {/* mmm */}
           </div>
           <div className="mt-3">
             <h1 className="text-center show">Product Details</h1>
-
             <div dangerouslySetInnerHTML={{ __html: product.description }} />
           </div>
         </div>
       )}
       <hr />
+      {/* Similar Products */}
 
-      <div>
-        <h6 className="container mb-3">Similar Products ➡️</h6>
-
-        {relProduct.length < 1 && (
-          <p className="text-center">No Similar Products found</p>
-        )}
-        <div className="container">
-          <Row xs={2} sm={3} md={4} lg={5} className="g-2 ">
-            {relProduct.slice(0, 4).map((p) => (
-              <Col key={p._id}>
-                <Card
-                  onClick={() => {
-                    navigate(`/product/${p._id}`);
-                    window.scrollTo(0, 0);
-                  }}
-                  className="productCard"
-                >
-                  <img
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      minHeight: "168px",
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div>
+          <h6 className="container mb-3">Similar Products ➡️</h6>
+          {relProduct.length < 1 && (
+            <p className="text-center">No Similar Products found</p>
+          )}
+          <div className="container">
+            <Row xs={2} sm={3} md={4} lg={5} className="g-2 ">
+              {relProduct.slice(0, 4).map((p) => (
+                <Col key={p._id}>
+                  <Card
+                    onClick={() => {
+                      navigate(`/product/${p._id}`);
+                      window.scrollTo(0, 0);
                     }}
-                    src={p.photo}
-                    className="card-img-top"
-                    // height={"150px"}
-                    alt={p.name}
-                  />
-                  <div className="card-body">
-                    <h5 className="cardTitle">{p.name}</h5>
-                    <p className="discountPrice">৳ {p.price}</p>
-                    <p className="price">৳ {p.discount}</p>
-                  </div>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+                    className="productCard"
+                  >
+                    <img
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        minHeight: "168px",
+                      }}
+                      src={p.photo}
+                      className="card-img-top"
+                      alt={p.name}
+                    />
+                    <div className="card-body">
+                      <h5 className="cardTitle">{p.name}</h5>
+                      <p className="discountPrice">৳ {p.price}</p>
+                      <p className="price">৳ {p.discount}</p>
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
         </div>
-      </div>
+      )}
     </Layout>
   );
 };
