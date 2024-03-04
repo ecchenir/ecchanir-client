@@ -67,7 +67,7 @@ const ProductDetails = () => {
     }
   };
 
-  console.log(categoryId);
+  // console.log(categoryId);
 
   //get similar product
   const getSimilarProduct = async (pid, cid) => {
