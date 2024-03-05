@@ -22,7 +22,23 @@ const ProductDetails = () => {
   const [availableSizes, setAvailableSizes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryId, setCategoryId] = useState();
-  const hasReloaded = useRef(false);
+
+  useEffect(() => {
+    const isReloaded = sessionStorage.getItem("isReloaded");
+    console.log("ssss");
+    if (!isReloaded) {
+      window.location.reload();
+      sessionStorage.setItem("isReloaded", true);
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    return () => {
+      sessionStorage.removeItem("isReloaded");
+    };
+  }, []);
 
   // Fetch product details and related products
   useEffect(() => {

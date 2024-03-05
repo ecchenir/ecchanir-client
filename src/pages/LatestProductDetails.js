@@ -24,10 +24,20 @@ const LatestProductDetails = () => {
   }, [id]);
 
   useEffect(() => {
+    const isReloaded = sessionStorage.getItem("isLatestProductReload");
+    if (!isReloaded) {
+      console.log("ssss");
+      window.location.reload();
+      sessionStorage.setItem("isLatestProductReload", true);
+    }
+
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // Optional: Adds smooth scrolling animation
+      behavior: "smooth",
     });
+    return () => {
+      sessionStorage.removeItem("isLatestProductReload");
+    };
   }, []);
 
   console.log(id);

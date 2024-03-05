@@ -6,13 +6,14 @@ import axios from "axios";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-
+import Spinner from "../components/Loader/Spinner";
 
 const CategoryProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [search, setSearch] = useState("");
@@ -22,15 +23,26 @@ const CategoryProduct = () => {
   }, [id]);
 
   useEffect(() => {
+    const isReloaded = sessionStorage.getItem("isCategoryReload");
+    if (!isReloaded) {
+      console.log("ssss");
+      window.location.reload();
+      sessionStorage.setItem("isCategoryReload", true);
+    }
+
     window.scrollTo({
       top: 0,
-      behavior: "smooth", // Optional: Adds smooth scrolling animation
+      behavior: "smooth",
     });
+    return () => {
+      sessionStorage.removeItem("isCategoryReload");
+    };
   }, []);
 
   // console.log(id);
   const getPrductsByCat = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `https://new-ecchanir-server.vercel.app/api/v1/product/get-allProduct`
       );
@@ -40,6 +52,8 @@ const CategoryProduct = () => {
       // setCategory(data?.category);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,87 +92,95 @@ const CategoryProduct = () => {
           }}
         />
 
-        {/* <h6 className="text-center">{products?.length} result found </h6> */}
-
-        {trendingProduct.length >= 1 && (
-          <div className="mb-5 mt-2">
-            <h6 className="text-center display-6">Trending Product</h6>
-            <div className="container">
-              <Row xs={2} sm={3} md={4} lg={5} className="g-2">
-                {trendingProduct.map((tp) => (
-                  <Col key={tp._id}>
-                    <Card
-                      onClick={() => navigate(`/product/${tp._id}`)}
-                      className="productCard"
-                    >
-                      <img
-                        style={{
-                          objectFit: "cover",
-                          width: "100%",
-                          minHeight: "168px",
-                        }}
-                        src={tp.photo}
-                        className="card-img-top"
-                        alt={tp.name}
-                        onClick={() => navigate(`/product/${tp._id}`)}
-                      />
-                      <div className="card-body">
-                        <div>
-                          <h5 className="cardTitle">{tp.name}</h5>
-                          {/* <h5 className="cardTitle">
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            {trendingProduct.length >= 1 && (
+              <div className="mb-5 mt-2">
+                <h6 className="text-center display-6">Trending Product</h6>
+                <div className="container">
+                  <Row xs={2} sm={3} md={4} lg={5} className="g-2">
+                    {trendingProduct.map((tp) => (
+                      <Col key={tp._id}>
+                        <Card
+                          onClick={() => navigate(`/product/${tp._id}`)}
+                          className="productCard"
+                        >
+                          <img
+                            style={{
+                              objectFit: "cover",
+                              width: "100%",
+                              minHeight: "168px",
+                            }}
+                            src={tp.photo}
+                            className="card-img-top"
+                            alt={tp.name}
+                            onClick={() => navigate(`/product/${tp._id}`)}
+                          />
+                          <div className="card-body">
+                            <div>
+                              <h5 className="cardTitle">{tp.name}</h5>
+                              {/* <h5 className="cardTitle">
                             {tp.name.length <= 20
                               ? tp.name
                               : `${tp.name.substring(0, 20)}...`}
                           </h5> */}
-                          <p className="price">৳ {tp.discount} </p>
-                          <p className="discountPrice">৳ {tp.price}</p>
-                        </div>
-                      </div>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </div>
-          </div>
+                              <p className="price">৳ {tp.discount} </p>
+                              <p className="discountPrice">৳ {tp.price}</p>
+                            </div>
+                          </div>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
-        <div className="container">
-          <h6 className="text-center display-6"> Category Products</h6>
-          <Row xs={2} sm={3} md={4} lg={5} className="g-2">
-            {cateGoryProduct.map((p) => (
-              <Col key={p._id}>
-                <Card
-                  onClick={() => navigate(`/product/${p._id}`)}
-                  className="productCard"
-                >
-                  <img
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      minHeight: "168px",
-                    }}
-                    src={p.photo}
-                    className="card-img-top"
-                    alt={p.name}
+        {loading ? (
+          <p className="text-center">Category Product Loading ....</p>
+        ) : (
+          <div className="container">
+            <h6 className="text-center display-6"> Category Products</h6>
+            <Row xs={2} sm={3} md={4} lg={5} className="g-2">
+              {cateGoryProduct.map((p) => (
+                <Col key={p._id}>
+                  <Card
                     onClick={() => navigate(`/product/${p._id}`)}
-                  />
-                  <div className="card-body">
-                    <div>
-                      <h5 className="cardTitle">{p.name}</h5>
-                      {/* <h5 className="cardTitle">
-                        {p.name.length <= 20
-                          ? p.name
-                          : `${p.name.substring(0, 20)}...`}
-                      </h5> */}
-                      <p className="price">৳ {p.discount} </p>
-                      <p className="discountPrice">৳ {p.price}</p>
+                    className="productCard"
+                  >
+                    <img
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        minHeight: "168px",
+                      }}
+                      src={p.photo}
+                      className="card-img-top"
+                      alt={p.name}
+                      onClick={() => navigate(`/product/${p._id}`)}
+                    />
+                    <div className="card-body">
+                      <div>
+                        <h5 className="cardTitle">{p.name}</h5>
+                        {/* <h5 className="cardTitle">
+                      {p.name.length <= 20
+                        ? p.name
+                        : `${p.name.substring(0, 20)}...`}
+                    </h5> */}
+                        <p className="price">৳ {p.discount} </p>
+                        <p className="discountPrice">৳ {p.price}</p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        )}
       </div>
     </Layout>
   );

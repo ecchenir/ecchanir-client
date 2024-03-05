@@ -21,6 +21,19 @@ export default function SubcategoryShow() {
     if (params?.name);
   }, [params?.name]);
 
+  useEffect(() => {
+    const isReloaded = sessionStorage.getItem("isSubCategoryReload");
+    if (!isReloaded) {
+      console.log("ssss");
+      window.location.reload();
+      sessionStorage.setItem("isSubCategoryReload", true);
+    }
+
+    return () => {
+      sessionStorage.removeItem("isSubCategoryReload");
+    };
+  }, []);
+
   const getAllProducts = async () => {
     try {
       setLoading(true);
