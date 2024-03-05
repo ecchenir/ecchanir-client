@@ -34,6 +34,18 @@ const CartPage = () => {
     setProducts(updatedCart);
   }, [cart]);
 
+  useEffect(() => {
+    const isReloaded = sessionStorage.getItem("isCategoryReload");
+    if (!isReloaded) {
+      console.log("ssss");
+      window.location.reload();
+      sessionStorage.setItem("isCategoryReload", true);
+    }
+    return () => {
+      sessionStorage.removeItem("isCategoryReload");
+    };
+  }, []);
+
   //total price
   const totalPrice = () => {
     try {

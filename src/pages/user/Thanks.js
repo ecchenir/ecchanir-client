@@ -14,6 +14,15 @@ export default function Thanks() {
   // console.log(id);
 
   useEffect(() => {
+    const isReloaded = sessionStorage.getItem("isCategoryReload");
+    if (!isReloaded) {
+      console.log("ssss");
+      window.location.reload();
+      sessionStorage.setItem("isCategoryReload", true);
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
