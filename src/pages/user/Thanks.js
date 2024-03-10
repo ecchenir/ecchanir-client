@@ -103,7 +103,7 @@ export default function Thanks() {
                 </tr>
 
                 <tr>
-                  <td className="fw-bold"> Shaping Charge </td>
+                  <td className="fw-bold">Shipping Charge</td>
                   <td className="fw-bold">: {order?.deliveryCharge}</td>
                 </tr>
 

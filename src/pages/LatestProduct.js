@@ -59,7 +59,8 @@ const LatestProduct = () => {
                   {/* {p.name.length <= 15
                     ? p.name
                     : `${p.name.substring(0, 15)}...`} */}
-                  <p className="price">{p.price}Taka</p>
+                  <p className="discountPrice">৳ {p.price}</p>
+                  <p className="price">৳ {p.discount}</p>
                 </div>
               </Card>
             </Col>
